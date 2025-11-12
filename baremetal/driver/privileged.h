@@ -176,3 +176,13 @@
     j fail;                     \
 4:
 
+#define setup_pmp                           \
+    la t0, 1f;                              \
+    csrrw t1, mtvec, t0;                     \
+    li t0, PMP_R | PMP_W | PMP_X | PMP_A;   \
+    csrw pmpcfg0, t0;                       \
+    li t0, -1;                              \
+    csrw pmpaddr0, t0;                      \
+.align 4;                                   \
+1:                                          \
+    csrw mtvec, t1
