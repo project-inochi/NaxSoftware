@@ -192,13 +192,13 @@
   /* test whether the test came from pass/fail */                              \
   csrr t5, mcause;                                                             \
   li t6, CAUSE_USER_ECALL;                                                     \
-  beq t5, t6, write_tohost;                                                    \
+  beq t5, t6, handle_ecall;                                                    \
   li t6, CAUSE_VIRTUAL_SUPERVISOR_ECALL;                                       \
-  beq t5, t6, write_tohost;                                                    \
+  beq t5, t6, handle_ecall;                                                    \
   li t6, CAUSE_SUPERVISOR_ECALL;                                               \
-  beq t5, t6, write_tohost;                                                    \
+  beq t5, t6, handle_ecall;                                                    \
   li t6, CAUSE_MACHINE_ECALL;                                                  \
-  beq t5, t6, write_tohost;                                                    \
+  beq t5, t6, handle_ecall;                                                    \
   /* if an mtvec_handler is defined, jump to it */                             \
   la t5, mtvec_handler;                                                        \
   beqz t5, 1f;                                                                 \
@@ -212,10 +212,9 @@
   other_exception:                                                             \
   /* some unhandlable exception occurred */                                    \
   1 : ori TESTNUM, TESTNUM, 1337;                                              \
-  write_tohost:                                                                \
-  sw TESTNUM, tohost, t5;                                                      \
-  sw zero, tohost + 4, t5;                                                     \
-  j write_tohost;                                                              \
+  handle_ecall:                                                                \
+  bnez a0, fail2;                                                              \
+  j pass2;                                                                     \
   reset_vector:                                                                \
   INIT_XREG;                                                                   \
   RISCV_MULTICORE_DISABLE;                                                     \
@@ -320,7 +319,11 @@
   fail:                                                                        \
   RVTEST_FAIL;                                                                 \
   pass:                                                                        \
-  RVTEST_PASS
+  RVTEST_PASS;                                                                 \
+  pass2:                                                                       \
+  nop;nop;nop;                                                                 \
+  fail2:                                                                       \
+  nop;nop;nop;
 
 //-----------------------------------------------------------------------
 // Macros to ease nop insertion
