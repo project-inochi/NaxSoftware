@@ -188,6 +188,11 @@
   /* reset vector */                                                           \
   j reset_vector;                                                              \
   .align 2;                                                                    \
+  pass2:                                                                       \
+  nop;nop;nop;                                                                 \
+  fail2:                                                                       \
+  nop;nop;nop;                                                                 \
+  .align 2;                                                                    \
   trap_vector:                                                                 \
   /* test whether the test came from pass/fail */                              \
   csrr t5, mcause;                                                             \
@@ -319,11 +324,7 @@
   fail:                                                                        \
   RVTEST_FAIL;                                                                 \
   pass:                                                                        \
-  RVTEST_PASS;                                                                 \
-  pass2:                                                                       \
-  nop;nop;nop;                                                                 \
-  fail2:                                                                       \
-  nop;nop;nop;
+  RVTEST_PASS;
 
 //-----------------------------------------------------------------------
 // Macros to ease nop insertion
