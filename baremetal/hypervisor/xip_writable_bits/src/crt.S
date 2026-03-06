@@ -28,19 +28,19 @@ csrw hideleg, a0
 
 li TESTNUM, 1
 li t0, MIP_SSIP | MIP_STIP | MIP_SEIP | MIP_VSSIP
-csrs mip, a0       // Try to set all bits
+csrs mip, t0       // Try to set all bits
 csrr t1, mip
 bne t0, t1, fail   // Check if written bits are expected
-csrc mip, a0       // Clear all bits
+csrc mip, t0       // Clear all bits
 csrr t1, mip
 bnez t1, fail    // Fail if unable to clear
 
 li TESTNUM, 2
 li t0, MIP_SSIP
-csrs sip, a0       // Try to set all bits
+csrs sip, t0       // Try to set all bits
 csrr t1, mip
 bne t0, t1, fail   // Check if written bits are expected
-csrc sip, a0       // Clear all bits
+csrc sip, t0       // Clear all bits
 csrr t1, mip
 bnez t1, fail      // Fail if unable to clear
 
