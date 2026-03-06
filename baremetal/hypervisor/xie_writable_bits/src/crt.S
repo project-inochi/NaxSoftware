@@ -32,7 +32,7 @@ li TESTNUM, 1
 li t0, MIP_SSIP | MIP_VSSIP | MIP_MSIP | \
        MIP_STIP | MIP_VSTIP | MIP_MTIP | \
        MIP_SEIP | MIP_VSEIP | MIP_MEIP | MIP_SGEIP
-csrs mie, a0       // Try to set all bits
+csrs mie, t0       // Try to set all bits
 csrr t1, mie
 bne t0, t1, fail   // Check if written bits are expected
 csrc mie, a0       // Clear all bits
@@ -41,10 +41,10 @@ bnez t1, fail      // Fail if unable to clear
 
 li TESTNUM, 2
 li t0, MIP_SSIP | MIP_STIP| MIP_SEIP
-csrs sie, a0       // Try to set all bits
+csrs sie, t0       // Try to set all bits
 csrr t1, mie
 bne t0, t1, fail   // Check if written bits are expected
-csrc sie, a0       // Clear all bits
+csrc sie, t0       // Clear all bits
 csrr t1, mie
 bnez t1, fail      // Fail if unable to clear
 
