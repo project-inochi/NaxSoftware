@@ -34,12 +34,8 @@ success:
     li TESTNUM, 0x1
     sw TESTNUM, 0(t0)
     sw zero, 4(t0)
-    j pass
+    j pass2
     unimp
-
-pass:
-    nop
-    j pass
 
 fail:
     # RVTEST_FAIL uses ecall and stops working after xtvec is overwritten
