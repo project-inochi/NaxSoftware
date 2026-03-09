@@ -201,16 +201,16 @@ fail:
     j fail
 
 mtvec_handler:
-    csrr a0, mcause
+    csrr t3, mcause
     beq gp, x0, misagligned_store
-    li t0, 4 # load misaligned
+    li t4, 4 # load misaligned
     j continue
 misagligned_store:
-    li t0, 6 # store misaligned
+    li t4, 6 # store misaligned
 continue:
-    bne t0, a0, fail
-    csrr t0, mepc
-    addi t0, t0, 8
-    csrw mepc, t0
+    bne t4, t3, fail
+    csrr t4, mepc
+    addi t4, t4, 8
+    csrw mepc, t4
     mret
 
