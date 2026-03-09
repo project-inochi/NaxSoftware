@@ -123,9 +123,10 @@ satp_test:
 misaligned_test:
     li  gp, 1 # 1 for load test, 0 for store test
 
+    li  a0, INVALID_MEM
+
     # load double
     li  t0, 8
-    li  a0, INVALID_MEM
     li  a1, 1
 1:  add t1, a0, a1
     ld a2, 0(t1)
@@ -135,7 +136,6 @@ misaligned_test:
 
     # load word
     li  t0, 4
-    li  a0, INVALID_MEM
     li  a1, 1
 1:  add t1, a0, a1
     lw a2, 0(t1)
@@ -143,9 +143,17 @@ misaligned_test:
     addi a1, a1, 1
     blt a1, t0, 1b
 
+    # load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    lwu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
     # load half word
     li  t0, 2
-    li  a0, INVALID_MEM
     li  a1, 1
 1:  add t1, a0, a1
     lh a2, 0(t1)
@@ -153,11 +161,159 @@ misaligned_test:
     addi a1, a1, 1
     blt a1, t0, 1b
 
+    # load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    lhu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load double
+    li  t0, 8
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.d a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.w a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.wu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.h a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.hu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    li  a0, VALID_MEM
+
+    # load double
+    li  t0, 8
+    li  a1, 1
+1:  add t1, a0, a1
+    ld a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    lw a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    lwu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    lh a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    lhu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load double
+    li  t0, 8
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.d a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.w a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.wu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.h a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    hlv.hu a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
     li  gp, 0 # 1 for load test, 0 for store test
     li  a2, 0xdeadbeaf
+
+    li  a0, INVALID_MEM
+
     # store double
     li  t0, 8
-    li  a0, INVALID_MEM
     li  a1, 1
 1:  add t1, a0, a1
     sd a2, 0(t1)
@@ -167,7 +323,6 @@ misaligned_test:
 
     # store word
     li  t0, 4
-    li  a0, INVALID_MEM
     li  a1, 1
 1:  add t1, a0, a1
     sw a2, 0(t1)
@@ -177,10 +332,93 @@ misaligned_test:
 
     # store half word
     li  t0, 2
-    li  a0, INVALID_MEM
     li  a1, 1
 1:  add t1, a0, a1
     sh a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+
+    # hyper load double
+    li  t0, 8
+    li  a1, 1
+1:  add t1, a0, a1
+    hsv.d a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    hsv.w a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    hsv.h a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    li  a0, VALID_MEM
+
+    # store double
+    li  t0, 8
+    li  a1, 1
+1:  add t1, a0, a1
+    sd a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # store word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    sw a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # store half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    sh a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load double
+    li  t0, 8
+    li  a1, 1
+1:  add t1, a0, a1
+    hsv.d a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load word
+    li  t0, 4
+    li  a1, 1
+1:  add t1, a0, a1
+    hsv.w a2, 0(t1)
+    j fail
+    addi a1, a1, 1
+    blt a1, t0, 1b
+
+    # hyper load half word
+    li  t0, 2
+    li  a1, 1
+1:  add t1, a0, a1
+    hsv.h a2, 0(t1)
     j fail
     addi a1, a1, 1
     blt a1, t0, 1b
