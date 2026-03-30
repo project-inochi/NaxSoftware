@@ -105,7 +105,7 @@ mtvec_handler:
   and a1, t0, a1
   and a2, t0, a2
   and a1, a1, a2
-  beq t1, zero, fail
+  beq a1, zero, fail
 
 RVTEST_PASSFAIL
 RVTEST_CODE_END
