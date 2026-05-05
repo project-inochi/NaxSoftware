@@ -1,7 +1,7 @@
 /**
  * File: htime_delta.S
- * Description: Verify that accessing a time when V=1 returns the sum of mtime & htimedelta
- * Bug: this test only works as long as the timer fires less than Δtime during the test
+ * Description: Verify that guest time reads are offset by htimedelta
+ * Note: This test checks relative differences and does not rely on writing mtime
  */
 
 #include "riscv_test.h"
@@ -29,8 +29,6 @@ csrw htimedelta, s0
 la a0, hstime
 la a1, vstime
 la a2, vutime
-// Reset timer
-SET_MTIME(zero)
 // Read time at different privileges
 mtime: csrr s1, time
 RVTEST_MRET_HS(a0)
@@ -39,11 +37,16 @@ RVTEST_SRET_VS(a1)
 vstime: csrr s3, time
 RVTEST_SRET_U(a2)
 vutime: csrr s4, time
-// Check results
-bgt s1, s0, fail
-bgt s2, s0, fail
-blt s3, s0, fail
-blt s4, s0, fail
+// Check relative differences:
+// - HS reads host time, so HS - M must stay below the delta window
+// - VS reads guest time, so VS - HS must include htimedelta
+// - VU reuses guest time, so VU - VS must stay below the delta window
+sub t1, s2, s1
+bgeu t1, s0, fail
+sub t1, s3, s2
+bltu t1, s0, fail
+sub t1, s4, s3
+bgeu t1, s0, fail
 j pass
 
 RVTEST_PASSFAIL

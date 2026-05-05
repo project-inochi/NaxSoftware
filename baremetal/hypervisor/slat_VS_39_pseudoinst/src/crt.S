@@ -44,7 +44,9 @@ li t0, HGATP_MODE_SV39X4 * (HGATP_MODE & ~(HGATP_MODE<<1))
 or t0, t0, t1
 csrw hgatp, t0
 
-# Enable automatic updates of pte.D & pte.A (Requires Svadu extension)
+# Enable automatic updates of pte.D & pte.A.
+# SVADU_EXT is provided by the local makefile because the generic rv64g build
+# flags do not advertise Svadu to the assembler preprocessor.
 #ifdef SVADU_EXT
 li t0, MENVCFG_HADE
 csrs menvcfg, t0
@@ -201,6 +203,7 @@ mtvec_handler:
 1:li t0, 4
   bne t0, TESTNUM, 1f
   li t1, CAUSE_LOAD_GUEST_PAGE_FAULT  # Cause is load-guest-page-fault
+  bne t1, a0, fail
   li t1, 0x0003020                    # Trap inst is not RV64 write pseudoinst
   beq t1, a4, fail
   li t1, 0x0003000                    # Trap inst is not RV64 read pseudoinst
