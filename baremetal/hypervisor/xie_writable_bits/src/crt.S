@@ -67,7 +67,10 @@ csrr t1, mie
 bnez t1, fail      // Fail if unable to clear
 
 // Check if mie bits are readable from xie
-csrs mie, a0 // Set all writable bits
+li t0, MIP_SSIP | MIP_VSSIP | MIP_MSIP | \
+       MIP_STIP | MIP_VSTIP | MIP_MTIP | \
+       MIP_SEIP | MIP_VSEIP | MIP_MEIP | MIP_SGEIP
+csrs mie, t0 // Set all writable bits
 
 li TESTNUM, 5
 li t0, MIP_SSIP | MIP_STIP| MIP_SEIP
