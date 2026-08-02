@@ -97,6 +97,7 @@ mtvec_handler:
   la a0, dirty_log
   ld a1, 0(a0)
   la t0, testdata
+  SPA2GPA_VDATA(t0)
   srli t0, t0, RISCV_PGSHIFT
   slli t0, t0, RISCV_PGSHIFT
   bne a1, t0, fail
