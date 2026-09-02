@@ -1,0 +1,5 @@
+# Compiler and campaign output for the RTL-directed test suite.
+build/
+__pycache__/
+.pytest_cache/
+*.py[cod]

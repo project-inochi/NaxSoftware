@@ -1,0 +1,11 @@
+# Generated output for bare-metal tests.
+# Keep this policy scoped to the test tree; source, manifests and test
+# utilities remain visible to Git.
+**/build/
+**/campaign/
+**/logs/
+**/traces/
+**/reports/
+**/__pycache__/
+.pytest_cache/
+*.py[cod]
