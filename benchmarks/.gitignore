@@ -1,0 +1,10 @@
+# Generated output for benchmark builds and report runs.
+# This file intentionally applies only below benchmarks/.
+**/build/
+**/campaign/
+**/logs/
+**/traces/
+**/reports/
+**/__pycache__/
+.pytest_cache/
+*.py[cod]
