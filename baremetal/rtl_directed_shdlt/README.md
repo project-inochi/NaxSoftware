@@ -35,7 +35,7 @@ The locally built `csr` image executes M -> HS -> VS and checks:
   reserved bits, and CSR set/clear behavior;
 - the 20-bit HDLTIDX write mask and boundary patterns.
 
-The campaign reuses, without rebuilding, the previous-stage binaries:
+The campaign rebuilds and pins the matrix binaries from their current source:
 
 | Family | Privileged behavior covered |
 | --- | --- |
@@ -86,26 +86,40 @@ each secondary hart also enters `pass`.  The runner therefore uses
 `--pass-policy all` as the authoritative result contract and checks intact UART
 records when any survive interleaving.
 
-## Preserved binaries
+## Generated and pinned binaries
 
-`binaries.sha256` pins all 43 previous-stage ELF files used by the campaign.
-The runner checks this manifest before and after simulation and never invokes
-`make` in an old test directory.  The manifest paths are repository-root
-relative, so run verification from the VexiiRiscv repository root:
+`matrix-binaries` invokes the existing dirtygen, smoke, race, and CTC
+Makefiles to generate all 43 ELF files used by the campaign.  The output paths
+are the paths already consumed by the runner; build products remain ignored.
+
+`binaries.sha256` pins those generated ELF files.  The runner incrementally
+rebuilds missing or stale binaries and checks the manifest before simulation,
+then checks it again after simulation.  It never updates the manifest itself.
+The manifest paths are repository-root relative, so run build verification
+from the VexiiRiscv repository root:
 
 ```bash
 bash ext/NaxSoftware/baremetal/rtl_directed_shdlt/tools/run_matrix.sh verify
 ```
 
-Only the new CSR image is rebuilt.  It has its own output directory at
-`build/csr`.
+For an intentional source update, regenerate the pinned hashes explicitly:
+
+```bash
+make -C ext/NaxSoftware/baremetal/rtl_directed_shdlt refresh-matrix-manifest
+```
+
+The CSR image is separate from the 43-file matrix manifest and is rebuilt in
+its own output directory at `build/csr`.
 
 ## Running
 
 From the VexiiRiscv repository root:
 
 ```bash
-# Build the new CSR firmware and run parser unit tests.
+# Build the matrix binaries and verify their pinned hashes without simulation.
+make -C ext/NaxSoftware/baremetal/rtl_directed_shdlt verify-matrix-binaries
+
+# Build the CSR firmware and run parser unit tests.
 make -C ext/NaxSoftware/baremetal/rtl_directed_shdlt compile
 make -C ext/NaxSoftware/baremetal/rtl_directed_shdlt test-report
 
@@ -150,26 +164,12 @@ The complete dirtygen RVLS trace is large (about 2.4 GiB in the current run),
 because it contains every commit for all 32 capacity/recovery cases.  Ensure
 adequate disk space before running that selector.
 
-## Validation status of preserved images
+## Build verification and simulation validation
 
-The new CSR image, the 2-hart smoke `load_only`, 2-hart race
-`buffer_isolation`/`same_pte`, 4-hart race `same_cacheline_ptes`, 2-hart and
-4-hart CTC representatives, and the complete dirtygen image have been run
-through both the architectural report and RVLS attribution report.  They pass;
-the dirtygen run produced 28,050 implicit stores, 13,638 appends, 14,412 PTE
-updates, and 84 cause-24 faults with zero attribution errors.
-
-Several preserved non-load smoke ELFs (`log_off`, `predirty`, `widths`,
-`nonzero_index`, `freeze`, and `reset_resume`) currently enter their own `fail`
-symbol on this DUT because those old images compare the log-derived bitmap with
-the PTE-D bitmap even when logging is disabled/frozen (for example,
-`log_off` reports `expected=1`, `actual=0`, `missing=1` despite the architectural
-PTE-D update and zero append).  This is a correctness issue in the previous
-stage binary's result predicate, not a new RTL/reporting failure.  The runner
-keeps these entries strict: it propagates the TestBench failure instead of
-turning a stale-image self-check into a pass.  Once corrected previous-stage
-ELFs are supplied, their repository-relative paths can be substituted in the
-matrix without changing the runner or RTL.
+Manifest verification proves that all matrix inputs can be reproduced from
+the current source and toolchain.  It does not replace architectural or RVLS
+simulation.  The full 52-run campaign remains an explicit, separate command;
+the binary build and `verify` selector do not start any simulation.
 
 ## Known capability observations
 

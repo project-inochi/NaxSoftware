@@ -83,7 +83,7 @@ esac
 
 manifest="$test_dir/binaries.sha256"
 cd "$repo_root"
-sha256sum -c "$manifest"
+make -C "$test_dir" verify-matrix-binaries
 if [[ "$selection" == verify ]]; then exit 0; fi
 
 make -C "$test_dir" compile
