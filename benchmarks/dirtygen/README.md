@@ -9,7 +9,8 @@ to audit, build, parse, and unit-test the benchmark software.
 
 - one hart;
 - M -> HS -> VS;
-- `vsatp=Bare`;
+- `vsatp=Bare` in the main and Phase-1 suites;
+- `vsatp=Sv39` in the Phase-6 implicit guest-store suite;
 - `hgatp=Sv39x4`;
 - 4 KiB G-stage leaves;
 - Svadu enabled through `menvcfg.ADUE` and `henvcfg.ADUE`;
@@ -28,15 +29,25 @@ Makefile                 standalone riscv64-elf build
 linker.ld                complete linker script
 include/runtime.h        minimal CSR/PTE/privilege definitions
 include/dirtygen.h       ABI v5 structures and assembly offsets
+include/phase1.h         failure-atomicity directed-test definitions
+include/phase6.h         implicit guest-store directed-test definitions
 include/dirty_log_check.h
 src/startup.S            reset, M/HS/VS, traps, storage, pass/fail
 src/page_table.c         private Sv39x4 construction
 src/dirtygen.inc.S       guest workloads and HS trap lifecycle
+src/phase1.inc.S         Phase-1 guest workload and trap lifecycle
+src/phase6.inc.S         Phase-6 guest workload and trap lifecycle
 src/dirtygen.c           descriptors, validation, records, summaries
+src/phase1.c             Phase-1 state validation and report
+src/phase6.c             Phase-6 page tables, validation, and report
 src/dirty_log_check.c    exact GPA-set checking
 src/dirty_log_random.c   deterministic reference pattern
 tools/dirtygen_report.py ABI v4/v5 parser and validator
+tools/phase1_report.py   Phase-1 report validator
+tools/phase6_report.py   Phase-6 report validator
 tests/test_dirtygen_report.py
+tests/test_phase1_report.py
+tests/test_phase6_report.py
 ```
 
 No source, header, linker script, or make fragment outside this directory is
@@ -58,6 +69,14 @@ boundary cases are:
 ```bash
 make clean
 make CASE_FIRST=30 CASE_LIMIT=32
+```
+
+The directed suites use separate build directories and do not change the
+32-case image ABI:
+
+```bash
+make phase1
+make phase6
 ```
 
 Outputs are placed under `build/`:

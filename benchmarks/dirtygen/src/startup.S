@@ -6,8 +6,10 @@
  * another bare-metal environment.
  */
 #include "runtime.h"
-#ifdef DIRTYGEN_PHASE1
+#if defined(DIRTYGEN_PHASE1)
 #include "phase1.h"
+#elif defined(DIRTYGEN_PHASE6)
+#include "phase6.h"
 #else
 #include "dirtygen.h"
 #endif
@@ -102,6 +104,8 @@ hs_entry:
   csrw hgatp, t0
 #ifdef DIRTYGEN_PHASE1
   j phase1_hs_start
+#elif defined(DIRTYGEN_PHASE6)
+  j phase6_hs_start
 #else
   j dirtygen_hs_start
 #endif
@@ -124,13 +128,17 @@ hs_trap:
   fence rw, rw
 #ifdef DIRTYGEN_PHASE1
   j phase1_trap_handler
+#elif defined(DIRTYGEN_PHASE6)
+  j phase6_trap_handler
 #else
   j dirtygen_trap_handler
 #endif
 
-/* Selected workload; both variants share this startup and trap environment. */
+/* Selected workload; all suites share this startup and trap environment. */
 #ifdef DIRTYGEN_PHASE1
 #include "phase1.inc.S"
+#elif defined(DIRTYGEN_PHASE6)
+#include "phase6.inc.S"
 #else
 #include "dirtygen.inc.S"
 #endif
@@ -145,7 +153,7 @@ machine_trap:
   csrr t2, mtval
   sd t2, 16(t1)
 
-#ifdef DIRTYGEN_PHASE1
+#if defined(DIRTYGEN_PHASE1)
   j phase1_machine_trap
 #else
   /* Terminal pass/fail ecalls arrive here if the simulator keeps running. */
@@ -194,8 +202,8 @@ trap_scause:
 trap_mcause:
   .zero 24
 
-/* Four slots for dirtygen; Phase 1 needs one 4 KiB SIZE=0 buffer. */
-#ifdef DIRTYGEN_PHASE1
+/* Directed suites need one 4 KiB SIZE=0 buffer. */
+#if defined(DIRTYGEN_PHASE1) || defined(DIRTYGEN_PHASE6)
 .align 12
 #else
 .align 14
@@ -214,11 +222,16 @@ stack_bottom:
   .zero RISCV_PGSIZE
 stack_top:
 
-/* Keep the Sv39x4 root 16 KiB aligned.  vsatp remains Bare. */
+/* Keep the Sv39x4 root 16 KiB aligned. */
 .section .page_tables,"aw",@nobits
 .align 21
+.global guest_slat
 guest_slat:
+#ifdef DIRTYGEN_PHASE6
+  .zero (3 * RISCV_PGSIZE)
+#else
   .zero RISCV_PGSIZE
+#endif
 .align 14
 .global gpt
 gpt:

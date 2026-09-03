@@ -58,6 +58,9 @@
 #define HFENCE_GVMA(vmid, gaddr) \
   .insn r 0x73, 0x0, 0x31, x0, gaddr, vmid
 
+#define HFENCE_VVMA(asid, vaddr) \
+  .insn r 0x73, 0x0, 0x11, x0, vaddr, asid
+
 /* Convert an SPA in the first code page to its G-stage GPA. */
 #define SPA2GPA_VCODE(spa_reg) \
   li t0, 0xfff;                 \

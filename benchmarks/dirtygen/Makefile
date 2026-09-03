@@ -12,6 +12,13 @@ SUITE_CPPFLAGS := -DDIRTYGEN_PHASE1
 C_SOURCES := \
   src/phase1.c \
   src/page_table.c
+else ifeq ($(SUITE),phase6)
+BUILD_DIR ?= build/phase6
+IMAGE_NAME := dirtygen_phase6
+SUITE_CPPFLAGS := -DDIRTYGEN_PHASE6
+C_SOURCES := \
+  src/phase6.c \
+  src/page_table.c
 else ifeq ($(SUITE),dirtygen)
 BUILD_DIR ?= build
 IMAGE_NAME := dirtygen
@@ -21,7 +28,7 @@ C_SOURCES := \
   src/dirty_log_random.c \
   src/page_table.c
 else
-$(error SUITE must be dirtygen or phase1)
+$(error SUITE must be dirtygen, phase1, or phase6)
 endif
 
 CASE_FIRST ?= 0
@@ -45,13 +52,17 @@ OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst src/%.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
 DEPS := $(OBJECTS:.o=.d)
 
-.PHONY: all phase1 clean report test-report test-phase1-report
+.PHONY: all phase1 phase6 clean report test-report test-phase1-report \
+        test-phase6-report
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
 
 phase1:
 	$(MAKE) SUITE=phase1 BUILD_DIR=build/phase1 all
+
+phase6:
+	$(MAKE) SUITE=phase6 BUILD_DIR=build/phase6 all
 
 $(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) linker.ld | $(BUILD_DIR)
 	$(CC) $(OBJECTS) $(LDFLAGS) -lgcc -o $@
@@ -80,6 +91,9 @@ test-report:
 
 test-phase1-report:
 	python3 -m unittest -v tests/test_phase1_report.py
+
+test-phase6-report:
+	python3 -m unittest -v tests/test_phase6_report.py
 
 clean:
 	rm -rf $(BUILD_DIR)

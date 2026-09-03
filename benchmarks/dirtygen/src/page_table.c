@@ -11,7 +11,7 @@ typedef uint64_t pte_t;
  *   GPA 0x1000 -> HS code alias
  *   GPA 0x2000 -> HS data alias
  *   GPA 0x3000 -> guest data alias
- *   GPA 0x200000 -> unused VS-stage table window (vsatp is Bare)
+ *   GPA 0x200000 -> VS-stage table window (unused when vsatp is Bare)
  *
  * The root is 16 KiB aligned by startup.S, as required by x4 modes.
  */
