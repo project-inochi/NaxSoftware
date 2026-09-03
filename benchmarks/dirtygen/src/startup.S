@@ -6,7 +6,11 @@
  * another bare-metal environment.
  */
 #include "runtime.h"
+#ifdef DIRTYGEN_PHASE1
+#include "phase1.h"
+#else
 #include "dirtygen.h"
+#endif
 
 .section .text.init
 .align 6
@@ -71,6 +75,10 @@ pmp_probe_done:
          (1 << CAUSE_LOAD_GUEST_PAGE_FAULT) |        \
          (1 << CAUSE_STORE_GUEST_PAGE_FAULT) |       \
          (1 << CAUSE_DIRTY_LOG_BUFFER_FAULT)
+#ifdef DIRTYGEN_PHASE1
+  li t1, (1 << CAUSE_STORE_ACCESS_FAULT)
+  or t0, t0, t1
+#endif
   csrs medeleg, t0
 
   la a0, hs_entry
@@ -92,7 +100,11 @@ hs_entry:
   slli t1, t1, 60
   or t0, t0, t1
   csrw hgatp, t0
+#ifdef DIRTYGEN_PHASE1
+  j phase1_hs_start
+#else
   j dirtygen_hs_start
+#endif
 
 .align 2
 hs_trap:
@@ -110,10 +122,18 @@ hs_trap:
   li t1, 1
   csrc CSR_HDLTCTL, t1
   fence rw, rw
+#ifdef DIRTYGEN_PHASE1
+  j phase1_trap_handler
+#else
   j dirtygen_trap_handler
+#endif
 
-/* Benchmark workloads, buffer-fault recovery, and epoch lifecycle. */
+/* Selected workload; both variants share this startup and trap environment. */
+#ifdef DIRTYGEN_PHASE1
+#include "phase1.inc.S"
+#else
 #include "dirtygen.inc.S"
+#endif
 
 .align 2
 machine_trap:
@@ -125,11 +145,15 @@ machine_trap:
   csrr t2, mtval
   sd t2, 16(t1)
 
+#ifdef DIRTYGEN_PHASE1
+  j phase1_machine_trap
+#else
   /* Terminal pass/fail ecalls arrive here if the simulator keeps running. */
   li t1, 9
   bne t0, t1, machine_unexpected
   beqz a0, pass_spin
   j fail_spin
+#endif
 
 machine_unexpected:
   li TESTNUM, 14
@@ -170,8 +194,12 @@ trap_scause:
 trap_mcause:
   .zero 24
 
-/* Four independent 16 KiB slots cover SIZE=0..2 and replacement chains. */
+/* Four slots for dirtygen; Phase 1 needs one 4 KiB SIZE=0 buffer. */
+#ifdef DIRTYGEN_PHASE1
+.align 12
+#else
 .align 14
+#endif
 .global dirty_log_buffers
 dirty_log_buffers:
   .zero (DIRTYGEN_LOG_BUFFER_COUNT * DIRTYGEN_LOG_SLOT_BYTES)
