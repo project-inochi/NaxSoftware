@@ -8,12 +8,38 @@ from typing import Any, TextIO
 
 
 PREFIX = "SHDLT_PHASE1"
+PTE_V = 0x01
+PTE_R = 0x02
+PTE_W = 0x04
+PTE_U = 0x10
 PTE_A = 0x40
-PTE_D = 0x80
+PTE_LOW_MASK = 0x3FF
 
 CASE_SPECS = {
-    "boundary_full_a0d0": {"id": 0, "cause": 24, "ad": 0, "index": 512},
-    "log_target_store_fault": {"id": 1, "cause": 7, "ad": PTE_A, "index": 0},
+    "boundary_full_a0d0": {
+        "id": 0,
+        "cause": 24,
+        "flags": PTE_V | PTE_R | PTE_W | PTE_U,
+        "index": 512,
+    },
+    "log_target_store_fault": {
+        "id": 1,
+        "cause": 7,
+        "flags": PTE_V | PTE_R | PTE_W | PTE_U | PTE_A,
+        "index": 0,
+    },
+    "invalid_gstage_pte_full": {
+        "id": 2,
+        "cause": 23,
+        "flags": 0,
+        "index": 512,
+    },
+    "write_permission_denied_full": {
+        "id": 3,
+        "cause": 23,
+        "flags": PTE_V | PTE_R | PTE_U | PTE_A,
+        "index": 512,
+    },
 }
 
 
@@ -87,8 +113,8 @@ class Phase1Report:
             pte_after = _required_int(record, "pte_after", name)
             if pte_before != pte_after:
                 raise ValueError(f"{name} changed its PTE")
-            if pte_before & (PTE_A | PTE_D) != spec["ad"]:
-                raise ValueError(f"{name} has incorrect initial PTE A/D bits")
+            if pte_before & PTE_LOW_MASK != spec["flags"]:
+                raise ValueError(f"{name} has incorrect initial PTE flags")
             if _required_int(record, "data_before", name) != _required_int(
                 record, "data_after", name
             ):

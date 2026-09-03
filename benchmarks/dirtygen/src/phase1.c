@@ -40,7 +40,35 @@ static uint64_t failures;
 static const char *const case_names[PHASE1_CASE_COUNT] = {
     "boundary_full_a0d0",
     "log_target_store_fault",
+    "invalid_gstage_pte_full",
+    "write_permission_denied_full",
 };
+
+static uint64_t pte_bits_for_case(uint32_t case_id) {
+  switch (case_id) {
+    case PHASE1_CASE_FULL_A0D0:
+      return PTE_V | PTE_R | PTE_W | PTE_U;
+    case PHASE1_CASE_LOG_STORE_FAULT:
+      return PTE_V | PTE_R | PTE_W | PTE_U | PTE_A;
+    case PHASE1_CASE_INVALID_GSTAGE_PTE_FULL:
+      return 0;
+    case PHASE1_CASE_WRITE_PERMISSION_DENIED_FULL:
+      return PTE_V | PTE_R | PTE_U | PTE_A;
+    default:
+      return 0;
+  }
+}
+
+static uint64_t expected_cause_for_case(uint32_t case_id) {
+  switch (case_id) {
+    case PHASE1_CASE_FULL_A0D0:
+      return CAUSE_DIRTY_LOG_BUFFER_FAULT;
+    case PHASE1_CASE_LOG_STORE_FAULT:
+      return CAUSE_STORE_ACCESS_FAULT;
+    default:
+      return CAUSE_STORE_GUEST_PAGE_FAULT;
+  }
+}
 
 static inline volatile uint64_t *tracked_leaf(void) {
   return &gpt[2][TRACKED_GPA_BASE >> RISCV_PGSHIFT];
@@ -99,13 +127,10 @@ void phase1_prepare(uint32_t case_id) {
   if (case_id >= PHASE1_CASE_COUNT) return;
   struct phase1_result *result = &results[case_id];
   volatile uint64_t *pte = tracked_leaf();
-  uint64_t pte_bits = PTE_V | PTE_R | PTE_W | PTE_U;
-  uint64_t index = DIRTYGEN_LOG_BASE_CAPACITY;
-
-  if (case_id == PHASE1_CASE_LOG_STORE_FAULT) {
-    pte_bits |= PTE_A;
-    index = 0;
-  }
+  uint64_t pte_bits = pte_bits_for_case(case_id);
+  uint64_t index = case_id == PHASE1_CASE_LOG_STORE_FAULT
+                       ? 0
+                       : DIRTYGEN_LOG_BASE_CAPACITY;
 
   for (uint32_t slot = 0; slot < DIRTYGEN_LOG_BASE_CAPACITY; slot++)
     dirty_log_buffers[0][slot] = log_sentinel(case_id, slot);
@@ -113,10 +138,7 @@ void phase1_prepare(uint32_t case_id) {
   *pte = (*pte & ~PTE_LOW_MASK) | pte_bits;
 
   result->case_id = case_id;
-  result->expected_cause =
-      case_id == PHASE1_CASE_FULL_A0D0
-          ? CAUSE_DIRTY_LOG_BUFFER_FAULT
-          : CAUSE_STORE_ACCESS_FAULT;
+  result->expected_cause = expected_cause_for_case(case_id);
   result->pte_before = *pte;
   result->data_before = tracked_data[0];
   result->idx_before = index;
@@ -133,8 +155,6 @@ void phase1_prepare(uint32_t case_id) {
 uint32_t phase1_record(uint32_t case_id) {
   if (case_id >= PHASE1_CASE_COUNT) return 1;
   struct phase1_result *result = &results[case_id];
-  uint64_t expected_ad =
-      case_id == PHASE1_CASE_FULL_A0D0 ? 0 : PTE_A;
 
   result->actual_cause = trap_scause[0];
   result->pte_after = *tracked_leaf();
@@ -143,7 +163,7 @@ uint32_t phase1_record(uint32_t case_id) {
 
   if (result->actual_cause != result->expected_cause)
     result->status |= STATUS_CAUSE;
-  if ((result->pte_before & (PTE_A | PTE_D)) != expected_ad)
+  if ((result->pte_before & PTE_LOW_MASK) != pte_bits_for_case(case_id))
     result->status |= STATUS_PTE_INITIAL;
   if (result->pte_after != result->pte_before)
     result->status |= STATUS_PTE_CHANGED;
