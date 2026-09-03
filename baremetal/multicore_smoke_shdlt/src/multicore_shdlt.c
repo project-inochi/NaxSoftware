@@ -23,12 +23,13 @@ void prepare_hart(uint64_t hart) {
     ((volatile uint64_t *)r)[i] = 0;
 }
 
-static uint64_t expected_d(void) {
+static uint64_t expected_pte_d_bitmap(void) {
 #if SHDLT_CASE == SHDLT_CASE_LEGACY
   return (UINT64_C(1) << TRACKED_PAGE_COUNT) - 1;
 #elif SHDLT_CASE == SHDLT_CASE_LOAD_ONLY
   return 0;
-#elif SHDLT_CASE == SHDLT_CASE_LOG_OFF || SHDLT_CASE == SHDLT_CASE_PREDIRTY || SHDLT_CASE_RESET_RESUME
+#elif SHDLT_CASE == SHDLT_CASE_LOG_OFF || SHDLT_CASE == SHDLT_CASE_PREDIRTY || \
+      SHDLT_CASE == SHDLT_CASE_RESET_RESUME
   return 1;
 #elif SHDLT_CASE == SHDLT_CASE_WIDTHS
   return 0xf;
@@ -39,10 +40,27 @@ static uint64_t expected_d(void) {
 #endif
 }
 
+static uint64_t expected_log_bitmap(void) {
+#if SHDLT_CASE == SHDLT_CASE_LEGACY
+  return (UINT64_C(1) << TRACKED_PAGE_COUNT) - 1;
+#elif SHDLT_CASE == SHDLT_CASE_LOAD_ONLY || SHDLT_CASE == SHDLT_CASE_LOG_OFF || SHDLT_CASE == SHDLT_CASE_PREDIRTY
+  return 0;
+#elif SHDLT_CASE == SHDLT_CASE_WIDTHS
+  return 0xf;
+#elif SHDLT_CASE == SHDLT_CASE_NONZERO_INDEX
+  return 3;
+#elif SHDLT_CASE == SHDLT_CASE_FREEZE || SHDLT_CASE == SHDLT_CASE_RESET_RESUME
+  return 1;
+#else
+  return 0;
+#endif
+}
+
 static uint64_t expected_entries(void) {
 #if SHDLT_CASE == SHDLT_CASE_LEGACY
   return TRACKED_PAGE_COUNT;
-#elif SHDLT_CASE == SHDLT_CASE_LOAD_ONLY || SHDLT_CASE_LOG_OFF || SHDLT_CASE_PREDIRTY
+#elif SHDLT_CASE == SHDLT_CASE_LOAD_ONLY || SHDLT_CASE == SHDLT_CASE_LOG_OFF || \
+      SHDLT_CASE == SHDLT_CASE_PREDIRTY
   return 0;
 #elif SHDLT_CASE == SHDLT_CASE_WIDTHS
   return 4;
@@ -97,7 +115,8 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
                    uint64_t initial_index, uint64_t final_index,
                    uint64_t log_base) {
   struct hart_result *r = result_ptr(hart);
-  const uint64_t expected = expected_d();
+  const uint64_t expected_pte_d = expected_pte_d_bitmap();
+  const uint64_t expected_log = expected_log_bitmap();
   const volatile uint64_t *log = (const volatile uint64_t *)(uintptr_t)log_base;
   uint64_t actual = 0, duplicates = 0, extra = 0;
   const uint64_t entries = final_index >= initial_index ? final_index - initial_index : 0;
@@ -115,7 +134,7 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
   }
   uint64_t unique = 0;
   for (uint64_t bits = actual; bits; bits >>= 1) unique += bits & 1;
-  uint64_t missing_mask = expected & ~actual;
+  uint64_t missing_mask = expected_log & ~actual;
   uint64_t missing = 0;
   for (uint64_t bits = missing_mask; bits; bits >>= 1) missing += bits & 1;
   uint64_t data_errors = 0;
@@ -135,7 +154,7 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
   r->d_bitmap = pte_d_bitmap;
   r->pte_a_bitmap = pte_a_bitmap;
   r->pte_d_bitmap = pte_d_bitmap;
-  r->expected_bitmap = expected;
+  r->expected_bitmap = expected_log;
   r->actual_bitmap = actual;
   r->initial_index = initial_index;
   r->final_index = final_index;
@@ -150,17 +169,17 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
   r->faults = 0;
   const uint64_t all_a = (UINT64_C(1) << TRACKED_PAGE_COUNT) - 1;
   r->status = (r->case_id == SHDLT_CASE && pte_a_bitmap == all_a &&
-               pte_d_bitmap == expected && initial_index == expected_initial_index() &&
+               pte_d_bitmap == expected_pte_d && initial_index == expected_initial_index() &&
                final_index == initial_index + expected_entries() &&
                entries == expected_entries() &&
-               actual == expected && unique == expected_entries() &&
+               actual == expected_log && unique == expected_entries() &&
                duplicates == 0 && missing == 0 && extra == 0 && data_errors == 0)
                   ? STATUS_READY : STATUS_FAIL;
   shdlt_puts("SHDLT_MC_SAMPLE case="); shdlt_puthex(SHDLT_CASE);
   shdlt_puts(" hart="); shdlt_puthex(hart);
   shdlt_puts(" a="); shdlt_puthex(pte_a_bitmap);
   shdlt_puts(" d="); shdlt_puthex(pte_d_bitmap);
-  shdlt_puts(" expected="); shdlt_puthex(expected);
+  shdlt_puts(" expected="); shdlt_puthex(expected_log);
   shdlt_puts(" actual="); shdlt_puthex(actual);
   shdlt_puts(" initial="); shdlt_puthex(initial_index);
   shdlt_puts(" final="); shdlt_puthex(final_index);
@@ -181,12 +200,14 @@ void wait_and_finish(uint64_t hart) {
     volatile struct hart_result *r = result_ptr(h);
     while (r->status == 0) { __asm__ volatile("fence rw,rw"); }
     if (r->status != STATUS_READY) goto fail;
-    uint64_t expected = expected_d();
+    uint64_t expected_pte_d = expected_pte_d_bitmap();
+    uint64_t expected_log = expected_log_bitmap();
     uint64_t all_a = (UINT64_C(1) << TRACKED_PAGE_COUNT) - 1;
     if (r->case_id != SHDLT_CASE || r->hart_id != h || r->a_bitmap != all_a ||
-        r->d_bitmap != expected || r->entries != expected_entries() ||
+        r->d_bitmap != expected_pte_d || r->entries != expected_entries() ||
         r->unique != expected_entries() || r->pte_a_bitmap != all_a ||
-        r->pte_d_bitmap != expected || r->expected_bitmap != expected || r->actual_bitmap != expected ||
+        r->pte_d_bitmap != expected_pte_d || r->expected_bitmap != expected_log ||
+        r->actual_bitmap != expected_log ||
         r->initial_index != expected_initial_index() ||
         r->final_index != expected_initial_index() + expected_entries() ||
         r->log_entries != expected_entries() || r->unique_pages != expected_entries() ||

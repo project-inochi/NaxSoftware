@@ -217,7 +217,7 @@ def check_invariants(family: str, case: str, cpus: int,
             "predirty": (0, 0, 0),
             "widths": (8 * cpus, 4 * cpus, 4 * cpus),
             "nonzero_index": (4 * cpus, 2 * cpus, 2 * cpus),
-            "freeze": (2 * cpus, cpus, cpus),
+            "freeze": (3 * cpus, cpus, 2 * cpus),
             "reset_resume": (4 * cpus, 2 * cpus, 2 * cpus),
         }
         if trace_available and case in expected:

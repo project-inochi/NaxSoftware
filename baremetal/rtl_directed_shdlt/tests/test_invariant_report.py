@@ -109,6 +109,18 @@ class InvariantReportTest(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertFalse(report["checks"]["logger_disabled_or_frozen_no_append"])
 
+    def test_smoke_freeze_accepts_unlogged_second_pte_update(self):
+        report = invariant_report.check_invariants(
+            "smoke", "freeze", 2, self.trace(2, 4))
+        self.assertEqual(report["status"], "PASS")
+        self.assertTrue(report["checks"]["logger_disabled_or_frozen_no_append"])
+
+    def test_smoke_freeze_rejects_missing_second_pte_update(self):
+        report = invariant_report.check_invariants(
+            "smoke", "freeze", 2, self.trace(2, 2))
+        self.assertEqual(report["status"], "FAIL")
+        self.assertIn("committed events", report["violations"][0])
+
     def test_smoke_architecture_only_marks_trace_unavailable(self):
         report = invariant_report.check_invariants(
             "smoke", "load_only", 2, rtl_report.empty_trace(2))

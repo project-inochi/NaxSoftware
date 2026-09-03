@@ -100,7 +100,7 @@ hs_trap:
 #if SHDLT_CASE == SHDLT_CASE_FREEZE
   /* First ecall freezes logging and resumes the second guest store. */
   slli t3, tp, 24
-  li t0, 0x810060a0             /* hart_result.phase (offset 160) */
+  li t0, 0x810600a0             /* hart_result.phase (offset 160) */
   add t0, t0, t3
   ld t1, 0(t0)
   bnez t1, hs_trap_final
@@ -118,7 +118,7 @@ hs_trap:
 #elif SHDLT_CASE == SHDLT_CASE_RESET_RESUME
   /* Freeze, clear D/index and resume at a fresh logging epoch. */
   slli t3, tp, 24
-  li t0, 0x810060a0
+  li t0, 0x810600a0
   add t0, t0, t3
   ld t1, 0(t0)
   bnez t1, hs_trap_final
