@@ -97,6 +97,35 @@ class InvariantReportTest(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertFalse(report["checks"]["cas_preserves_pte_bits"])
 
+    def test_ctc_remote_reread_allows_zero_log_and_ppn_remap(self):
+        records = []
+        for hart in range(2):
+            records.append({
+                "hart": hart, "entries": 0, "initial_index": 0,
+                "final_index": 0, "duplicates": 0, "missing": 0,
+                "faults": 0, "pte_errors": 0, "pte_before": 0x1000D7,
+                "pte_after": 0x2000D7,
+            })
+        report = invariant_report.check_invariants(
+            "ctc", "remote_pte_reread", 2, self.trace(0, 0),
+            {"harts": records})
+        self.assertEqual(report["status"], "PASS")
+
+    def test_ctc_remote_reread_still_rejects_permission_change(self):
+        records = []
+        for hart in range(2):
+            records.append({
+                "hart": hart, "entries": 0, "initial_index": 0,
+                "final_index": 0, "duplicates": 0, "missing": 0,
+                "faults": 0, "pte_errors": 0, "pte_before": 0x1000D7,
+                "pte_after": 0x2000D3,
+            })
+        report = invariant_report.check_invariants(
+            "ctc", "remote_pte_reread", 2, self.trace(0, 0),
+            {"harts": records})
+        self.assertEqual(report["status"], "FAIL")
+        self.assertFalse(report["checks"]["cas_preserves_pte_bits"])
+
     def test_smoke_logger_off_requires_no_append(self):
         report = invariant_report.check_invariants(
             "smoke", "log_off", 2, self.trace(0, 2))

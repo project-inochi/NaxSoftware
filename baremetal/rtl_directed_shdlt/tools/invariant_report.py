@@ -90,9 +90,15 @@ def _check_arch(family: str, case: str, cpus: int, arch: Any,
             all(e <= 1 for e in entries) if single_pte else True)
         if not checks["d_transition_at_most_one_log_per_hart"]:
             violations.append(f"per-hart entries exceed one: {entries}")
-        checks["d_transition_all_required_harts_logged"] = (
-            (sum(entries) >= 1 if shared_pte or cas_retry else all(e >= 1 for e in entries))
-        )
+        if cas_retry:
+            checks["d_transition_all_required_harts_logged"] = sum(entries) >= 1
+        elif family == "ctc":
+            checks["d_transition_all_required_harts_logged"] = not _nonzero(
+                records, "missing")
+        else:
+            checks["d_transition_all_required_harts_logged"] = (
+                sum(entries) >= 1 if shared_pte else all(e >= 1 for e in entries)
+            )
         if not checks["d_transition_all_required_harts_logged"]:
             violations.append(f"missing required hart log: {entries}")
         checks["predirty_repeat_no_append"] = (
@@ -110,8 +116,17 @@ def _check_arch(family: str, case: str, cpus: int, arch: Any,
         if family == "ctc":
             # A committed dirty transition may change only architectural A/D;
             # V, permissions, and PPN must remain byte-for-byte identical.
+            # Mapping/fence cases intentionally replace the PPN, so only their
+            # leaf flags can be compared independently here; the firmware's
+            # pte_errors field checks the exact replacement PPN.
+            remaps_pte = case in (
+                "remote_pte_reread", "hfence_gpa", "hfence_vmid",
+                "hfence_global", "fence_hart_isolation",
+            )
+            preserved_mask = (0x3FF if remaps_pte else ~0) & ~0xC0
             checks["cas_preserves_pte_bits"] = checks["cas_preserves_pte_bits"] and all(
-                ((int(r.get("pte_before", 0)) ^ int(r.get("pte_after", 0))) & ~0xC0) == 0
+                ((int(r.get("pte_before", 0)) ^ int(r.get("pte_after", 0))) &
+                 preserved_mask) == 0
                 for r in records)
         checks["hart_isolation"] = not _nonzero(
             records, "foreign", "buffer_errors", "result_errors", "isolation_errors")

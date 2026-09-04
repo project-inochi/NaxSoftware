@@ -120,6 +120,15 @@ class RtlReportTest(unittest.TestCase):
         self.assertEqual(details["decoded_uart_records"], 0)
         self.assertIn("pass-policy-all", details["result_contract"])
 
+    def test_smoke_ignores_interleaving_after_intact_prefix(self):
+        text = "\n".join([
+            "SHDLT_MC_SAMPLE case=_MC_SAMPLE_interleaved",
+            "[Done] Simulation done in 123.000 ms",
+            "[395/395, SUCCESS] mill Test.runMain",
+        ])
+        details = rtl_report.validate_smoke(text, 4, "log_off")
+        self.assertEqual(details["decoded_uart_records"], 0)
+
     def test_smoke_checks_intact_records(self):
         text = "\n".join([
             "SHDLT_MC_SAMPLE case=0x1 hart=0x0 entries=0x0 status=0x600d",

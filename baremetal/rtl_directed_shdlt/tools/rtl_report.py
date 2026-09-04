@@ -183,8 +183,16 @@ def validate_smoke(text: str, cpus: int, case: str) -> dict[str, object]:
     # records that happened to remain intact.
     if "[Done] Simulation done" not in text or "SUCCESS] mill" not in text:
         raise ValueError("smoke TestBench all-hart success marker is missing")
-    records = [fields(line) for line in text.splitlines()
-               if line.startswith("SHDLT_MC_SAMPLE ")]
+    records = []
+    for line in text.splitlines():
+        if not line.startswith("SHDLT_MC_SAMPLE "):
+            continue
+        try:
+            records.append(fields(line))
+        except ValueError:
+            # Another hart may have interleaved characters after an intact
+            # prefix.  Such a line is not a decodable SAMPLE record.
+            continue
     expected_case = SMOKE_CASES[case]
     decoded_harts = [r.get("hart") for r in records]
     if (len(records) > cpus or len(set(decoded_harts)) != len(decoded_harts) or
