@@ -225,7 +225,9 @@ stack_top:
 /* Keep the Sv39x4 root 16 KiB aligned. */
 .section .page_tables,"aw",@nobits
 .align 21
+#ifdef DIRTYGEN_PHASE6
 .global guest_slat
+#endif
 guest_slat:
 #ifdef DIRTYGEN_PHASE6
   .zero (3 * RISCV_PGSIZE)
