@@ -254,6 +254,13 @@ failures=0
 active=0
 for selected_spec in "${selected[@]}"; do
   IFS='|' read -r family cpus test_case profile seed elf run_id <<<"$selected_spec"
+  if ((jobs == 1)); then
+    if ! run_one "$family" "$cpus" "$test_case" "$profile" "$seed" "$elf" "$run_id"; then
+      echo "one or more campaign simulations failed" >&2
+      exit 1
+    fi
+    continue
+  fi
   run_one "$family" "$cpus" "$test_case" "$profile" "$seed" "$elf" "$run_id" &
   ((active += 1))
   if ((active >= jobs)); then
