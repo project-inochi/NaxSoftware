@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import uuid
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -395,7 +396,7 @@ def validate_matrix_document(document: dict[str, Any], expected_runs: int) -> li
 
 def validate_correctness(
     manifest: dict[str, Any], evidence: Evidence, checks: Checks
-) -> None:
+) -> dict[str, Any]:
     config = manifest["correctness"]
     summary_path = config["summary"]
     summary = evidence.json(summary_path)
@@ -437,12 +438,23 @@ def validate_correctness(
 
     report_paths = [item[0] for item in config["attribution_reports"]]
     require_unique(report_paths, "attribution report")
+    attribution_data: list[dict[str, Any]] = []
     for report_path, expected in config["attribution_reports"]:
         observed = evidence.json(report_path)
         validate_attribution(observed, expected)
         checks.equal(
             "attribution", Path(report_path).stem, observed, expected, report_path
         )
+        attribution_data.append(
+            {
+                "case": Path(report_path).name.removesuffix(".attribution.json"),
+                **observed,
+            }
+        )
+    return {
+        "matrix_totals": summary["totals"],
+        "attribution": attribution_data,
+    }
 
 
 def validate_attribution(observed: dict[str, Any], expected: dict[str, Any]) -> None:
@@ -681,6 +693,62 @@ def validate_seed_equivalence(
             raise AuditError(f"schedule {schedule} has observable sample differences across seeds")
 
 
+def campaign_run_data(campaign: dirtygen_perf_compare.Campaign) -> dict[str, Any]:
+    measured = [sample for sample in campaign.samples if sample["warmup"] == 0]
+    return {
+        "suite": campaign.metadata["suite"],
+        "mode": campaign.metadata["mode"],
+        "schedule_id": campaign.schedule_id,
+        "simulation_seed": campaign.seed,
+        "run_id": campaign.run_id,
+        "elf_sha256": campaign.elf_sha256,
+        "raw_samples": len(campaign.samples),
+        "measured_samples": len(measured),
+    }
+
+
+def comparison_median_rows(document: dict[str, Any]) -> list[dict[str, Any]]:
+    instret: dict[tuple[Any, ...], set[int]] = defaultdict(set)
+    for pairing in document["pairings"]:
+        key = tuple(
+            pairing[field]
+            for field in (
+                "pattern", "pages", "operations", "schedule_id",
+                "simulation_seed", "run_id",
+            )
+        )
+        instret[key].add(int(pairing["workload_instret"]))
+    rows: list[dict[str, Any]] = []
+    for summary in document["summaries"]:
+        key = tuple(
+            summary[field]
+            for field in (
+                "pattern", "pages", "operations", "schedule_id",
+                "simulation_seed", "run_id",
+            )
+        )
+        instret_values = sorted(instret[key])
+        row = {
+            "pattern": summary["pattern"],
+            "pages": summary["pages"],
+            "operations": summary["operations"],
+            "schedule_id": summary["schedule_id"],
+            "simulation_seed": summary["simulation_seed"],
+            "run_id": summary["run_id"],
+            "workload_instret": (
+                instret_values[0] if len(instret_values) == 1 else instret_values
+            ),
+        }
+        row.update(
+            {
+                metric: summary["metrics"][metric]["median"]
+                for metric in dirtygen_perf_compare.DELTA_METRICS
+            }
+        )
+        rows.append(row)
+    return rows
+
+
 def validate_reference_samples(
     clean: list[dirtygen_perf_compare.Campaign],
     reference: list[dirtygen_perf_compare.Campaign],
@@ -696,13 +764,14 @@ def validate_reference_samples(
 
 def validate_performance(
     manifest: dict[str, Any], evidence: Evidence, checks: Checks
-) -> tuple[dict[str, Any], dict[str, int]]:
+) -> tuple[dict[str, Any], dict[str, int], dict[str, Any]]:
     config = manifest["performance"]
     root = config["root"]
     tested = manifest["tested_heads"]
 
     require_unique(config["rvls_smoke_runs"], "RVLS smoke run")
     smoke: list[dirtygen_perf_compare.Campaign] = []
+    smoke_lifecycles: list[dict[str, Any]] = []
     for run in config["rvls_smoke_runs"]:
         campaign = load_campaign(evidence, root, run, rvls=True)
         assert_campaign_head(campaign, tested, run)
@@ -714,6 +783,7 @@ def validate_performance(
         if scan_forbidden(evidence.path(f"{root}/{run}/console.log")):
             raise AuditError(f"{run} console contains a forbidden failure marker")
         smoke.append(campaign)
+        smoke_lifecycles.append({**campaign_run_data(campaign), **trace})
     checks.equal("performance", "RVLS smoke campaigns", len(smoke), 4, root)
 
     sensitivity: list[dirtygen_perf_compare.Campaign] = []
@@ -766,7 +836,7 @@ def validate_performance(
         "performance", "full campaigns/raw/measured/pairs/summaries/distributions",
         full_counts, (4, 768, 640, 160, 32, 8), full_comparison_path,
     )
-    return stability, {
+    counts = {
         "rvls_smoke_runs": len(smoke),
         "sensitivity_runs": len(sensitivity),
         "sensitivity_raw_samples": sensitivity_counts[1],
@@ -775,6 +845,16 @@ def validate_performance(
         "full_raw_samples": full_counts[1],
         "full_measured_samples": full_counts[2],
     }
+    run_data = {
+        "campaigns": [
+            campaign_run_data(campaign)
+            for campaign in (*smoke, *sensitivity, *full)
+        ],
+        "rvls_smoke_lifecycles": smoke_lifecycles,
+        "sensitivity_medians": comparison_median_rows(recomputed_sensitivity),
+        "full_medians": comparison_median_rows(recomputed_full),
+    }
+    return stability, counts, run_data
 
 
 def validate_manifest_paths(manifest: dict[str, Any], root: Path) -> None:
@@ -823,6 +903,91 @@ def audit_markdown(document: dict[str, Any]) -> str:
     stability = document["stability"]
     repeat = stability["REPEAT/1/4096"]["2"]
     unique = stability["UNIQUE/128/128"]["2"]
+    run_data = document["run_data"]
+    matrix = run_data["correctness"]["matrix_totals"]
+
+    def number(value: Any) -> str:
+        if isinstance(value, float) and value.is_integer():
+            return str(int(value))
+        return str(value)
+
+    matrix_rows = "\n".join(
+        f"| {label} | {matrix[field]} |"
+        for field, label in (
+            ("appends", "Logger appends"),
+            ("pte_updates", "PTE updates"),
+            ("mmu_stores", "Architectural implicit MMU stores"),
+            ("dirty_log_faults", "Dirty-log faults"),
+            ("traps", "Traps"),
+            ("attribution_errors", "Attribution errors"),
+            ("invariant_failures", "Invariant failures"),
+        )
+    )
+    attribution_rows = "\n".join(
+        "| {case} | {mode} | {attempts} | {pending} | {committed} | "
+        "{superseded} | {error} | {logger} | {mmu} |".format(
+            case=item["case"],
+            mode=item["mode"],
+            attempts=item["attempts"],
+            pending=item["states"]["pending"],
+            committed=item["states"]["committed"],
+            superseded=item["states"]["superseded"],
+            error=item["states"]["error"],
+            logger=item["architectural_logger_stores"],
+            mmu=item["architectural_mmu_stores"],
+        )
+        for item in run_data["correctness"]["attribution"]
+    )
+    campaign_rows = "\n".join(
+        "| {suite}/{mode} | {schedule} | {seed} | `{run_id}` | {raw} | "
+        "{measured} | `{elf}` |".format(
+            suite=item["suite"],
+            mode=item["mode"],
+            schedule=item["schedule_id"],
+            seed=item["simulation_seed"],
+            run_id=item["run_id"],
+            raw=item["raw_samples"],
+            measured=item["measured_samples"],
+            elf=item["elf_sha256"],
+        )
+        for item in run_data["performance"]["campaigns"]
+    )
+    smoke_rows = "\n".join(
+        f"| {item['schedule_id']} | {item['attempts']} | {item['committed']} | "
+        f"{item['superseded']} | {item['error']} | "
+        f"{item['architectural_mmu_stores']} |"
+        for item in run_data["performance"]["rvls_smoke_lifecycles"]
+    )
+
+    def median_rows(rows: list[dict[str, Any]]) -> str:
+        return "\n".join(
+            "| {workload} | {schedule} | {seed} | {instret} | {enable} | "
+            "{svadu} | {log} | {total} | {active} |".format(
+                workload=(
+                    f"UNIQUE/{item['pages']}"
+                    if item["pattern"] == "UNIQUE"
+                    else f"REPEAT/{item['operations']}"
+                ),
+                schedule=item["schedule_id"],
+                seed=item["simulation_seed"],
+                instret=item["workload_instret"],
+                enable=number(item["enable_cycles"]),
+                svadu=number(item["svadu_cycles"]),
+                log=number(item["log_cycles"]),
+                total=number(item["total_cycles"]),
+                active=number(item["active_total"]),
+            )
+            for item in rows
+        )
+
+    sensitivity_rows = median_rows(
+        [
+            item
+            for item in run_data["performance"]["sensitivity_medians"]
+            if item["simulation_seed"] == 2
+        ]
+    )
+    full_rows = median_rows(run_data["performance"]["full_medians"])
     return f"""# SHDLT validation audit
 
 Status: **PASS**
@@ -878,6 +1043,18 @@ the tested NaxSoftware head; no measured executable or checker is changed.
 - The 43-entry ELF manifest, main dirtygen ELF, and all frozen performance ELF
   hashes match the input manifest.
 
+Matrix trace totals:
+
+| Metric | Observed |
+|---|---:|
+{matrix_rows}
+
+Focused attribution lifecycle counts:
+
+| Case | Mode | Attempts | Pending | Committed | Superseded | Error | Architectural logger stores | Architectural MMU stores |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+{attribution_rows}
+
 No SHDLT correctness blocker remains in the audited scope.
 
 ## Performance evidence
@@ -891,6 +1068,31 @@ No SHDLT correctness blocker remains in the audited scope.
 - Full architecture: 4/4 PASS, 768 raw, 640 measured, 160 paired repetitions,
   32 summaries, and 8 distributions. Firmware oracles and paired instret checks
   all pass.
+
+Formal campaign provenance and sample counts:
+
+| Suite/mode | Schedule | Seed | Run ID | Raw | Measured | ELF SHA256 |
+|---|---|---:|---|---:|---:|---|
+{campaign_rows}
+
+RVLS smoke lifecycle counts:
+
+| Schedule | Attempts | Committed | Superseded | Error | Architectural MMU stores |
+|---|---:|---:|---:|---:|---:|
+{smoke_rows}
+
+Sensitivity paired-cycle medians for seed 2; seeds 17 and 101 produced the
+same sample values:
+
+| Workload | Schedule | Seed | Instret | B1-B0 | B2-B0 | B3-B2 | B3-B0 | B3-B1 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+{sensitivity_rows}
+
+Full architecture paired-cycle medians:
+
+| Workload | Schedule | Seed | Instret | B1-B0 | B2-B0 | B3-B2 | B3-B0 | B3-B1 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+{full_rows}
 
 Schedule classification for seed 2 (the other two seeds are sample-identical):
 
@@ -931,8 +1133,8 @@ def build_audit(root: Path, manifest_path: Path) -> dict[str, Any]:
     checks = Checks()
     repositories = validate_repo_state(root, manifest, checks)
     validate_artifacts(root, manifest, evidence, checks)
-    validate_correctness(manifest, evidence, checks)
-    stability, counts = validate_performance(manifest, evidence, checks)
+    correctness_data = validate_correctness(manifest, evidence, checks)
+    stability, counts, performance_data = validate_performance(manifest, evidence, checks)
     document = {
         "schema": OUTPUT_SCHEMA,
         "status": "PASS",
@@ -942,6 +1144,10 @@ def build_audit(root: Path, manifest_path: Path) -> dict[str, Any]:
         "top_level_gitlinks": manifest["top_level_gitlinks"],
         "current_repositories": repositories,
         "counts": counts,
+        "run_data": {
+            "correctness": correctness_data,
+            "performance": performance_data,
+        },
         "stability": stability,
         "checks": [item.document() for item in checks.items],
         "evidence_files": sorted(evidence.files.values(), key=lambda item: item["path"]),

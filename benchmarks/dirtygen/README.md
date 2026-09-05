@@ -263,8 +263,10 @@ CAS-loser attribution, RVLS smoke lifecycle closure, paired performance
 comparisons, Phase-4 reference equality, and schedule-stability categories.
 Every consumed file is SHA256-hashed and contributes to one deterministic
 evidence digest.  The committed [SHDLT_VALIDATION_AUDIT.md](SHDLT_VALIDATION_AUDIT.md)
-is the human-readable snapshot for that digest; generated JSON/CSV outputs and
-campaign data remain ignored.
+is the human-readable snapshot for that digest, including observed correctness
+event totals, attribution lifecycles, campaign provenance, sample counts, and
+paired-cycle medians.  Generated JSON/CSV outputs and campaign data remain
+ignored.
 
 ## Dirty-log buffer boundary coverage
 

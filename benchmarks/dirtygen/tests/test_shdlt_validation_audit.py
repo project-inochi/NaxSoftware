@@ -208,6 +208,20 @@ class ValidationAuditTest(unittest.TestCase):
             "evidence_digest": "0" * 64,
             "evidence_files": [],
             "checks": [],
+            "run_data": {
+                "correctness": {
+                    "matrix_totals": {
+                        "appends": 0, "pte_updates": 0, "mmu_stores": 0,
+                        "dirty_log_faults": 0, "traps": 0,
+                        "attribution_errors": 0, "invariant_failures": 0,
+                    },
+                    "attribution": [],
+                },
+                "performance": {
+                    "campaigns": [], "rvls_smoke_lifecycles": [],
+                    "sensitivity_medians": [], "full_medians": [],
+                },
+            },
             "stability": {
                 workload: {
                     "2": {
@@ -250,6 +264,20 @@ class ValidationAuditTest(unittest.TestCase):
             "evidence_digest": "0" * 64,
             "evidence_files": [],
             "checks": [],
+            "run_data": {
+                "correctness": {
+                    "matrix_totals": {
+                        "appends": 0, "pte_updates": 0, "mmu_stores": 0,
+                        "dirty_log_faults": 0, "traps": 0,
+                        "attribution_errors": 0, "invariant_failures": 0,
+                    },
+                    "attribution": [],
+                },
+                "performance": {
+                    "campaigns": [], "rvls_smoke_lifecycles": [],
+                    "sensitivity_medians": [], "full_medians": [],
+                },
+            },
             "stability": {
                 workload: {
                     "2": {

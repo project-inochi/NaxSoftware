@@ -53,6 +53,29 @@ the tested NaxSoftware head; no measured executable or checker is changed.
 - The 43-entry ELF manifest, main dirtygen ELF, and all frozen performance ELF
   hashes match the input manifest.
 
+Matrix trace totals:
+
+| Metric | Observed |
+|---|---:|
+| Logger appends | 14902 |
+| PTE updates | 15694 |
+| Architectural implicit MMU stores | 30596 |
+| Dirty-log faults | 84 |
+| Traps | 725 |
+| Attribution errors | 0 |
+| Invariant failures | 0 |
+
+Focused attribution lifecycle counts:
+
+| Case | Mode | Attempts | Pending | Committed | Superseded | Error | Architectural logger stores | Architectural MMU stores |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| 01_boundary_idx510 | normal | 6 | 6 | 6 | 0 | 0 | 6 | 12 |
+| 02_log_target_store_fault | fault | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
+| 03_ctc_cpu2_cas_retry | ctc | 2 | 2 | 1 | 1 | 0 | 1 | 2 |
+| 04_ctc_cpu4_cas_retry | ctc | 2 | 2 | 1 | 1 | 0 | 1 | 2 |
+| 05_race_cpu2_same_pte | race | 1 | 1 | 1 | 0 | 0 | 1 | 2 |
+| 06_race_cpu4_same_pte | race | 1 | 1 | 1 | 0 | 0 | 1 | 2 |
+
 No SHDLT correctness blocker remains in the audited scope.
 
 ## Performance evidence
@@ -66,6 +89,91 @@ No SHDLT correctness blocker remains in the audited scope.
 - Full architecture: 4/4 PASS, 768 raw, 640 measured, 160 paired repetitions,
   32 summaries, and 8 distributions. Firmware oracles and paired instret checks
   all pass.
+
+Formal campaign provenance and sample counts:
+
+| Suite/mode | Schedule | Seed | Run ID | Raw | Measured | ELF SHA256 |
+|---|---|---:|---|---:|---:|---|
+| smoke/rvls | S0 | 2 | `d32a0227c5464f37882d2abc7a120e16` | 48 | 40 | `9718fd2243109ca3950f39455ecfb7de1d46f2e2d14678889861282bdcad1578` |
+| smoke/rvls | S1 | 2 | `a9b604e90aca45308775e9047ca47891` | 48 | 40 | `a3437fb410cc1cd9a4cd9a10dce5d75a3a2bbb6fccb0a83cfe3c4c3f3d1d693d` |
+| smoke/rvls | S2 | 2 | `2fefc1484b3f4a85bc0e436304fb32f7` | 48 | 40 | `1dbf865726bd701ff7ebcfdbf04f3983b980193a531ecf124ffccb77320be865` |
+| smoke/rvls | S3 | 2 | `5f5bcff5323a4d73a264fa881b9ad460` | 48 | 40 | `622548cec33d75dc106242b0526f548cbced24da6e16a8e996acfe4eefd805f1` |
+| sensitivity/architecture | S0 | 2 | `c95ebf9e2a284ad6a9f51e9cfb507198` | 48 | 40 | `8659db707ddb37aabc21a347bca6513fdcae5adb6ebacaf1ff748d1b1e2fe112` |
+| sensitivity/architecture | S1 | 2 | `e7caa39eeb0a498fb2d8fe59c5f31d3c` | 48 | 40 | `b3edded16a4de3de3b717563363fff85f4d9ddac87dc158807e8eb7f66e51032` |
+| sensitivity/architecture | S2 | 2 | `c33dcfaa2e7b4cee92a1f09cfb8165f2` | 48 | 40 | `d5b720bfb692801b0811b135102653b57a64d22550b184a2fe2652e90d0785a1` |
+| sensitivity/architecture | S3 | 2 | `7b26709383b44aa585d73f9c72a57306` | 48 | 40 | `e0ccc43a3b380dc0c9e106d570f730376b0bc4cf64708d3d327036016fe22693` |
+| sensitivity/architecture | S0 | 17 | `f747b17dd919473c86e19c92b3c10be3` | 48 | 40 | `8659db707ddb37aabc21a347bca6513fdcae5adb6ebacaf1ff748d1b1e2fe112` |
+| sensitivity/architecture | S1 | 17 | `9939b14723514921acacb17cf6e7097b` | 48 | 40 | `b3edded16a4de3de3b717563363fff85f4d9ddac87dc158807e8eb7f66e51032` |
+| sensitivity/architecture | S2 | 17 | `f6efbea9713c4aeebacc87cbceca1aaf` | 48 | 40 | `d5b720bfb692801b0811b135102653b57a64d22550b184a2fe2652e90d0785a1` |
+| sensitivity/architecture | S3 | 17 | `d52e9716fb8b4fdabc6d2f81b1f8ed5d` | 48 | 40 | `e0ccc43a3b380dc0c9e106d570f730376b0bc4cf64708d3d327036016fe22693` |
+| sensitivity/architecture | S0 | 101 | `a6adfa5ef57246cbb564069661046f51` | 48 | 40 | `8659db707ddb37aabc21a347bca6513fdcae5adb6ebacaf1ff748d1b1e2fe112` |
+| sensitivity/architecture | S1 | 101 | `e48816fb246841c18e7a702639701e6a` | 48 | 40 | `b3edded16a4de3de3b717563363fff85f4d9ddac87dc158807e8eb7f66e51032` |
+| sensitivity/architecture | S2 | 101 | `41b0896120de463a8acebf9b9719bfbe` | 48 | 40 | `d5b720bfb692801b0811b135102653b57a64d22550b184a2fe2652e90d0785a1` |
+| sensitivity/architecture | S3 | 101 | `b1adc13b84e7453b8c4b85c19ff9e356` | 48 | 40 | `e0ccc43a3b380dc0c9e106d570f730376b0bc4cf64708d3d327036016fe22693` |
+| full/architecture | S0 | 2 | `75c9b454f56742c78c0ec196a49fb597` | 192 | 160 | `e7e1d1a3a8efcf33a7575cd4e075f815e4fb5ea0fd09cd90b9a13ead304892a2` |
+| full/architecture | S1 | 2 | `677e16139c494afbbce19fa63f3a5da9` | 192 | 160 | `f5dec894f9cf2bfb6a25b3984bde63314ed32418244bd2ca07e759ce3931d97f` |
+| full/architecture | S2 | 2 | `850186bb58444620b65d8bb5374bb78f` | 192 | 160 | `b00c8ef603cb9ce2a89c0abe8a167b350d98ad78773b97c938f96b294b0273e4` |
+| full/architecture | S3 | 2 | `857fbc773ddb40fb94004a0df5178ba6` | 192 | 160 | `9d2c13ebc9218ae3d87bffc96f3cd1bb7e514540cdfaa45370494cd177884c77` |
+
+RVLS smoke lifecycle counts:
+
+| Schedule | Attempts | Committed | Superseded | Error | Architectural MMU stores |
+|---|---:|---:|---:|---:|---:|
+| S0 | 54 | 54 | 0 | 0 | 162 |
+| S1 | 54 | 54 | 0 | 0 | 162 |
+| S2 | 54 | 54 | 0 | 0 | 162 |
+| S3 | 54 | 54 | 0 | 0 | 162 |
+
+Sensitivity paired-cycle medians for seed 2; seeds 17 and 101 produced the
+same sample values:
+
+| Workload | Schedule | Seed | Instret | B1-B0 | B2-B0 | B3-B2 | B3-B0 | B3-B1 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| REPEAT/4096 | S0 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S1 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S2 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S3 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| UNIQUE/128 | S0 | 2 | 644 | -14 | 882 | 1226 | 2122 | 2122 |
+| UNIQUE/128 | S1 | 2 | 644 | 0 | 896 | 1226 | 2122 | 2108 |
+| UNIQUE/128 | S2 | 2 | 644 | 0 | 910 | 1212 | 2122 | 2122 |
+| UNIQUE/128 | S3 | 2 | 644 | 0 | 896 | 1226 | 2136 | 2136 |
+
+Full architecture paired-cycle medians:
+
+| Workload | Schedule | Seed | Instret | B1-B0 | B2-B0 | B3-B2 | B3-B0 | B3-B1 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| REPEAT/1 | S0 | 2 | 7 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/1 | S1 | 2 | 7 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/1 | S2 | 2 | 7 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/1 | S3 | 2 | 7 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/128 | S0 | 2 | 515 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/128 | S1 | 2 | 515 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/128 | S2 | 2 | 515 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/128 | S3 | 2 | 515 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S0 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S1 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S2 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/4096 | S3 | 2 | 16387 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/8 | S0 | 2 | 35 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/8 | S1 | 2 | 35 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/8 | S2 | 2 | 35 | 0 | 7 | 22 | 29 | 29 |
+| REPEAT/8 | S3 | 2 | 35 | 0 | 7 | 22 | 29 | 29 |
+| UNIQUE/1 | S0 | 2 | 9 | 0 | 7 | 22 | 29 | 29 |
+| UNIQUE/1 | S1 | 2 | 9 | 0 | 7 | 22 | 29 | 29 |
+| UNIQUE/1 | S2 | 2 | 9 | 0 | 7 | 22 | 29 | 29 |
+| UNIQUE/1 | S3 | 2 | 9 | 0 | 7 | 22 | 29 | 29 |
+| UNIQUE/128 | S0 | 2 | 644 | 43 | 925 | 1197 | 2122 | 2079 |
+| UNIQUE/128 | S1 | 2 | 644 | 0 | 939 | 1226 | 2151 | 2151 |
+| UNIQUE/128 | S2 | 2 | 644 | -29 | 867 | 1269 | 2122 | 2165 |
+| UNIQUE/128 | S3 | 2 | 644 | 0 | 853 | 1226 | 2082 | 2093 |
+| UNIQUE/32 | S0 | 2 | 164 | 0 | 224 | 374 | 598 | 598 |
+| UNIQUE/32 | S1 | 2 | 164 | 0 | 224 | 374 | 598 | 598 |
+| UNIQUE/32 | S2 | 2 | 164 | 0 | 224 | 374 | 598 | 598 |
+| UNIQUE/32 | S3 | 2 | 164 | 0 | 224 | 374 | 598 | 598 |
+| UNIQUE/8 | S0 | 2 | 44 | 0 | 56 | 176 | 232 | 232 |
+| UNIQUE/8 | S1 | 2 | 44 | 0 | 56 | 176 | 232 | 232 |
+| UNIQUE/8 | S2 | 2 | 44 | 0 | 56 | 176 | 232 | 232 |
+| UNIQUE/8 | S3 | 2 | 44 | 0 | 56 | 176 | 232 | 232 |
 
 Schedule classification for seed 2 (the other two seeds are sample-identical):
 
