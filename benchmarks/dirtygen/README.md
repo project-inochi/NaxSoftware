@@ -184,7 +184,19 @@ Remove `--dry-run` to perform one run.  `--suite` must be `full` or `smoke`,
 and `--mode` must be `architecture` or `rvls`.  Results are written under the
 ignored `build/campaign/dirtygen-perf/` tree unless `--output-root` is given.
 The campaign metadata records the four repository states, ELF checksum,
-toolchain, exact commands, and fixed TestBench configuration.
+toolchain, exact commands, and fixed TestBench configuration.  Metadata schema
+v2 distinguishes each submodule's actual HEAD from the gitlink recorded by the
+top-level commit, and separates tracked changes from untracked files.  It also
+records the campaign lifecycle (`initialized`, `running`, `passed`, `failed`,
+or `interrupted`), exit code, failure stage and message, start/end timestamps,
+simulation seed, and a unique run ID.  Updates use an atomic replacement so an
+interrupted write cannot leave a partial JSON document.
+
+Trace provenance is explicit: `trace_required`, `trace_requested`,
+`trace_generated`, and `trace_path` describe four separate facts.  Architecture
+mode records all three booleans as false and the path as null.  RVLS mode only
+sets `trace_generated` after a fresh tracer has been copied into the campaign
+directory; a missing or stale tracer is a campaign failure.
 
 ## Dirty-log buffer boundary coverage
 
