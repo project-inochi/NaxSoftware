@@ -10,6 +10,8 @@
 #include "phase1.h"
 #elif defined(DIRTYGEN_PHASE6)
 #include "phase6.h"
+#elif defined(DIRTYGEN_PERF)
+#include "dirtygen_perf.h"
 #else
 #include "dirtygen.h"
 #endif
@@ -106,12 +108,20 @@ hs_entry:
   j phase1_hs_start
 #elif defined(DIRTYGEN_PHASE6)
   j phase6_hs_start
+#elif defined(DIRTYGEN_PERF)
+  j dirtygen_perf_hs_start
 #else
   j dirtygen_hs_start
 #endif
 
 .align 2
 hs_trap:
+#ifdef DIRTYGEN_PERF
+  /* The first perf-only trap action defines the collect interval start. */
+  csrr t6, cycle
+  la t5, dirtygen_perf_collect_start
+  sd t6, 0(t5)
+#endif
   csrr t0, scause
   la t1, trap_scause
   sd t0, 0(t1)
@@ -130,6 +140,8 @@ hs_trap:
   j phase1_trap_handler
 #elif defined(DIRTYGEN_PHASE6)
   j phase6_trap_handler
+#elif defined(DIRTYGEN_PERF)
+  j dirtygen_perf_trap_handler
 #else
   j dirtygen_trap_handler
 #endif
@@ -139,6 +151,8 @@ hs_trap:
 #include "phase1.inc.S"
 #elif defined(DIRTYGEN_PHASE6)
 #include "phase6.inc.S"
+#elif defined(DIRTYGEN_PERF)
+#include "dirtygen_perf.inc.S"
 #else
 #include "dirtygen.inc.S"
 #endif
@@ -203,7 +217,8 @@ trap_mcause:
   .zero 24
 
 /* Directed suites need one 4 KiB SIZE=0 buffer. */
-#if defined(DIRTYGEN_PHASE1) || defined(DIRTYGEN_PHASE6)
+#if defined(DIRTYGEN_PHASE1) || defined(DIRTYGEN_PHASE6) || \
+    defined(DIRTYGEN_PERF)
 .align 12
 #else
 .align 14

@@ -19,6 +19,16 @@ SUITE_CPPFLAGS := -DDIRTYGEN_PHASE6
 C_SOURCES := \
   src/phase6.c \
   src/page_table.c
+else ifeq ($(SUITE),perf)
+BUILD_DIR ?= build/perf
+IMAGE_NAME := dirtygen_perf
+PERF_CONFIG_MASK ?= 0xffffffff
+SUITE_CPPFLAGS := -DDIRTYGEN_PERF \
+                  -DDIRTYGEN_PERF_CONFIG_MASK=$(PERF_CONFIG_MASK)
+C_SOURCES := \
+  src/dirtygen_perf.c \
+  src/dirty_log_check.c \
+  src/page_table.c
 else ifeq ($(SUITE),dirtygen)
 BUILD_DIR ?= build
 IMAGE_NAME := dirtygen
@@ -28,7 +38,7 @@ C_SOURCES := \
   src/dirty_log_random.c \
   src/page_table.c
 else
-$(error SUITE must be dirtygen, phase1, or phase6)
+$(error SUITE must be dirtygen, phase1, phase6, or perf)
 endif
 
 CASE_FIRST ?= 0
@@ -63,6 +73,14 @@ phase1:
 
 phase6:
 	$(MAKE) SUITE=phase6 BUILD_DIR=build/phase6 all
+
+perf:
+	$(MAKE) SUITE=perf BUILD_DIR=build/perf \
+		PERF_CONFIG_MASK=0xffffffff all
+
+perf-rvls-smoke:
+	$(MAKE) SUITE=perf BUILD_DIR=build/perf-rvls-smoke \
+		PERF_CONFIG_MASK=0x0f0000f0 all
 
 $(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) linker.ld | $(BUILD_DIR)
 	$(CC) $(OBJECTS) $(LDFLAGS) -lgcc -o $@

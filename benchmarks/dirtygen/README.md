@@ -18,9 +18,10 @@ to audit, build, parse, and unit-test the benchmark software.
 - `HDLTCTL=0x681`, `HDLTIDX=0x682`;
 - dirty-log buffer-full exception cause `0x18`.
 
-The image exports `pass` and `fail` ELF symbols for simulator termination and
-emits the machine-readable dirtygen ABI v5 stream through the VexiiRiscv test
-UART MMIO addresses.
+The images export `pass` and `fail` ELF symbols for simulator termination.  The
+correctness image emits dirtygen ABI v5; the independent performance image
+emits `SHDLT_DIRTYGEN_PERF` ABI v1 through the VexiiRiscv test UART MMIO
+addresses.
 
 ## Directory boundary
 
@@ -31,15 +32,18 @@ include/runtime.h        minimal CSR/PTE/privilege definitions
 include/dirtygen.h       ABI v5 structures and assembly offsets
 include/phase1.h         failure-atomicity directed-test definitions
 include/phase6.h         implicit guest-store directed-test definitions
+include/dirtygen_perf.h  performance configuration and result ABI
 include/dirty_log_check.h
 src/startup.S            reset, M/HS/VS, traps, storage, pass/fail
 src/page_table.c         private Sv39x4 construction
 src/dirtygen.inc.S       guest workloads and HS trap lifecycle
 src/phase1.inc.S         Phase-1 guest workload and trap lifecycle
 src/phase6.inc.S         Phase-6 guest workload and trap lifecycle
+src/dirtygen_perf.inc.S  timed UNIQUE/REPEAT guest workloads
 src/dirtygen.c           descriptors, validation, records, summaries
 src/phase1.c             Phase-1 state validation and report
 src/phase6.c             Phase-6 page tables, validation, and report
+src/dirtygen_perf.c      performance fixture, oracle, and buffered output
 src/dirty_log_check.c    exact GPA-set checking
 src/dirty_log_random.c   deterministic reference pattern
 tools/dirtygen_report.py ABI v4/v5 parser and validator
@@ -77,7 +81,46 @@ The directed suites use separate build directories and do not change the
 ```bash
 make phase1
 make phase6
+make perf
+make perf-rvls-smoke
 ```
+
+The performance targets produce, respectively:
+
+```text
+build/perf/dirtygen_perf.elf
+build/perf-rvls-smoke/dirtygen_perf.elf
+```
+
+The full image contains 32 configurations and 192 samples.  The smoke image
+contains UNIQUE/pages=8 and REPEAT/operations=128 for B0--B3, for 48 samples.
+Each configuration has one warmup followed by five measured repetitions.
+
+## Performance measurement model
+
+All four baselines run the same guest code, address sequence, page-table
+layout, tracked region, and workload values.  They differ only in the initial
+G-stage PTE.D value and logger enable state:
+
+| Baseline | Initial PTE.D | Logger |
+|----------|--------------:|:------:|
+| B0       | 1             | off    |
+| B1       | 1             | on     |
+| B2       | 0             | off    |
+| B3       | 0             | on     |
+
+UNIQUE stores one 64-bit word to each selected 4 KiB page.  REPEAT performs
+the selected number of stores to one word on the first page.  Fixture data and
+log-buffer sentinel initialization run before all measured intervals.
+
+The VS workload interval is bounded by `rdcycle`/`rdinstret`, contains only the
+store loop and its final `fence rw,rw`, and excludes PTE rearm, HFENCE, logger
+reset, collection, oracle work, and UART output.  `prepare_cycles` covers PTE
+rearm and readback, HFENCE, INDEX reset, and logger programming.
+`collect_cycles` begins at the first HS trap instruction and ends after the
+logger is frozen and `[0, min(INDEX, 512))` has been copied.  `epoch_cycles`
+covers the complete prepare, guest, and collect sequence.  Oracle checks run
+after collection, and all records are emitted only after every sample ends.
 
 Outputs are placed under `build/`:
 
