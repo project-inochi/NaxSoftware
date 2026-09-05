@@ -62,8 +62,9 @@ OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst src/%.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
 DEPS := $(OBJECTS:.o=.d)
 
-.PHONY: all phase1 phase6 clean report test-report test-phase1-report \
-        test-phase6-report
+.PHONY: all phase1 phase6 perf perf-rvls-smoke clean report perf-report \
+        test-report test-phase1-report test-phase6-report \
+        test-perf-report test-perf-campaign test-perf
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
@@ -104,6 +105,12 @@ report:
 	@test -n "$(LOG)" || { echo "usage: make report LOG=/path/to/log"; exit 2; }
 	python3 tools/dirtygen_report.py "$(LOG)" --format table
 
+perf-report:
+	@test -n "$(LOG)" || { echo "usage: make perf-report LOG=/path/to/log PERF_SUITE=full|smoke"; exit 2; }
+	@test -n "$(PERF_SUITE)" || { echo "PERF_SUITE must be full or smoke"; exit 2; }
+	python3 tools/dirtygen_perf_report.py "$(LOG)" \
+		--suite "$(PERF_SUITE)" --format table
+
 test-report:
 	python3 -m unittest -v tests/test_dirtygen_report.py
 
@@ -112,6 +119,14 @@ test-phase1-report:
 
 test-phase6-report:
 	python3 -m unittest -v tests/test_phase6_report.py
+
+test-perf-report:
+	python3 -m unittest -v tests/test_dirtygen_perf_report.py
+
+test-perf-campaign:
+	python3 -m unittest -v tests/test_dirtygen_perf_campaign.py
+
+test-perf: test-perf-report test-perf-campaign
 
 clean:
 	rm -rf $(BUILD_DIR)

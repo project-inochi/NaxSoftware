@@ -1,9 +1,10 @@
 # Standalone G-stage dirtygen
 
-This directory is a self-contained RV64 bare-metal correctness benchmark for
-the VexiiRiscv `Shdlt` G-stage dirty-log extension.  It is intentionally
-independent from `ext/NaxSoftware`: copying this directory alone is sufficient
-to audit, build, parse, and unit-test the benchmark software.
+This directory contains a self-contained RV64 bare-metal benchmark for the
+VexiiRiscv `Shdlt` G-stage dirty-log extension.  Its firmware and parsers can
+be built and audited without another NaxSoftware runtime.  The optional
+campaign runner and its metadata test locate the enclosing VexiiRiscv tree so
+they can record the four repository states and invoke TestBench.
 
 ## Architectural scope
 
@@ -49,9 +50,13 @@ src/dirty_log_random.c   deterministic reference pattern
 tools/dirtygen_report.py ABI v4/v5 parser and validator
 tools/phase1_report.py   Phase-1 report validator
 tools/phase6_report.py   Phase-6 report validator
+tools/dirtygen_perf_report.py  performance validator and CSV/JSON exporter
+tools/run_dirtygen_perf.py     reproducible single-run campaign driver
 tests/test_dirtygen_report.py
 tests/test_phase1_report.py
 tests/test_phase6_report.py
+tests/test_dirtygen_perf_report.py
+tests/test_dirtygen_perf_campaign.py
 ```
 
 No source, header, linker script, or make fragment outside this directory is
@@ -148,8 +153,38 @@ mill -i Test.2_13_12.runMain vexiiriscv.tester.TestBench \
   --name dirtygen_standalone
 ```
 
-RVLS must remain enabled.  The benchmark is not intended to be run with
-`--no-rvls-check`.
+RVLS must remain enabled for the main correctness image.  The independent
+performance runner supports paired architecture-only and RVLS diagnostic
+runs without changing the firmware or CPU parameters.
+
+## Performance reporting and campaign runner
+
+Validate a captured full or smoke console and generate raw plus measured-only
+CSV/JSON outputs with:
+
+```bash
+python3 tools/dirtygen_perf_report.py console.log \
+  --suite smoke --output-dir build/campaign/example/report
+make perf-report LOG=console.log PERF_SUITE=smoke
+make test-perf
+```
+
+The parser independently checks the configuration mapping, sample keys,
+PTE.D and log bitmaps, INDEX, data/buffer errors, and firmware status.  It does
+not use cycle values or relative performance as correctness predicates.
+
+Inspect a reproducible campaign command without building or running anything:
+
+```bash
+python3 tools/run_dirtygen_perf.py \
+  --suite smoke --mode rvls --dry-run
+```
+
+Remove `--dry-run` to perform one run.  `--suite` must be `full` or `smoke`,
+and `--mode` must be `architecture` or `rvls`.  Results are written under the
+ignored `build/campaign/dirtygen-perf/` tree unless `--output-root` is given.
+The campaign metadata records the four repository states, ELF checksum,
+toolchain, exact commands, and fixed TestBench configuration.
 
 ## Dirty-log buffer boundary coverage
 
