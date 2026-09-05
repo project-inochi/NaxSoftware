@@ -244,6 +244,28 @@ median is therefore the median of paired differences, not a difference of
 baseline medians.  Negative or zero cycle deltas remain valid descriptive
 results and never determine firmware or campaign correctness.
 
+## Frozen validation audit
+
+The versioned audit manifest freezes the completed correctness and performance
+campaign inputs without committing their ignored build products.  From the
+VexiiRiscv repository root, reproduce the audit with:
+
+```bash
+python3 ext/NaxSoftware/benchmarks/dirtygen/tools/shdlt_validation_audit.py \
+  --manifest ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_validation_inputs.json \
+  --output-dir ext/NaxSoftware/benchmarks/dirtygen/build/campaign/shdlt-validation-audit
+```
+
+The command refuses an existing output directory and atomically creates
+`audit.json`, `audit.csv`, and `audit.md`.  It validates repository and gitlink
+provenance, all frozen ELF hashes, the fresh 52-run correctness matrix,
+CAS-loser attribution, RVLS smoke lifecycle closure, paired performance
+comparisons, Phase-4 reference equality, and schedule-stability categories.
+Every consumed file is SHA256-hashed and contributes to one deterministic
+evidence digest.  The committed [SHDLT_VALIDATION_AUDIT.md](SHDLT_VALIDATION_AUDIT.md)
+is the human-readable snapshot for that digest; generated JSON/CSV outputs and
+campaign data remain ignored.
+
 ## Dirty-log buffer boundary coverage
 
 Cases `11:24` exercise the last writable slot, exactly-full fault, recovery,

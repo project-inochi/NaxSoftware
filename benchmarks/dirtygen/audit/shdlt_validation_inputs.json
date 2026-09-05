@@ -1,0 +1,152 @@
+{
+  "schema": "shdlt-validation-audit-input-v1",
+  "snapshot_id": "shdlt-validation-2026-09-06",
+  "tested_heads": {
+    "VexiiRiscv": "5ca7edc59e0392e1b4b32d4403cfc9c23b421236",
+    "NaxSoftware": "17dba914100716ef2174db88f1e2406fe8b1cc49",
+    "Spike": "8057bc8758804953daafebb8a12af81a4110d447",
+    "RVLS": "f70cc0152fabde0829d3c267e1cd9915a4b9acd2"
+  },
+  "top_level_gitlinks": {
+    "NaxSoftware": {
+      "path": "ext/NaxSoftware",
+      "head": "b801c3ee0c2ef32f982a95fc7f7a063f47689971",
+      "allow_mismatch": true
+    },
+    "Spike": {
+      "path": "ext/riscv-isa-sim",
+      "head": "6bd1623d89e1859e32b6547cca4d94045e3a64bc",
+      "allow_mismatch": true
+    },
+    "RVLS": {
+      "path": "ext/rvls",
+      "head": "bcff90eb7877df4ba5f5be5e2fbc00ce7018de4e",
+      "allow_mismatch": true
+    }
+  },
+  "commit_chain": {
+    "VexiiRiscv": [
+      "e57f482c96399b11fc182bd17153ef4f4b837ac0",
+      "a0ef60413a36675d13be85a055474285ffd94a1d",
+      "0241e294946e389b3c52fc49e7d7447d4897d8d7",
+      "29bf7a4c766ee09189c14cee0f2467f334b2bf5a",
+      "d03db3a7d66c773beac0400b9bd23878606b49c0",
+      "5ca7edc59e0392e1b4b32d4403cfc9c23b421236"
+    ],
+    "NaxSoftware": [
+      "b0c92578c2483fcfc424272a45debde8c073dce9",
+      "5f8b195b0f337f449dc85fc6bbe325e8030ff89d",
+      "f9f1740450b847daaaf0f4d0346dd6e0a18d1a3f",
+      "27b59f276b8896c545bd7125ad0988e9fdaf8300",
+      "b62218fda8927d5cca9a3e338f2b4682d5976ac6",
+      "b9e542f281adfa42e15f88daf48af10946d389fb",
+      "25e3777aa629d3319bb8c8e4438931ef93a6756d",
+      "6002e9580249600ad2839c1aa9f6a4ba1f5a8808",
+      "f3ae67c1f872fb366aa31e4f27f613dffbf0782b",
+      "3001d86209557a33f5ab3d47b00e88da48daaa3a",
+      "1c8c944a368841370915b1121aa42c11506e4c6f",
+      "17dba914100716ef2174db88f1e2406fe8b1cc49"
+    ],
+    "Spike": [
+      "819617e802639ee8e9017a48d5768b761870fa19",
+      "8057bc8758804953daafebb8a12af81a4110d447"
+    ],
+    "RVLS": [
+      "552d2a1db779d63181208452d5bcb49c0df0edda",
+      "841e330e60070a78f4e04faec5ea60f5574a824e",
+      "ea2cac070b3669527e9b157d760414ef0be23cf9",
+      "f70cc0152fabde0829d3c267e1cd9915a4b9acd2"
+    ]
+  },
+  "audit_only_paths": [
+    "benchmarks/dirtygen/audit/shdlt_validation_inputs.json",
+    "benchmarks/dirtygen/tools/shdlt_validation_audit.py",
+    "benchmarks/dirtygen/tests/test_shdlt_validation_audit.py",
+    "benchmarks/dirtygen/SHDLT_VALIDATION_AUDIT.md",
+    "benchmarks/dirtygen/README.md"
+  ],
+  "allowed_nax_untracked": [
+    "riscv-arch-test/config/build.py"
+  ],
+  "hashes": {
+    "binary_manifest": {
+      "path": "ext/NaxSoftware/baremetal/rtl_directed_shdlt/binaries.sha256",
+      "sha256": "4eaad59b041a61fb0f8103a246eb07ec2e642614d2903ebb849345fc7826f857",
+      "entries": 43
+    },
+    "artifacts": [
+      ["dirtygen", "ext/NaxSoftware/benchmarks/dirtygen/build/dirtygen.elf", "147b58638dac62826170c1187faff16246adcdaabc31794f920c37fbbed526bc"],
+      ["perf-legacy-full", "ext/NaxSoftware/benchmarks/dirtygen/build/perf/dirtygen_perf.elf", "3ee314725633854ed8422746dd6f54178b381642b495dfa49335961ad4f06424"],
+      ["perf-legacy-smoke", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-rvls-smoke/dirtygen_perf.elf", "fc69c09b7763b8a9157b7ea8b3c3ba14a897e97dffa8e7a3407375e69733210b"],
+      ["perf-full-S0", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-full-s0/dirtygen_perf.elf", "e7e1d1a3a8efcf33a7575cd4e075f815e4fb5ea0fd09cd90b9a13ead304892a2"],
+      ["perf-full-S1", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-full-s1/dirtygen_perf.elf", "f5dec894f9cf2bfb6a25b3984bde63314ed32418244bd2ca07e759ce3931d97f"],
+      ["perf-full-S2", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-full-s2/dirtygen_perf.elf", "b00c8ef603cb9ce2a89c0abe8a167b350d98ad78773b97c938f96b294b0273e4"],
+      ["perf-full-S3", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-full-s3/dirtygen_perf.elf", "9d2c13ebc9218ae3d87bffc96f3cd1bb7e514540cdfaa45370494cd177884c77"],
+      ["perf-smoke-S0", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-smoke-s0/dirtygen_perf.elf", "9718fd2243109ca3950f39455ecfb7de1d46f2e2d14678889861282bdcad1578"],
+      ["perf-smoke-S1", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-smoke-s1/dirtygen_perf.elf", "a3437fb410cc1cd9a4cd9a10dce5d75a3a2bbb6fccb0a83cfe3c4c3f3d1d693d"],
+      ["perf-smoke-S2", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-smoke-s2/dirtygen_perf.elf", "1dbf865726bd701ff7ebcfdbf04f3983b980193a531ecf124ffccb77320be865"],
+      ["perf-smoke-S3", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-smoke-s3/dirtygen_perf.elf", "622548cec33d75dc106242b0526f548cbced24da6e16a8e996acfe4eefd805f1"],
+      ["perf-sensitivity-S0", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-sensitivity-s0/dirtygen_perf.elf", "8659db707ddb37aabc21a347bca6513fdcae5adb6ebacaf1ff748d1b1e2fe112"],
+      ["perf-sensitivity-S1", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-sensitivity-s1/dirtygen_perf.elf", "b3edded16a4de3de3b717563363fff85f4d9ddac87dc158807e8eb7f66e51032"],
+      ["perf-sensitivity-S2", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-sensitivity-s2/dirtygen_perf.elf", "d5b720bfb692801b0811b135102653b57a64d22550b184a2fe2652e90d0785a1"],
+      ["perf-sensitivity-S3", "ext/NaxSoftware/benchmarks/dirtygen/build/perf-sensitivity-s3/dirtygen_perf.elf", "e0ccc43a3b380dc0c9e106d570f730376b0bc4cf64708d3d327036016fe22693"]
+    ]
+  },
+  "correctness": {
+    "matrix_root": "ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase4-fresh",
+    "summary": "ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase4-fresh/summary-shard0-of-1.json",
+    "expected_runs": 52,
+    "attribution_reports": [
+      ["ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase2-attribution/results/01_boundary_idx510.attribution.json", {"mode":"normal","architectural_logger_stores":6,"architectural_mmu_stores":12,"attempts":6,"duplicate_attempt_states":0,"open_pending":0,"states":{"committed":6,"error":0,"pending":6,"superseded":0},"status":"PASS"}],
+      ["ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase2-attribution/results/02_log_target_store_fault.attribution.json", {"mode":"fault","architectural_logger_stores":1,"architectural_mmu_stores":1,"attempts":1,"duplicate_attempt_states":0,"open_pending":0,"states":{"committed":0,"error":1,"pending":0,"superseded":0},"status":"PASS"}],
+      ["ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase2-attribution/results/03_ctc_cpu2_cas_retry.attribution.json", {"mode":"ctc","architectural_logger_stores":1,"architectural_mmu_stores":2,"attempts":2,"duplicate_attempt_states":0,"open_pending":0,"states":{"committed":1,"error":0,"pending":2,"superseded":1},"status":"PASS"}],
+      ["ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase2-attribution/results/04_ctc_cpu4_cas_retry.attribution.json", {"mode":"ctc","architectural_logger_stores":1,"architectural_mmu_stores":2,"attempts":2,"duplicate_attempt_states":0,"open_pending":0,"states":{"committed":1,"error":0,"pending":2,"superseded":1},"status":"PASS"}],
+      ["ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase2-attribution/results/05_race_cpu2_same_pte.attribution.json", {"mode":"race","architectural_logger_stores":1,"architectural_mmu_stores":2,"attempts":1,"duplicate_attempt_states":0,"open_pending":0,"states":{"committed":1,"error":0,"pending":1,"superseded":0},"status":"PASS"}],
+      ["ext/NaxSoftware/baremetal/rtl_directed_shdlt/build/campaign/phase2-attribution/results/06_race_cpu4_same_pte.attribution.json", {"mode":"race","architectural_logger_stores":1,"architectural_mmu_stores":2,"attempts":1,"duplicate_attempt_states":0,"open_pending":0,"states":{"committed":1,"error":0,"pending":1,"superseded":0},"status":"PASS"}]
+    ]
+  },
+  "performance": {
+    "root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf",
+    "reference_nax_head": "3001d86209557a33f5ab3d47b00e88da48daaa3a",
+    "rvls_smoke_runs": [
+      "phase5-clean-smoke-rvls-s0-seed2",
+      "phase5-clean-smoke-rvls-s1-seed2",
+      "phase5-clean-smoke-rvls-s2-seed2",
+      "phase5-clean-smoke-rvls-s3-seed2"
+    ],
+    "sensitivity_runs": [
+      "phase5-clean-sensitivity-architecture-s0-seed2", "phase5-clean-sensitivity-architecture-s1-seed2", "phase5-clean-sensitivity-architecture-s2-seed2", "phase5-clean-sensitivity-architecture-s3-seed2",
+      "phase5-clean-sensitivity-architecture-s0-seed17", "phase5-clean-sensitivity-architecture-s1-seed17", "phase5-clean-sensitivity-architecture-s2-seed17", "phase5-clean-sensitivity-architecture-s3-seed17",
+      "phase5-clean-sensitivity-architecture-s0-seed101", "phase5-clean-sensitivity-architecture-s1-seed101", "phase5-clean-sensitivity-architecture-s2-seed101", "phase5-clean-sensitivity-architecture-s3-seed101"
+    ],
+    "sensitivity_reference_runs": [
+      "phase4-sensitivity-s0-seed2", "phase4-sensitivity-s1-seed2", "phase4-sensitivity-s2-seed2", "phase4-sensitivity-s3-seed2",
+      "phase4-sensitivity-s0-seed17", "phase4-sensitivity-s1-seed17", "phase4-sensitivity-s2-seed17", "phase4-sensitivity-s3-seed17",
+      "phase4-sensitivity-s0-seed101", "phase4-sensitivity-s1-seed101", "phase4-sensitivity-s2-seed101", "phase4-sensitivity-s3-seed101"
+    ],
+    "sensitivity_comparison": "phase5-clean-sensitivity-comparison-seeds2-17-101/comparison.json",
+    "full_runs": [
+      "phase5-clean-full-architecture-s0-seed2",
+      "phase5-clean-full-architecture-s1-seed2",
+      "phase5-clean-full-architecture-s2-seed2",
+      "phase5-clean-full-architecture-s3-seed2"
+    ],
+    "full_comparison": "phase5-clean-full-comparison-seed2/comparison.json"
+  },
+  "stability_expectations": {
+    "REPEAT/1/4096": {
+      "enable_cycles": "exact",
+      "svadu_cycles": "exact",
+      "log_cycles": "exact",
+      "total_cycles": "exact",
+      "active_total": "exact"
+    },
+    "UNIQUE/128/128": {
+      "enable_cycles": "unstable",
+      "svadu_cycles": "directional/value-sensitive",
+      "log_cycles": "directional/value-sensitive",
+      "total_cycles": "directional/value-sensitive",
+      "active_total": "directional/value-sensitive"
+    }
+  }
+}
