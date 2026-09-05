@@ -36,6 +36,14 @@ CPU_CONFIG: dict[str, Any] = {
     "stdin": False,
 }
 
+SUITE_MASKS = {
+    "full": "0xffffffff",
+    "smoke": "0x0f0000f0",
+    "sensitivity": "0xf000f000",
+}
+SCHEDULE_MACROS = {"S0": 0, "S1": 1, "S2": 2, "S3": 3}
+SCHEDULE_IDS = ("legacy", *SCHEDULE_MACROS)
+
 TERMINAL_STATUSES = {"passed", "failed", "interrupted"}
 FAILURE_STAGES = {
     "setup",
@@ -84,21 +92,70 @@ def suite_target(suite: str) -> str:
     return "perf" if suite == "full" else "perf-rvls-smoke"
 
 
-def elf_path(repo_root: Path, suite: str) -> Path:
-    build_dir = "perf" if suite == "full" else "perf-rvls-smoke"
+def build_directory(suite: str, schedule_id: str = "legacy") -> str:
+    if suite not in SUITE_MASKS:
+        raise ValueError(f"unknown suite {suite!r}")
+    if schedule_id not in SCHEDULE_IDS:
+        raise ValueError(f"unknown schedule {schedule_id!r}")
+    if schedule_id == "legacy":
+        if suite == "full":
+            return "perf"
+        if suite == "smoke":
+            return "perf-rvls-smoke"
+        return "perf-sensitivity-legacy"
+    return f"perf-{suite}-{schedule_id.lower()}"
+
+
+def elf_path(
+    repo_root: Path, suite: str, schedule_id: str = "legacy"
+) -> Path:
+    build_dir = build_directory(suite, schedule_id)
     return dirtygen_dir(repo_root) / "build" / build_dir / "dirtygen_perf.elf"
 
 
-def build_command(repo_root: Path, suite: str) -> list[str]:
-    return ["make", "-C", str(dirtygen_dir(repo_root)), suite_target(suite)]
+def build_command(
+    repo_root: Path, suite: str, schedule_id: str = "legacy"
+) -> list[str]:
+    if schedule_id == "legacy" and suite in ("full", "smoke"):
+        return ["make", "-C", str(dirtygen_dir(repo_root)), suite_target(suite)]
+    command = [
+        "make",
+        "-C",
+        str(dirtygen_dir(repo_root)),
+        "SUITE=perf",
+        f"BUILD_DIR=build/{build_directory(suite, schedule_id)}",
+        f"PERF_CONFIG_MASK={SUITE_MASKS[suite]}",
+    ]
+    if schedule_id != "legacy":
+        command.append(f"PERF_SCHEDULE_ID={SCHEDULE_MACROS[schedule_id]}")
+    command.append("all")
+    return command
 
 
-def simulation_name(suite: str, mode: str) -> str:
-    return f"shdlt_dirtygen_perf_{suite}_{mode}_seed2"
+def simulation_name(
+    suite: str, mode: str, schedule_id: str = "legacy", seed: int = 2
+) -> str:
+    return (
+        f"shdlt_dirtygen_perf_{suite}_{mode}_"
+        f"{schedule_id.lower()}_seed{seed}"
+    )
 
 
-def mill_command(repo_root: Path, suite: str, mode: str) -> list[str]:
-    name = simulation_name(suite, mode)
+def cpu_config(seed: int = 2) -> dict[str, Any]:
+    config = dict(CPU_CONFIG)
+    config["seed"] = seed
+    return config
+
+
+def mill_command(
+    repo_root: Path,
+    suite: str,
+    mode: str,
+    schedule_id: str = "legacy",
+    seed: int = 2,
+) -> list[str]:
+    config = cpu_config(seed)
+    name = simulation_name(suite, mode, schedule_id, seed)
     mill = shutil.which("mill")
     if mill is None:
         raise RuntimeError("mill was not found in PATH")
@@ -117,11 +174,11 @@ def mill_command(repo_root: Path, suite: str, mode: str) -> list[str]:
         "--reset-vector",
         "0x80000000",
         "--with-isa",
-        str(CPU_CONFIG["isa"]),
+        str(config["isa"]),
         "--with-fetch-l1",
         "--with-lsu-l1",
         "--load-elf",
-        str(elf_path(repo_root, suite)),
+        str(elf_path(repo_root, suite, schedule_id)),
         "--pass-symbol",
         "pass",
         "--fail-symbol",
@@ -131,13 +188,13 @@ def mill_command(repo_root: Path, suite: str, mode: str) -> list[str]:
         "--fail-policy",
         "any",
         "--fail-after",
-        str(CPU_CONFIG["fail_after"]),
+        str(config["fail_after"]),
         "--dbus-ready-factor",
-        str(CPU_CONFIG["dbus_ready_factor"]),
+        str(config["dbus_ready_factor"]),
         "--memory-latency",
-        str(CPU_CONFIG["memory_latency"]),
+        str(config["memory_latency"]),
         "--seed",
-        str(CPU_CONFIG["seed"]),
+        str(config["seed"]),
         "--name",
         name,
         "--with-rvls-log" if mode == "rvls" else "--no-rvls-check",
@@ -147,7 +204,11 @@ def mill_command(repo_root: Path, suite: str, mode: str) -> list[str]:
 
 
 def report_command(
-    repo_root: Path, suite: str, console: Path, report_dir: Path
+    repo_root: Path,
+    suite: str,
+    console: Path,
+    report_dir: Path,
+    schedule_id: str = "legacy",
 ) -> list[str]:
     script = dirtygen_dir(repo_root) / "tools" / "dirtygen_perf_report.py"
     return [
@@ -156,6 +217,8 @@ def report_command(
         str(console),
         "--suite",
         suite,
+        "--schedule-id",
+        schedule_id,
         "--output-dir",
         str(report_dir),
     ]
@@ -298,6 +361,8 @@ def initial_metadata(
     build: list[str],
     mill: list[str],
     report: list[str],
+    schedule_id: str = "legacy",
+    seed: int = 2,
 ) -> dict[str, Any]:
     repositories = repository_states(repo_root)
     trace_required = mode == "rvls"
@@ -305,6 +370,7 @@ def initial_metadata(
     return {
         "schema": "shdlt-dirtygen-perf-campaign-v2",
         "run_id": uuid.uuid4().hex,
+        "schedule_id": schedule_id,
         "suite": suite,
         "mode": mode,
         "status": "initialized",
@@ -317,18 +383,18 @@ def initial_metadata(
         "trace_requested": trace_requested,
         "trace_generated": False,
         "trace_path": None,
-        "simulation_seed": CPU_CONFIG["seed"],
+        "simulation_seed": seed,
         "repositories": repositories,
         "top_level_gitlinks": top_level_gitlinks(repo_root, repositories),
         "toolchain": toolchain_information(mill),
-        "cpu_config": dict(CPU_CONFIG),
+        "cpu_config": cpu_config(seed),
         "commands": {
             "build": command_record(build),
             "simulation": command_record(mill),
             "report": command_record(report),
         },
         "artifact": {
-            "elf": str(elf_path(repo_root, suite)),
+            "elf": str(elf_path(repo_root, suite, schedule_id)),
             "sha256": None,
         },
         "build_exit_code": None,
@@ -412,12 +478,18 @@ def run_logged(command: list[str], cwd: Path, log: Path) -> int:
             _active_process = None
 
 
-def rvls_trace_path(repo_root: Path, suite: str, mode: str) -> Path:
+def rvls_trace_path(
+    repo_root: Path,
+    suite: str,
+    mode: str,
+    schedule_id: str = "legacy",
+    seed: int = 2,
+) -> Path:
     return (
         repo_root
         / "simWorkspace"
         / "TestBenchDut"
-        / simulation_name(suite, mode)
+        / simulation_name(suite, mode, schedule_id, seed)
         / "tracer.log"
     )
 
@@ -435,10 +507,12 @@ def copy_rvls_trace(
     mode: str,
     output: Path,
     previous_signature: tuple[int, int] | None,
+    schedule_id: str = "legacy",
+    seed: int = 2,
 ) -> Path | None:
     if mode != "rvls":
         return None
-    source = rvls_trace_path(repo_root, suite, mode)
+    source = rvls_trace_path(repo_root, suite, mode, schedule_id, seed)
     if not source.is_file():
         return None
     if trace_signature(source) == previous_signature:
@@ -448,13 +522,19 @@ def copy_rvls_trace(
     return destination
 
 
-def default_output_root(repo_root: Path, suite: str, mode: str) -> Path:
+def default_output_root(
+    repo_root: Path,
+    suite: str,
+    mode: str,
+    schedule_id: str = "legacy",
+    seed: int = 2,
+) -> Path:
     return (
         dirtygen_dir(repo_root)
         / "build"
         / "campaign"
         / "dirtygen-perf"
-        / f"{suite}-{mode}"
+        / f"{suite}-{mode}-{schedule_id.lower()}-seed{seed}"
     )
 
 
@@ -462,8 +542,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Run one reproducible SHDLT dirtygen performance campaign"
     )
-    parser.add_argument("--suite", choices=("full", "smoke"), required=True)
+    parser.add_argument("--suite", choices=tuple(SUITE_MASKS), required=True)
     parser.add_argument("--mode", choices=("architecture", "rvls"), required=True)
+    parser.add_argument("--schedule-id", choices=SCHEDULE_IDS, default="legacy")
+    parser.add_argument("--seed", type=int, default=2)
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
@@ -489,13 +571,19 @@ def main(argv: list[str] | None = None) -> int:
         output = (
             args.output_root.resolve()
             if args.output_root is not None
-            else default_output_root(repo_root, args.suite, args.mode)
+            else default_output_root(
+                repo_root, args.suite, args.mode, args.schedule_id, args.seed
+            )
         )
-        build = build_command(repo_root, args.suite)
-        mill = mill_command(repo_root, args.suite, args.mode)
+        build = build_command(repo_root, args.suite, args.schedule_id)
+        mill = mill_command(
+            repo_root, args.suite, args.mode, args.schedule_id, args.seed
+        )
         console = output / "console.log"
         report_dir = output / "report"
-        report = report_command(repo_root, args.suite, console, report_dir)
+        report = report_command(
+            repo_root, args.suite, console, report_dir, args.schedule_id
+        )
 
         if args.dry_run:
             print(f"BUILD {shlex.join(build)}")
@@ -517,6 +605,8 @@ def main(argv: list[str] | None = None) -> int:
             build,
             mill,
             report,
+            args.schedule_id,
+            args.seed,
         )
         write_metadata(metadata_path, metadata)
 
@@ -537,14 +627,20 @@ def main(argv: list[str] | None = None) -> int:
             )
 
         active_stage = "artifact"
-        elf = elf_path(repo_root, args.suite)
+        elf = elf_path(repo_root, args.suite, args.schedule_id)
         if not elf.is_file():
             raise CampaignFailure("artifact", f"ELF is missing: {elf}")
         metadata["artifact"]["sha256"] = sha256(elf)
         write_metadata(metadata_path, metadata)
 
         trace_before = trace_signature(
-            rvls_trace_path(repo_root, args.suite, args.mode)
+            rvls_trace_path(
+                repo_root,
+                args.suite,
+                args.mode,
+                args.schedule_id,
+                args.seed,
+            )
         ) if args.mode == "rvls" else None
 
         active_stage = "simulation"
@@ -560,6 +656,8 @@ def main(argv: list[str] | None = None) -> int:
                 args.mode,
                 output,
                 trace_before,
+                args.schedule_id,
+                args.seed,
             )
         except OSError as error:
             if simulation_exit != 0:

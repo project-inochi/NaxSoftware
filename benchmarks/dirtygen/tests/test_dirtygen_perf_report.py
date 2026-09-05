@@ -102,13 +102,8 @@ def record(prefix, fields):
     return f"{prefix} {' '.join(tokens)}\n"
 
 
-def valid_log(suite):
-    configs = (
-        range(32)
-        if suite == "full"
-        else (*range(4, 8), *range(24, 28))
-    )
-    configs = tuple(configs)
+def valid_log(suite, schedule_id="legacy"):
+    configs = dirtygen_perf_report.ordered_configs(suite, schedule_id)
     rows = []
     for config in configs:
         rows.append(sample(config, 1, 0))
@@ -136,9 +131,11 @@ def valid_log(suite):
     return "".join(lines)
 
 
-def parse_valid(suite="smoke"):
-    report = dirtygen_perf_report.parse_lines(io.StringIO(valid_log(suite)))
-    report.validate(suite)
+def parse_valid(suite="smoke", schedule_id="legacy"):
+    report = dirtygen_perf_report.parse_lines(
+        io.StringIO(valid_log(suite, schedule_id))
+    )
+    report.validate(suite, schedule_id)
     return report
 
 
@@ -152,6 +149,62 @@ class DirtygenPerfReportTest(unittest.TestCase):
         report = parse_valid("full")
         self.assertEqual(len(report.samples), 192)
         self.assertEqual(len(report.measured_samples()), 160)
+
+    def test_valid_sensitivity_report(self):
+        report = parse_valid("sensitivity")
+        self.assertEqual(len(report.samples), 48)
+        self.assertEqual(
+            {int(row["config"]) for row in report.samples},
+            set(range(12, 16)) | set(range(28, 32)),
+        )
+
+    def test_balanced_schedules_and_sample_order(self):
+        scheduled = {
+            name: order
+            for name, order in dirtygen_perf_report.SCHEDULE_BASELINES.items()
+            if name != "legacy"
+        }
+        self.assertTrue(all(sorted(order) == [0, 1, 2, 3]
+                            for order in scheduled.values()))
+        for position in range(4):
+            self.assertEqual(
+                {order[position] for order in scheduled.values()},
+                {0, 1, 2, 3},
+            )
+        adjacent = {
+            pair
+            for order in scheduled.values()
+            for pair in zip(order, order[1:])
+        }
+        self.assertEqual(
+            adjacent,
+            {(left, right) for left in range(4) for right in range(4)
+             if left != right},
+        )
+        for schedule_id in scheduled:
+            with self.subTest(schedule_id=schedule_id):
+                for suite, expected_samples in (
+                    ("full", 192),
+                    ("smoke", 48),
+                    ("sensitivity", 48),
+                ):
+                    report = parse_valid(suite, schedule_id)
+                    self.assertEqual(report.schedule_id, schedule_id)
+                    self.assertEqual(len(report.samples), expected_samples)
+
+    def test_wrong_schedule_and_uart_order_are_rejected(self):
+        report = dirtygen_perf_report.parse_lines(
+            io.StringIO(valid_log("smoke", "S0"))
+        )
+        with self.assertRaisesRegex(
+            dirtygen_perf_report.ReportError, "sample order.*S1"
+        ):
+            report.validate("smoke", "S1")
+
+        with self.assertRaisesRegex(
+            dirtygen_perf_report.ReportError, "unknown schedule"
+        ):
+            report.validate("smoke", "invalid")
 
     def test_missing_and_duplicate_samples_are_rejected(self):
         report = dirtygen_perf_report.parse_lines(io.StringIO(valid_log("smoke")))

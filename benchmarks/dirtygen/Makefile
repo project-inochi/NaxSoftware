@@ -25,6 +25,9 @@ IMAGE_NAME := dirtygen_perf
 PERF_CONFIG_MASK ?= 0xffffffff
 SUITE_CPPFLAGS := -DDIRTYGEN_PERF \
                   -DDIRTYGEN_PERF_CONFIG_MASK=$(PERF_CONFIG_MASK)
+ifneq ($(strip $(PERF_SCHEDULE_ID)),)
+SUITE_CPPFLAGS += -DDIRTYGEN_PERF_SCHEDULE_ID=$(PERF_SCHEDULE_ID)
+endif
 C_SOURCES := \
   src/dirtygen_perf.c \
   src/dirty_log_check.c \
@@ -64,7 +67,7 @@ DEPS := $(OBJECTS:.o=.d)
 
 .PHONY: all phase1 phase6 perf perf-rvls-smoke clean report perf-report \
         test-report test-phase1-report test-phase6-report \
-        test-perf-report test-perf-campaign test-perf
+        test-perf-report test-perf-campaign test-perf-compare test-perf
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
@@ -106,10 +109,11 @@ report:
 	python3 tools/dirtygen_report.py "$(LOG)" --format table
 
 perf-report:
-	@test -n "$(LOG)" || { echo "usage: make perf-report LOG=/path/to/log PERF_SUITE=full|smoke"; exit 2; }
-	@test -n "$(PERF_SUITE)" || { echo "PERF_SUITE must be full or smoke"; exit 2; }
+	@test -n "$(LOG)" || { echo "usage: make perf-report LOG=/path/to/log PERF_SUITE=full|smoke|sensitivity [PERF_SCHEDULE=legacy|S0|S1|S2|S3]"; exit 2; }
+	@test -n "$(PERF_SUITE)" || { echo "PERF_SUITE must be full, smoke, or sensitivity"; exit 2; }
 	python3 tools/dirtygen_perf_report.py "$(LOG)" \
-		--suite "$(PERF_SUITE)" --format table
+		--suite "$(PERF_SUITE)" \
+		--schedule-id "$(or $(PERF_SCHEDULE),legacy)" --format table
 
 test-report:
 	python3 -m unittest -v tests/test_dirtygen_report.py
@@ -126,7 +130,10 @@ test-perf-report:
 test-perf-campaign:
 	python3 -m unittest -v tests/test_dirtygen_perf_campaign.py
 
-test-perf: test-perf-report test-perf-campaign
+test-perf-compare:
+	python3 -m unittest -v tests/test_dirtygen_perf_compare.py
+
+test-perf: test-perf-report test-perf-campaign test-perf-compare
 
 clean:
 	rm -rf $(BUILD_DIR)

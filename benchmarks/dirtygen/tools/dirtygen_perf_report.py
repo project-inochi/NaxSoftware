@@ -20,7 +20,19 @@ MEASURED_REPETITIONS = 5
 BUFFER_CAPACITY = 512
 FULL_CONFIGS = tuple(range(32))
 SMOKE_CONFIGS = tuple(range(4, 8)) + tuple(range(24, 28))
-SUITE_CONFIGS = {"full": FULL_CONFIGS, "smoke": SMOKE_CONFIGS}
+SENSITIVITY_CONFIGS = tuple(range(12, 16)) + tuple(range(28, 32))
+SUITE_CONFIGS = {
+    "full": FULL_CONFIGS,
+    "smoke": SMOKE_CONFIGS,
+    "sensitivity": SENSITIVITY_CONFIGS,
+}
+SCHEDULE_BASELINES = {
+    "legacy": (0, 1, 2, 3),
+    "S0": (0, 1, 3, 2),
+    "S1": (1, 2, 0, 3),
+    "S2": (2, 3, 1, 0),
+    "S3": (3, 0, 2, 1),
+}
 UNIQUE_PAGES = (1, 8, 32, 128)
 REPEAT_OPERATIONS = (1, 8, 128, 4096)
 TIME_METRICS = (
@@ -188,6 +200,21 @@ def expected_config(config: int) -> dict[str, int | str | tuple[int, int]]:
     }
 
 
+def ordered_configs(suite: str, schedule_id: str = "legacy") -> tuple[int, ...]:
+    if suite not in SUITE_CONFIGS:
+        raise ReportError(f"unknown suite {suite!r}")
+    if schedule_id not in SCHEDULE_BASELINES:
+        raise ReportError(f"unknown schedule {schedule_id!r}")
+    enabled = set(SUITE_CONFIGS[suite])
+    groups = sorted(config // 4 for config in enabled if config % 4 == 0)
+    return tuple(
+        group * 4 + baseline
+        for group in groups
+        for baseline in SCHEDULE_BASELINES[schedule_id]
+        if group * 4 + baseline in enabled
+    )
+
+
 @dataclass
 class DirtygenPerfReport:
     begin: dict[str, int | str] | None = None
@@ -195,10 +222,10 @@ class DirtygenPerfReport:
     end: dict[str, int | str] | None = None
     errors: list[dict[str, int | str]] = field(default_factory=list)
     suite: str | None = None
+    schedule_id: str | None = None
 
-    def validate(self, suite: str) -> None:
-        if suite not in SUITE_CONFIGS:
-            raise ReportError(f"unknown suite {suite!r}")
+    def validate(self, suite: str, schedule_id: str = "legacy") -> None:
+        expected_order = ordered_configs(suite, schedule_id)
         expected_configs = SUITE_CONFIGS[suite]
         expected_count = len(expected_configs) * RUNS_PER_CONFIG
         if self.begin is None:
@@ -287,7 +314,38 @@ class DirtygenPerfReport:
             raise ReportError(f"missing sample key(s): {missing_keys}")
         if extra_keys:
             raise ReportError(f"unexpected sample key(s): {extra_keys}")
+        expected_sample_order = [
+            key
+            for config in expected_order
+            for key in (
+                (config, 1, 0),
+                *((config, 0, repetition)
+                  for repetition in range(MEASURED_REPETITIONS)),
+            )
+        ]
+        actual_sample_order = [
+            (
+                int(sample["config"]),
+                int(sample["warmup"]),
+                int(sample["repetition"]),
+            )
+            for sample in self.samples
+        ]
+        if actual_sample_order != expected_sample_order:
+            mismatch = next(
+                index
+                for index, (actual, expected) in enumerate(
+                    zip(actual_sample_order, expected_sample_order)
+                )
+                if actual != expected
+            )
+            raise ReportError(
+                f"sample order does not match schedule {schedule_id}: "
+                f"sample {mismatch} is {actual_sample_order[mismatch]}, "
+                f"expected {expected_sample_order[mismatch]}"
+            )
         self.suite = suite
+        self.schedule_id = schedule_id
 
     def measured_samples(self) -> list[dict[str, int | str]]:
         if self.suite is None:
@@ -433,6 +491,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("log", type=Path)
     parser.add_argument("--suite", choices=tuple(SUITE_CONFIGS), required=True)
+    parser.add_argument(
+        "--schedule-id", choices=tuple(SCHEDULE_BASELINES), default="legacy"
+    )
     parser.add_argument("--format", choices=("table", "json", "csv"), default="table")
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args(argv)
@@ -440,7 +501,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         with args.log.open(encoding="utf-8", errors="replace") as stream:
             report = parse_lines(stream)
-        report.validate(args.suite)
+        report.validate(args.suite, args.schedule_id)
         if args.output_dir is not None:
             write_outputs(report, args.output_dir)
         if args.format == "json":
@@ -451,6 +512,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print(
                 f"dirtygen perf: PASS suite={args.suite} "
+                f"schedule={args.schedule_id} "
                 f"configs={len(SUITE_CONFIGS[args.suite])} "
                 f"samples={len(report.samples)} measured={len(report.measured_samples())}"
             )

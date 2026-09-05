@@ -57,6 +57,57 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
             run_dirtygen_perf.elf_path(REPO_ROOT, "smoke")
         ))
 
+    def test_scheduled_profiles_select_masks_directories_and_macros(self):
+        expected_masks = {
+            "full": "0xffffffff",
+            "smoke": "0x0f0000f0",
+            "sensitivity": "0xf000f000",
+        }
+        for suite, mask in expected_masks.items():
+            for index, schedule_id in enumerate(("S0", "S1", "S2", "S3")):
+                with self.subTest(suite=suite, schedule_id=schedule_id):
+                    build = run_dirtygen_perf.build_command(
+                        REPO_ROOT, suite, schedule_id
+                    )
+                    directory = f"perf-{suite}-s{index}"
+                    self.assertIn(f"BUILD_DIR=build/{directory}", build)
+                    self.assertIn(f"PERF_CONFIG_MASK={mask}", build)
+                    self.assertIn(f"PERF_SCHEDULE_ID={index}", build)
+                    self.assertEqual(build[-1], "all")
+                    self.assertIn(
+                        f"build/{directory}/dirtygen_perf.elf",
+                        str(run_dirtygen_perf.elf_path(
+                            REPO_ROOT, suite, schedule_id
+                        )),
+                    )
+
+    def test_schedule_and_seed_propagate_to_single_simulation(self):
+        command = run_dirtygen_perf.mill_command(
+            REPO_ROOT, "sensitivity", "architecture", "S2", 17
+        )
+        self.assertEqual(command.count("Test[2.13.12].runMain"), 1)
+        self.assertEqual(
+            command[command.index("--seed") + 1], "17"
+        )
+        self.assertEqual(
+            command[command.index("--name") + 1],
+            "shdlt_dirtygen_perf_sensitivity_architecture_s2_seed17",
+        )
+        self.assertTrue(any(
+            item.endswith("build/perf-sensitivity-s2/dirtygen_perf.elf")
+            for item in command
+        ))
+        report = run_dirtygen_perf.report_command(
+            REPO_ROOT, "sensitivity", Path("console"), Path("report"), "S2"
+        )
+        self.assertEqual(report[report.index("--schedule-id") + 1], "S2")
+        output = run_dirtygen_perf.default_output_root(
+            REPO_ROOT, "sensitivity", "architecture", "S2", 17
+        )
+        self.assertTrue(str(output).endswith(
+            "sensitivity-architecture-s2-seed17"
+        ))
+
     def test_metadata_contains_heads_status_commands_and_cpu_config(self):
         build = run_dirtygen_perf.build_command(REPO_ROOT, "smoke")
         mill = run_dirtygen_perf.mill_command(REPO_ROOT, "smoke", "rvls")
@@ -70,6 +121,7 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
             metadata["schema"], "shdlt-dirtygen-perf-campaign-v2"
         )
         self.assertEqual(metadata["status"], "initialized")
+        self.assertEqual(metadata["schedule_id"], "legacy")
         self.assertIsNone(metadata["exit_code"])
         self.assertIsNone(metadata["end_time"])
         self.assertEqual(len(metadata["run_id"]), 32)
@@ -117,6 +169,28 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
             str(Path(mill[1]).resolve()),
         )
 
+    def test_metadata_records_actual_schedule_and_seed(self):
+        build = run_dirtygen_perf.build_command(REPO_ROOT, "smoke", "S3")
+        mill = run_dirtygen_perf.mill_command(
+            REPO_ROOT, "smoke", "rvls", "S3", 9
+        )
+        report = run_dirtygen_perf.report_command(
+            REPO_ROOT, "smoke", Path("console.log"), Path("report"), "S3"
+        )
+        metadata = run_dirtygen_perf.initial_metadata(
+            REPO_ROOT, "smoke", "rvls", build, mill, report, "S3", 9
+        )
+        self.assertEqual(metadata["schedule_id"], "S3")
+        self.assertEqual(metadata["simulation_seed"], 9)
+        self.assertEqual(metadata["cpu_config"]["seed"], 9)
+        self.assertIn("perf-smoke-s3", metadata["artifact"]["elf"])
+        self.assertEqual(
+            metadata["commands"]["report"]["argv"][
+                metadata["commands"]["report"]["argv"].index("--schedule-id") + 1
+            ],
+            "S3",
+        )
+
     def test_architecture_metadata_does_not_claim_a_trace(self):
         build = run_dirtygen_perf.build_command(REPO_ROOT, "smoke")
         mill = run_dirtygen_perf.mill_command(
@@ -162,6 +236,18 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
                 )
             )
 
+    def test_trace_sources_are_distinct_by_schedule_and_seed(self):
+        first = run_dirtygen_perf.rvls_trace_path(
+            Path("/repo"), "smoke", "rvls", "S0", 2
+        )
+        second = run_dirtygen_perf.rvls_trace_path(
+            Path("/repo"), "smoke", "rvls", "S1", 2
+        )
+        third = run_dirtygen_perf.rvls_trace_path(
+            Path("/repo"), "smoke", "rvls", "S0", 3
+        )
+        self.assertEqual(len({first, second, third}), 3)
+
     def test_atomic_metadata_write_preserves_previous_document_on_failure(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "metadata.json"
@@ -183,6 +269,7 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
         return {
             "schema": "shdlt-dirtygen-perf-campaign-v2",
             "run_id": "test-run",
+            "schedule_id": "legacy",
             "suite": "smoke",
             "mode": mode,
             "status": "initialized",
@@ -356,6 +443,32 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
             self.assertIn("--no-rvls-check", stdout.getvalue())
             self.assertIn("dirtygen_perf_report.py", stdout.getvalue())
             self.assertEqual(stdout.getvalue().count("SIMULATE "), 1)
+
+    def test_scheduled_dry_run_propagates_all_parameters(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "not-created"
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                status = run_dirtygen_perf.main(
+                    [
+                        "--suite", "sensitivity",
+                        "--mode", "architecture",
+                        "--schedule-id", "S1",
+                        "--seed", "23",
+                        "--output-root", str(output),
+                        "--dry-run",
+                    ]
+                )
+            rendered = stdout.getvalue()
+            self.assertEqual(status, 0)
+            self.assertFalse(output.exists())
+            self.assertIn("PERF_CONFIG_MASK=0xf000f000", rendered)
+            self.assertIn("PERF_SCHEDULE_ID=1", rendered)
+            self.assertIn("build/perf-sensitivity-s1/dirtygen_perf.elf", rendered)
+            self.assertIn("--schedule-id S1", rendered)
+            self.assertIn("--seed 23", rendered)
+            self.assertEqual(rendered.count("SIMULATE "), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -115,6 +115,28 @@ static uint32_t config_enabled(uint32_t config) {
   return (mask & (UINT32_C(1) << config)) != 0;
 }
 
+#ifdef DIRTYGEN_PERF_SCHEDULE_ID
+#if DIRTYGEN_PERF_SCHEDULE_ID < 0 || DIRTYGEN_PERF_SCHEDULE_ID > 3
+#error "DIRTYGEN_PERF_SCHEDULE_ID must be in the range 0..3"
+#endif
+
+static uint32_t schedule_cursor;
+
+static uint32_t scheduled_config(uint32_t ordinal) {
+  static const uint8_t baseline_order[4][4] = {
+      {0, 1, 3, 2},
+      {1, 2, 0, 3},
+      {2, 3, 1, 0},
+      {3, 0, 2, 1},
+  };
+  uint32_t group = ordinal / 4;
+  uint32_t position = ordinal % 4;
+
+  return group * 4 +
+         baseline_order[DIRTYGEN_PERF_SCHEDULE_ID][position];
+}
+#endif
+
 static uint32_t config_initial_d(uint32_t config) {
   return config_baseline(config) < DIRTYGEN_PERF_BASELINE_B2;
 }
@@ -171,6 +193,9 @@ void dirtygen_perf_init(void) {
   expected_config_count = 0;
   expected_sample_count = 0;
   failures = 0;
+#ifdef DIRTYGEN_PERF_SCHEDULE_ID
+  schedule_cursor = 0;
+#endif
   zero_words(samples, sizeof(samples));
   zero_words(log_snapshot, sizeof(log_snapshot));
   write_hdltctl(0);
@@ -185,11 +210,21 @@ void dirtygen_perf_init(void) {
 }
 
 uint32_t dirtygen_perf_next_config(uint32_t first) {
+#ifdef DIRTYGEN_PERF_SCHEDULE_ID
+  (void)first;
+  while (schedule_cursor < DIRTYGEN_PERF_CONFIG_COUNT) {
+    uint32_t config = scheduled_config(schedule_cursor++);
+
+    if (config_enabled(config))
+      return config;
+  }
+#else
   for (uint32_t config = first; config < DIRTYGEN_PERF_CONFIG_COUNT;
        config++) {
     if (config_enabled(config))
       return config;
   }
+#endif
   return DIRTYGEN_PERF_CONFIG_COUNT;
 }
 

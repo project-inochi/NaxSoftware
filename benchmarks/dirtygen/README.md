@@ -52,11 +52,13 @@ tools/phase1_report.py   Phase-1 report validator
 tools/phase6_report.py   Phase-6 report validator
 tools/dirtygen_perf_report.py  performance validator and CSV/JSON exporter
 tools/run_dirtygen_perf.py     reproducible single-run campaign driver
+tools/dirtygen_perf_compare.py paired B0--B3 comparison and robust statistics
 tests/test_dirtygen_report.py
 tests/test_phase1_report.py
 tests/test_phase6_report.py
 tests/test_dirtygen_perf_report.py
 tests/test_dirtygen_perf_campaign.py
+tests/test_dirtygen_perf_compare.py
 ```
 
 No source, header, linker script, or make fragment outside this directory is
@@ -100,6 +102,22 @@ build/perf-rvls-smoke/dirtygen_perf.elf
 The full image contains 32 configurations and 192 samples.  The smoke image
 contains UNIQUE/pages=8 and REPEAT/operations=128 for B0--B3, for 48 samples.
 Each configuration has one warmup followed by five measured repetitions.
+
+Scheduled builds use the same firmware and select only the order in which the
+four baselines run within each workload group:
+
+```text
+S0: B0 B1 B3 B2
+S1: B1 B2 B0 B3
+S2: B2 B3 B1 B0
+S3: B3 B0 B2 B1
+```
+
+The runner supplies `DIRTYGEN_PERF_SCHEDULE_ID=0..3` at compile time and puts
+the resulting images in `build/perf-{suite}-s{0..3}/`.  Its `sensitivity`
+profile contains only UNIQUE/pages=128 and REPEAT/operations=4096, again for
+all four baselines.  Omitting the schedule macro keeps the legacy increasing
+config order used by `make perf` and `make perf-rvls-smoke`.
 
 ## Performance measurement model
 
@@ -164,8 +182,9 @@ CSV/JSON outputs with:
 
 ```bash
 python3 tools/dirtygen_perf_report.py console.log \
-  --suite smoke --output-dir build/campaign/example/report
-make perf-report LOG=console.log PERF_SUITE=smoke
+  --suite smoke --schedule-id S0 \
+  --output-dir build/campaign/example/report
+make perf-report LOG=console.log PERF_SUITE=smoke PERF_SCHEDULE=S0
 make test-perf
 ```
 
@@ -177,12 +196,16 @@ Inspect a reproducible campaign command without building or running anything:
 
 ```bash
 python3 tools/run_dirtygen_perf.py \
-  --suite smoke --mode rvls --dry-run
+  --suite smoke --mode rvls --schedule-id S0 --seed 2 --dry-run
 ```
 
-Remove `--dry-run` to perform one run.  `--suite` must be `full` or `smoke`,
-and `--mode` must be `architecture` or `rvls`.  Results are written under the
-ignored `build/campaign/dirtygen-perf/` tree unless `--output-root` is given.
+Remove `--dry-run` to perform one run.  `--suite` is `full`, `smoke`, or
+`sensitivity`; `--schedule-id` is `legacy` or `S0`--`S3`; and `--mode` is
+`architecture` or `rvls`.  Each invocation builds one image and starts exactly
+one simulation process, so a schedule/seed pair begins from a fresh CPU reset.
+Results are written under the ignored `build/campaign/dirtygen-perf/` tree
+unless `--output-root` is given.  Simulation names, default output paths,
+metadata, and trace source paths include both schedule and seed.
 The campaign metadata records the four repository states, ELF checksum,
 toolchain, exact commands, and fixed TestBench configuration.  Metadata schema
 v2 distinguishes each submodule's actual HEAD from the gitlink recorded by the
@@ -192,11 +215,34 @@ or `interrupted`), exit code, failure stage and message, start/end timestamps,
 simulation seed, and a unique run ID.  Updates use an atomic replacement so an
 interrupted write cannot leave a partial JSON document.
 
+The report parser validates the UART sample order against the selected
+schedule while preserving samples schema v1.  The comparison tool obtains the
+schedule from campaign metadata, confirms that the report command used the
+same value, and then attaches it to the structured pairing key.
+
 Trace provenance is explicit: `trace_required`, `trace_requested`,
 `trace_generated`, and `trace_path` describe four separate facts.  Architecture
 mode records all three booleans as false and the path as null.  RVLS mode only
 sets `trace_generated` after a fresh tracer has been copied into the campaign
 directory; a missing or stale tracer is a campaign failure.
+
+Generate paired B0--B3 comparisons from one or more successful campaigns:
+
+```bash
+python3 tools/dirtygen_perf_compare.py \
+  --input build/campaign/run/report/samples.json \
+          build/campaign/run/metadata.json \
+  --output-dir build/campaign/run/comparison
+```
+
+Additional `--input SAMPLES_JSON METADATA_JSON` pairs combine compatible runs.
+The comparison tool requires campaign metadata schema v2; preserved v1
+campaigns are not modified or implicitly upgraded.
+Warmups are validated but excluded.  Each measured repetition is paired before
+calculating `B1-B0`, `B2-B0`, `B3-B2`, `B3-B0`, and `B3-B1`; the reported
+median is therefore the median of paired differences, not a difference of
+baseline medians.  Negative or zero cycle deltas remain valid descriptive
+results and never determine firmware or campaign correctness.
 
 ## Dirty-log buffer boundary coverage
 
