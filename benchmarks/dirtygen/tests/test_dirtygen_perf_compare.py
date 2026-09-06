@@ -1,4 +1,5 @@
 import csv
+import copy
 import contextlib
 import io
 import json
@@ -55,6 +56,25 @@ def samples_document(schedule_id="legacy"):
     }
 
 
+def isolated_samples_document(config):
+    rows = [sample(config, 1, 0)] + [
+        sample(config, 0, repetition)
+        for repetition in range(dirtygen_perf_report.MEASURED_REPETITIONS)
+    ]
+    return {
+        "schema": dirtygen_perf_compare.SAMPLES_SCHEMA,
+        "suite": "isolated",
+        "begin": {"abi": 1, "configs": 1, "samples": len(rows)},
+        "samples": rows,
+        "end": {
+            "configs": 1,
+            "samples": len(rows),
+            "failures": 0,
+            "status": 0,
+        },
+    }
+
+
 def metadata(run_id="run-0", schedule_id="legacy", seed=2, sha="1" * 64):
     repositories = {
         name: {"head": str(index) * 40}
@@ -99,6 +119,68 @@ def metadata(run_id="run-0", schedule_id="legacy", seed=2, sha="1" * 64):
     }
 
 
+def isolated_metadata(config, block_id="I0", seed=2, experiment="experiment-a"):
+    baseline = f"B{config & 3}"
+    order = list(dirtygen_perf_compare.ISOLATION_BLOCKS[block_id])
+    position = order.index(baseline)
+    run_id = f"run-{experiment}-{block_id.lower()}-c{config}-seed{seed}"
+    result = metadata(run_id=run_id, seed=seed, sha=f"{config:x}"[-1] * 64)
+    result.update(
+        {
+            "schedule_id": "isolated",
+            "suite": "isolated",
+            "experiment_id": experiment,
+            "isolation_block_id": block_id,
+            "config_id": config,
+            "baseline": baseline,
+            "fresh_reset": True,
+            "launch_order": order,
+            "launch_position": position,
+            "process_run_id": run_id,
+            "start_time": f"2026-09-05T00:{position * 2:02}:00+08:00",
+            "end_time": f"2026-09-05T00:{position * 2 + 1:02}:00+08:00",
+        }
+    )
+    result["commands"]["simulation"]["argv"] = [
+        "mill", "Test[2.13.12].runMain", "--seed", str(seed)
+    ]
+    result["commands"]["report"]["argv"] = [
+        "report", "--suite", "isolated", "--config-id", str(config)
+    ]
+    result["artifact"].update(
+        {
+            "elf_sha256": result["artifact"]["sha256"],
+            "text_sha256": "a" * 64,
+            "text_size": 100,
+            "text_init_sha256": "b" * 64,
+            "text_init_size": 200,
+            "workload_code_sha256": "c" * 64,
+            "workload_symbol_range": {
+                "start_symbol": "dirtygen_perf_guest_entry",
+                "end_symbol": "dirtygen_perf_trap_handler",
+                "start_address": "0x0000000080000280",
+                "end_address": "0x00000000800002f8",
+                "size": 120,
+                "section": ".text.init",
+            },
+        }
+    )
+    return result
+
+
+def isolated_block(root, group=12, block_id="I0", seed=2):
+    campaigns = []
+    for baseline in range(4):
+        config = group + baseline
+        paths = write_campaign(
+            root / f"c{config}",
+            document=isolated_samples_document(config),
+            campaign_metadata=isolated_metadata(config, block_id, seed),
+        )
+        campaigns.append(dirtygen_perf_compare.load_campaign(*paths))
+    return campaigns
+
+
 def write_campaign(root, document=None, campaign_metadata=None):
     root.mkdir(parents=True)
     samples_path = root / "samples.json"
@@ -115,6 +197,162 @@ def write_campaign(root, document=None, campaign_metadata=None):
 
 
 class DirtygenPerfCompareTest(unittest.TestCase):
+    def test_valid_isolated_block_pairs_four_processes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            campaigns = isolated_block(Path(directory) / "block")
+            document = dirtygen_perf_compare.comparison_document(campaigns)
+        self.assertEqual(
+            document["schema"],
+            dirtygen_perf_compare.ISOLATED_COMPARISON_SCHEMA,
+        )
+        self.assertEqual(len(document["sources"]), 4)
+        self.assertEqual(len(document["pairings"]), 5)
+        self.assertEqual(len(document["summaries"]), 1)
+        self.assertEqual(len(document["block_distributions"]), 1)
+        self.assertEqual(document["pairings"][0]["enable_cycles"], 10)
+        self.assertEqual(document["pairings"][0]["svadu_cycles"], 20)
+        self.assertEqual(document["pairings"][0]["log_cycles"], 10)
+        self.assertEqual(document["pairings"][0]["total_cycles"], 30)
+        self.assertEqual(document["pairings"][0]["active_total"], 20)
+
+    def test_isolated_four_blocks_produce_cross_block_distribution_and_csv(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            campaigns = []
+            for block_id in dirtygen_perf_compare.ISOLATION_BLOCKS:
+                campaigns.extend(isolated_block(root / block_id, block_id=block_id))
+            document = dirtygen_perf_compare.comparison_document(campaigns)
+            output = root / "output"
+            dirtygen_perf_compare.write_outputs(document, output)
+            written = json.loads((output / "comparison.json").read_text())
+            with (output / "comparison.csv").open(newline="") as stream:
+                rows = list(csv.DictReader(stream))
+        self.assertEqual(len(written["sources"]), 16)
+        self.assertEqual(len(written["pairings"]), 20)
+        self.assertEqual(len(written["summaries"]), 4)
+        self.assertEqual(len(written["block_distributions"]), 1)
+        self.assertEqual(
+            [item["isolation_block_id"]
+             for item in written["block_distributions"][0]["blocks"]],
+            ["I0", "I1", "I2", "I3"],
+        )
+        self.assertEqual(len(rows), 4)
+        self.assertIn("isolation_block_id", rows[0])
+
+    def test_isolated_block_rejects_missing_and_duplicate_baselines(self):
+        with tempfile.TemporaryDirectory() as directory:
+            campaigns = isolated_block(Path(directory) / "block")
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "baseline set"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns[:-1])
+        duplicate = copy.deepcopy(campaigns[0])
+        duplicate.metadata["run_id"] = "duplicate-b0"
+        duplicate.metadata["process_run_id"] = "duplicate-b0"
+        campaigns[-1] = duplicate
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "duplicate baseline"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
+    def test_isolated_metadata_requires_fresh_distinct_processes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            campaigns = isolated_block(Path(directory) / "block")
+        campaigns[0].metadata["fresh_reset"] = False
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "fresh_reset"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+        campaigns[0].metadata["fresh_reset"] = True
+        campaigns[1].metadata["run_id"] = campaigns[0].run_id
+        campaigns[1].metadata["process_run_id"] = campaigns[0].run_id
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "duplicate process_run_id"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
+    def test_isolated_rejects_declared_order_and_config_elf_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            campaigns = isolated_block(root / "i0")
+        campaigns[0].metadata["launch_position"] = 1
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "launch_position"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            campaigns = isolated_block(root / "i0", block_id="I0")
+            campaigns.extend(isolated_block(root / "i1", block_id="I1"))
+        repeated_config = next(
+            campaign for campaign in campaigns
+            if campaign.metadata["isolation_block_id"] == "I1"
+            and campaign.metadata["config_id"] == 12
+        )
+        repeated_config.metadata["artifact"]["sha256"] = "e" * 64
+        repeated_config.metadata["artifact"]["elf_sha256"] = "e" * 64
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "multiple ELF SHA256"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
+    def test_isolated_rejects_launch_overlap_and_code_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            campaigns = isolated_block(Path(directory) / "block")
+        ordered = sorted(
+            campaigns, key=lambda item: item.metadata["launch_position"]
+        )
+        ordered[1].metadata["start_time"] = ordered[0].metadata["start_time"]
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "overlap"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+        ordered[1].metadata["start_time"] = "2026-09-05T00:02:00+08:00"
+        ordered[1].metadata["artifact"]["text_sha256"] = "d" * 64
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "code hashes"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
+    def test_isolated_rejects_cpu_head_repetition_and_instret_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            campaigns = isolated_block(Path(directory) / "block")
+        campaigns[1].metadata["cpu_config"]["memory_latency"] = 1
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "incompatible experiment"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+        campaigns[1].metadata["cpu_config"]["memory_latency"] = 0
+        campaigns[1].metadata["repositories"]["RVLS"]["head"] = "9" * 40
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "incompatible experiment"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+        campaigns[1].metadata["repositories"]["RVLS"]["head"] = "4" * 40
+        campaigns[1].samples.pop()
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "baseline set"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+        campaigns[1].samples.append(sample(13, 0, 4))
+        campaigns[1].samples[-1]["workload_instret"] += 1
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "workload_instret"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
+    def test_isolated_and_scheduled_campaigns_cannot_mix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            campaigns = isolated_block(root / "block")
+            scheduled_paths = write_campaign(root / "scheduled")
+            campaigns.append(dirtygen_perf_compare.load_campaign(*scheduled_paths))
+        with self.assertRaisesRegex(
+            dirtygen_perf_compare.ComparisonError, "cannot mix"
+        ):
+            dirtygen_perf_compare.comparison_document(campaigns)
+
     def test_valid_single_campaign_pairs_measured_samples(self):
         with tempfile.TemporaryDirectory() as directory:
             paths = write_campaign(Path(directory) / "run")

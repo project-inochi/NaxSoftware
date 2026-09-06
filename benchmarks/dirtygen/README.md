@@ -275,6 +275,16 @@ median is therefore the median of paired differences, not a difference of
 baseline medians.  Negative or zero cycle deltas remain valid descriptive
 results and never determine firmware or campaign correctness.
 
+When every input has `suite=isolated`, the same command instead produces the
+isolated comparison schema.  Each `(experiment, block, workload, seed)` must
+contain four distinct, non-overlapping fresh processes in the declared launch
+order, one for each baseline.  CPU configuration, repository HEADs, toolchain,
+and `.text`/`.text.init`/guest-workload hashes must match; repeated uses of one
+config must also have the same full ELF hash.  The tool pairs equal measured
+repetitions across processes, verifies equal `workload_instret`, emits one CSV
+row per block/workload, and reports distributions across isolation blocks.
+Scheduled and isolated campaign inputs cannot be mixed.
+
 ## Frozen validation audit
 
 The versioned audit manifest freezes the completed correctness and performance
