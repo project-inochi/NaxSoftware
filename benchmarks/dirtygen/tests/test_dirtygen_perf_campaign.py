@@ -16,6 +16,23 @@ assert SPEC.loader is not None
 SPEC.loader.exec_module(run_dirtygen_perf)
 REPO_ROOT = run_dirtygen_perf.find_repo_root(Path(__file__))
 
+FINGERPRINT = {
+    "elf_sha256": "1" * 64,
+    "text_sha256": "2" * 64,
+    "text_size": 100,
+    "text_init_sha256": "3" * 64,
+    "text_init_size": 200,
+    "workload_code_sha256": "4" * 64,
+    "workload_symbol_range": {
+        "start_symbol": "dirtygen_perf_guest_entry",
+        "end_symbol": "dirtygen_perf_trap_handler",
+        "start_address": "0x0000000080000280",
+        "end_address": "0x00000000800002f8",
+        "size": 120,
+        "section": ".text.init",
+    },
+}
+
 
 def normalize_mode(command):
     result = []
@@ -34,6 +51,97 @@ def normalize_mode(command):
 
 
 class DirtygenPerfCampaignTest(unittest.TestCase):
+    def test_isolated_commands_select_one_config_and_process(self):
+        isolation = run_dirtygen_perf.IsolationSpec(
+            15, "experiment-a", "I0", "process-a"
+        )
+        self.assertEqual(isolation.baseline, "B3")
+        self.assertEqual(
+            isolation.launch_order, ("B0", "B1", "B3", "B2")
+        )
+        self.assertEqual(isolation.launch_position, 2)
+        build = run_dirtygen_perf.build_command(
+            REPO_ROOT, "isolated", "isolated", isolation
+        )
+        self.assertIn("perf-isolated", build)
+        self.assertIn("PERF_ISOLATED_CONFIG=15", build)
+        elf = run_dirtygen_perf.elf_path(
+            REPO_ROOT, "isolated", "isolated", isolation
+        )
+        self.assertTrue(str(elf).endswith(
+            "build/perf-isolated-c15/dirtygen_perf.elf"
+        ))
+        mill = run_dirtygen_perf.mill_command(
+            REPO_ROOT, "isolated", "architecture", "isolated", 2,
+            isolation,
+        )
+        self.assertEqual(mill.count("Test[2.13.12].runMain"), 1)
+        self.assertTrue(any(
+            "experiment-a_i0_c15_seed2_process-a" in token for token in mill
+        ))
+        report = run_dirtygen_perf.report_command(
+            REPO_ROOT, "isolated", Path("console"), Path("report"),
+            "isolated", isolation,
+        )
+        self.assertEqual(report[report.index("--config-id") + 1], "15")
+        self.assertNotIn("--schedule-id", report)
+
+    def test_isolated_metadata_records_process_provenance(self):
+        isolation = run_dirtygen_perf.IsolationSpec(
+            12, "experiment-a", "I3", "process-a"
+        )
+        build = run_dirtygen_perf.build_command(
+            REPO_ROOT, "isolated", "isolated", isolation
+        )
+        mill = run_dirtygen_perf.mill_command(
+            REPO_ROOT, "isolated", "architecture", "isolated", 7,
+            isolation,
+        )
+        report = run_dirtygen_perf.report_command(
+            REPO_ROOT, "isolated", Path("console"), Path("report"),
+            "isolated", isolation,
+        )
+        metadata = run_dirtygen_perf.initial_metadata(
+            REPO_ROOT, "isolated", "architecture", build, mill, report,
+            "isolated", 7, isolation,
+        )
+        self.assertEqual(metadata["run_id"], "process-a")
+        self.assertEqual(metadata["process_run_id"], "process-a")
+        self.assertEqual(metadata["experiment_id"], "experiment-a")
+        self.assertEqual(metadata["isolation_block_id"], "I3")
+        self.assertEqual(metadata["config_id"], 12)
+        self.assertEqual(metadata["baseline"], "B0")
+        self.assertTrue(metadata["fresh_reset"])
+        self.assertEqual(metadata["launch_order"], ["B3", "B0", "B2", "B1"])
+        self.assertEqual(metadata["launch_position"], 1)
+        self.assertEqual(metadata["schedule_id"], "isolated")
+        self.assertEqual(metadata["simulation_seed"], 7)
+
+    def test_isolated_dry_run_requires_isolation_arguments(self):
+        with self.assertRaises(SystemExit):
+            run_dirtygen_perf.main(
+                ["--suite", "isolated", "--mode", "architecture", "--dry-run"]
+            )
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "not-created"
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                status = run_dirtygen_perf.main(
+                    [
+                        "--suite", "isolated", "--mode", "architecture",
+                        "--config-id", "12", "--experiment-id", "experiment-a",
+                        "--isolation-block-id", "I0", "--seed", "2",
+                        "--output-root", str(output), "--dry-run",
+                    ]
+                )
+            rendered = stdout.getvalue()
+            self.assertEqual(status, 0)
+            self.assertFalse(output.exists())
+            self.assertIn("PERF_ISOLATED_CONFIG=12", rendered)
+            self.assertIn("build/perf-isolated-c12/dirtygen_perf.elf", rendered)
+            self.assertIn("--suite isolated --config-id 12", rendered)
+            self.assertEqual(rendered.count("SIMULATE "), 1)
+
     def test_modes_share_elf_and_cpu_configuration(self):
         architecture = run_dirtygen_perf.mill_command(
             REPO_ROOT, "smoke", "architecture"
@@ -161,6 +269,19 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
         self.assertIn("shell", metadata["commands"]["build"])
         self.assertIn("sha256", metadata["artifact"])
         self.assertEqual(
+            {
+                "sha256",
+                "elf_sha256",
+                "text_sha256",
+                "text_size",
+                "text_init_sha256",
+                "text_init_size",
+                "workload_code_sha256",
+                "workload_symbol_range",
+            },
+            set(metadata["artifact"]) - {"elf"},
+        )
+        self.assertEqual(
             set(metadata["toolchain"]),
             {"python", "riscv_gcc", "java", "verilator", "mill"},
         )
@@ -282,7 +403,17 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
             "trace_requested": mode == "rvls",
             "trace_generated": False,
             "trace_path": None,
-            "artifact": {"elf": "unused", "sha256": None},
+            "artifact": {
+                "elf": "unused",
+                "sha256": None,
+                "elf_sha256": None,
+                "text_sha256": None,
+                "text_size": None,
+                "text_init_sha256": None,
+                "text_init_size": None,
+                "workload_code_sha256": None,
+                "workload_symbol_range": None,
+            },
             "build_exit_code": None,
             "simulation_exit_code": None,
             "report_exit_code": None,
@@ -325,13 +456,21 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
                 return_value=self.minimal_metadata(mode),
             ),
             mock.patch.object(
+                run_dirtygen_perf,
+                "elf_fingerprints",
+                return_value=FINGERPRINT,
+            ),
+            mock.patch.object(
                 run_dirtygen_perf, "run_logged", side_effect=fake_run_logged
             ),
             mock.patch.object(
                 run_dirtygen_perf, "copy_rvls_trace", return_value=trace
             ),
         )
-        with patches[0], patches[1], patches[2], patches[3], patches[4], patches[5]:
+        with (
+            patches[0], patches[1], patches[2], patches[3], patches[4],
+            patches[5], patches[6],
+        ):
             with contextlib.redirect_stderr(io.StringIO()):
                 status = run_dirtygen_perf.main(
                     [
@@ -353,6 +492,16 @@ class DirtygenPerfCampaignTest(unittest.TestCase):
         self.assertIsNotNone(metadata["end_time"])
         self.assertFalse(metadata["trace_generated"])
         self.assertIsNone(metadata["trace_path"])
+        self.assertEqual(metadata["artifact"]["sha256"], "1" * 64)
+        self.assertEqual(metadata["artifact"]["elf_sha256"], "1" * 64)
+        self.assertEqual(metadata["artifact"]["text_sha256"], "2" * 64)
+        self.assertEqual(metadata["artifact"]["text_init_sha256"], "3" * 64)
+        self.assertEqual(
+            metadata["artifact"]["workload_code_sha256"], "4" * 64
+        )
+        self.assertEqual(
+            metadata["artifact"]["workload_symbol_range"]["size"], 120
+        )
 
     def test_rvls_success_records_the_copied_trace(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -25,6 +25,12 @@ IMAGE_NAME := dirtygen_perf
 PERF_CONFIG_MASK ?= 0xffffffff
 SUITE_CPPFLAGS := -DDIRTYGEN_PERF \
                   -DDIRTYGEN_PERF_CONFIG_MASK=$(PERF_CONFIG_MASK)
+ifneq ($(strip $(PERF_ISOLATED_CONFIG)),)
+ifneq ($(strip $(PERF_SCHEDULE_ID)),)
+$(error PERF_ISOLATED_CONFIG and PERF_SCHEDULE_ID are mutually exclusive)
+endif
+SUITE_CPPFLAGS += -DDIRTYGEN_PERF_ISOLATED
+endif
 ifneq ($(strip $(PERF_SCHEDULE_ID)),)
 SUITE_CPPFLAGS += -DDIRTYGEN_PERF_SCHEDULE_ID=$(PERF_SCHEDULE_ID)
 endif
@@ -32,6 +38,9 @@ C_SOURCES := \
   src/dirtygen_perf.c \
   src/dirty_log_check.c \
   src/page_table.c
+ifneq ($(strip $(PERF_ISOLATED_CONFIG)),)
+C_SOURCES += src/dirtygen_perf_selection.c
+endif
 else ifeq ($(SUITE),dirtygen)
 BUILD_DIR ?= build
 IMAGE_NAME := dirtygen
@@ -65,7 +74,8 @@ OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst src/%.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
 DEPS := $(OBJECTS:.o=.d)
 
-.PHONY: all phase1 phase6 perf perf-rvls-smoke clean report perf-report \
+.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated clean report \
+        perf-report \
         test-report test-phase1-report test-phase6-report \
         test-perf-report test-perf-campaign test-perf-compare test-perf
 
@@ -86,6 +96,13 @@ perf-rvls-smoke:
 	$(MAKE) SUITE=perf BUILD_DIR=build/perf-rvls-smoke \
 		PERF_CONFIG_MASK=0x0f0000f0 all
 
+perf-isolated:
+	@test -n "$(PERF_ISOLATED_CONFIG)" || { \
+		echo "usage: make perf-isolated PERF_ISOLATED_CONFIG=0..31"; exit 2; }
+	$(MAKE) SUITE=perf \
+		BUILD_DIR=build/perf-isolated-c$(PERF_ISOLATED_CONFIG) \
+		PERF_ISOLATED_CONFIG=$(PERF_ISOLATED_CONFIG) all
+
 $(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) linker.ld | $(BUILD_DIR)
 	$(CC) $(OBJECTS) $(LDFLAGS) -lgcc -o $@
 
@@ -97,6 +114,13 @@ $(BUILD_DIR)/$(IMAGE_NAME).asm: $(BUILD_DIR)/$(IMAGE_NAME).elf
 
 $(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
+
+ifneq ($(strip $(PERF_ISOLATED_CONFIG)),)
+$(BUILD_DIR)/dirtygen_perf_selection.o: src/dirtygen_perf_selection.c | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) \
+		-DDIRTYGEN_PERF_ISOLATED_CONFIG=$(PERF_ISOLATED_CONFIG) \
+		-MMD -MP -c $< -o $@
+endif
 
 $(BUILD_DIR)/%.o: src/%.S | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(ASFLAGS) -MMD -MP -c $< -o $@

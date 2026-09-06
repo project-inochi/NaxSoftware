@@ -12,6 +12,9 @@ extern volatile uint64_t dirty_log_buffers[DIRTYGEN_LOG_BUFFER_COUNT]
 extern volatile uint64_t tracked_data[];
 extern volatile uint64_t gpt[3][RISCV_PGSIZE / sizeof(uint64_t)];
 extern volatile uint64_t trap_scause[4];
+#ifdef DIRTYGEN_PERF_ISOLATED
+extern const uint32_t dirtygen_perf_isolated_config;
+#endif
 
 volatile uint64_t dirtygen_perf_collect_start;
 volatile uint64_t dirtygen_perf_epoch_start;
@@ -111,8 +114,12 @@ static uint32_t config_operations(uint32_t config) {
 }
 
 static uint32_t config_enabled(uint32_t config) {
+#ifdef DIRTYGEN_PERF_ISOLATED
+  return config == dirtygen_perf_isolated_config;
+#else
   uint32_t mask = (uint32_t)DIRTYGEN_PERF_CONFIG_MASK;
   return (mask & (UINT32_C(1) << config)) != 0;
+#endif
 }
 
 #ifdef DIRTYGEN_PERF_SCHEDULE_ID

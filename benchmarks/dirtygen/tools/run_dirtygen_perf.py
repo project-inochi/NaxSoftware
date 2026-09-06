@@ -8,9 +8,11 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import shlex
 import shutil
 import signal
+import struct
 import subprocess
 import sys
 import uuid
@@ -43,6 +45,14 @@ SUITE_MASKS = {
 }
 SCHEDULE_MACROS = {"S0": 0, "S1": 1, "S2": 2, "S3": 3}
 SCHEDULE_IDS = ("legacy", *SCHEDULE_MACROS)
+SUITES = (*SUITE_MASKS, "isolated")
+ISOLATION_BLOCKS = {
+    "I0": ("B0", "B1", "B3", "B2"),
+    "I1": ("B1", "B2", "B0", "B3"),
+    "I2": ("B2", "B3", "B1", "B0"),
+    "I3": ("B3", "B0", "B2", "B1"),
+}
+IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 
 TERMINAL_STATUSES = {"passed", "failed", "interrupted"}
 FAILURE_STAGES = {
@@ -69,6 +79,41 @@ class CampaignInterrupted(RuntimeError):
         self.signum = signum
 
 
+class IsolationSpec:
+    def __init__(
+        self, config_id: int, experiment_id: str, block_id: str,
+        process_run_id: str,
+    ) -> None:
+        if config_id < 0 or config_id >= 32:
+            raise ValueError("isolated config id must be in the range 0..31")
+        if not IDENTIFIER_PATTERN.fullmatch(experiment_id):
+            raise ValueError("experiment id contains unsupported characters")
+        if len(experiment_id) > 64:
+            raise ValueError("experiment id is longer than 64 characters")
+        if block_id not in ISOLATION_BLOCKS:
+            raise ValueError(f"unknown isolation block {block_id!r}")
+        if not IDENTIFIER_PATTERN.fullmatch(process_run_id):
+            raise ValueError("process run id contains unsupported characters")
+        if len(process_run_id) > 64:
+            raise ValueError("process run id is longer than 64 characters")
+        self.config_id = config_id
+        self.experiment_id = experiment_id
+        self.block_id = block_id
+        self.process_run_id = process_run_id
+
+    @property
+    def baseline(self) -> str:
+        return f"B{self.config_id & 3}"
+
+    @property
+    def launch_order(self) -> tuple[str, ...]:
+        return ISOLATION_BLOCKS[self.block_id]
+
+    @property
+    def launch_position(self) -> int:
+        return self.launch_order.index(self.baseline)
+
+
 def now() -> str:
     return datetime.datetime.now().astimezone().isoformat()
 
@@ -92,7 +137,18 @@ def suite_target(suite: str) -> str:
     return "perf" if suite == "full" else "perf-rvls-smoke"
 
 
-def build_directory(suite: str, schedule_id: str = "legacy") -> str:
+def build_directory(
+    suite: str, schedule_id: str = "legacy",
+    isolation: IsolationSpec | None = None,
+) -> str:
+    if suite == "isolated":
+        if isolation is None:
+            raise ValueError("isolated suite requires an isolation specification")
+        if schedule_id != "isolated":
+            raise ValueError("isolated suite cannot use a baseline schedule")
+        return f"perf-isolated-c{isolation.config_id}"
+    if isolation is not None:
+        raise ValueError(f"suite {suite!r} cannot use an isolation specification")
     if suite not in SUITE_MASKS:
         raise ValueError(f"unknown suite {suite!r}")
     if schedule_id not in SCHEDULE_IDS:
@@ -107,15 +163,30 @@ def build_directory(suite: str, schedule_id: str = "legacy") -> str:
 
 
 def elf_path(
-    repo_root: Path, suite: str, schedule_id: str = "legacy"
+    repo_root: Path, suite: str, schedule_id: str = "legacy",
+    isolation: IsolationSpec | None = None,
 ) -> Path:
-    build_dir = build_directory(suite, schedule_id)
+    build_dir = build_directory(suite, schedule_id, isolation)
     return dirtygen_dir(repo_root) / "build" / build_dir / "dirtygen_perf.elf"
 
 
 def build_command(
-    repo_root: Path, suite: str, schedule_id: str = "legacy"
+    repo_root: Path, suite: str, schedule_id: str = "legacy",
+    isolation: IsolationSpec | None = None,
 ) -> list[str]:
+    if suite == "isolated":
+        if isolation is None:
+            raise ValueError("isolated suite requires an isolation specification")
+        build_directory(suite, schedule_id, isolation)
+        return [
+            "make",
+            "-C",
+            str(dirtygen_dir(repo_root)),
+            "perf-isolated",
+            f"PERF_ISOLATED_CONFIG={isolation.config_id}",
+        ]
+    if isolation is not None:
+        raise ValueError(f"suite {suite!r} cannot use an isolation specification")
     if schedule_id == "legacy" and suite in ("full", "smoke"):
         return ["make", "-C", str(dirtygen_dir(repo_root)), suite_target(suite)]
     command = [
@@ -133,8 +204,17 @@ def build_command(
 
 
 def simulation_name(
-    suite: str, mode: str, schedule_id: str = "legacy", seed: int = 2
+    suite: str, mode: str, schedule_id: str = "legacy", seed: int = 2,
+    isolation: IsolationSpec | None = None,
 ) -> str:
+    if suite == "isolated":
+        if isolation is None:
+            raise ValueError("isolated suite requires an isolation specification")
+        return (
+            f"shdlt_dirtygen_perf_isolated_{mode}_{isolation.experiment_id}_"
+            f"{isolation.block_id.lower()}_c{isolation.config_id}_seed{seed}_"
+            f"{isolation.process_run_id}"
+        )
     return (
         f"shdlt_dirtygen_perf_{suite}_{mode}_"
         f"{schedule_id.lower()}_seed{seed}"
@@ -153,9 +233,10 @@ def mill_command(
     mode: str,
     schedule_id: str = "legacy",
     seed: int = 2,
+    isolation: IsolationSpec | None = None,
 ) -> list[str]:
     config = cpu_config(seed)
-    name = simulation_name(suite, mode, schedule_id, seed)
+    name = simulation_name(suite, mode, schedule_id, seed, isolation)
     mill = shutil.which("mill")
     if mill is None:
         raise RuntimeError("mill was not found in PATH")
@@ -178,7 +259,7 @@ def mill_command(
         "--with-fetch-l1",
         "--with-lsu-l1",
         "--load-elf",
-        str(elf_path(repo_root, suite, schedule_id)),
+        str(elf_path(repo_root, suite, schedule_id, isolation)),
         "--pass-symbol",
         "pass",
         "--fail-symbol",
@@ -209,19 +290,26 @@ def report_command(
     console: Path,
     report_dir: Path,
     schedule_id: str = "legacy",
+    isolation: IsolationSpec | None = None,
 ) -> list[str]:
     script = dirtygen_dir(repo_root) / "tools" / "dirtygen_perf_report.py"
-    return [
+    command = [
         sys.executable,
         str(script),
         str(console),
         "--suite",
         suite,
-        "--schedule-id",
-        schedule_id,
-        "--output-dir",
-        str(report_dir),
     ]
+    if suite == "isolated":
+        if isolation is None:
+            raise ValueError("isolated suite requires an isolation specification")
+        command.extend(("--config-id", str(isolation.config_id)))
+    else:
+        if isolation is not None:
+            raise ValueError(f"suite {suite!r} cannot use isolation")
+        command.extend(("--schedule-id", schedule_id))
+    command.extend(("--output-dir", str(report_dir)))
+    return command
 
 
 def run_git(path: Path, *arguments: str) -> str:
@@ -297,6 +385,143 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def elf_fingerprints(path: Path) -> dict[str, Any]:
+    """Hash the ELF code sections and the measured guest workload range."""
+    payload = path.read_bytes()
+    header_format = "<16sHHIQQQIHHHHHH"
+    section_format = "<IIQQQQIIQQ"
+    symbol_format = "<IBBHQQ"
+    header_size = struct.calcsize(header_format)
+    section_size = struct.calcsize(section_format)
+    symbol_size = struct.calcsize(symbol_format)
+
+    if len(payload) < header_size:
+        raise ValueError("ELF header is truncated")
+    header = struct.unpack_from(header_format, payload)
+    identity = header[0]
+    if identity[:4] != b"\x7fELF" or identity[4] != 2 or identity[5] != 1:
+        raise ValueError("artifact is not a little-endian ELF64 image")
+
+    section_offset = header[6]
+    section_entry_size = header[11]
+    section_count = header[12]
+    section_names_index = header[13]
+    if section_entry_size < section_size or section_count == 0:
+        raise ValueError("ELF section table is missing or unsupported")
+    if section_names_index >= section_count:
+        raise ValueError("ELF section-name table index is invalid")
+    if section_offset + section_entry_size * section_count > len(payload):
+        raise ValueError("ELF section table is truncated")
+
+    sections: list[dict[str, int | str]] = []
+    for index in range(section_count):
+        offset = section_offset + index * section_entry_size
+        values = struct.unpack_from(section_format, payload, offset)
+        sections.append({
+            "name_offset": values[0],
+            "type": values[1],
+            "address": values[3],
+            "offset": values[4],
+            "size": values[5],
+            "link": values[6],
+            "entry_size": values[9],
+        })
+
+    def section_payload(section: dict[str, int | str]) -> bytes:
+        offset = int(section["offset"])
+        size = int(section["size"])
+        if offset + size > len(payload):
+            raise ValueError("ELF section contents are truncated")
+        return payload[offset:offset + size]
+
+    names_payload = section_payload(sections[section_names_index])
+
+    def string_at(strings: bytes, offset: int) -> str:
+        if offset >= len(strings):
+            raise ValueError("ELF string-table offset is invalid")
+        end = strings.find(b"\0", offset)
+        if end < 0:
+            raise ValueError("ELF string table is unterminated")
+        return strings[offset:end].decode("ascii")
+
+    named_sections: dict[str, dict[str, int | str]] = {}
+    for section in sections:
+        name = string_at(names_payload, int(section["name_offset"]))
+        section["name"] = name
+        named_sections[name] = section
+    for required in (".text", ".text.init", ".symtab"):
+        if required not in named_sections:
+            raise ValueError(f"ELF section is missing: {required}")
+
+    symbol_section = named_sections[".symtab"]
+    string_index = int(symbol_section["link"])
+    if string_index >= len(sections):
+        raise ValueError("ELF symbol string-table index is invalid")
+    symbol_strings = section_payload(sections[string_index])
+    symbol_payload = section_payload(symbol_section)
+    symbol_entry_size = int(symbol_section["entry_size"])
+    if symbol_entry_size < symbol_size:
+        raise ValueError("ELF symbol table entry size is unsupported")
+
+    wanted = {
+        "dirtygen_perf_guest_entry",
+        "dirtygen_perf_trap_handler",
+    }
+    symbols: dict[str, int] = {}
+    for offset in range(0, len(symbol_payload), symbol_entry_size):
+        if offset + symbol_size > len(symbol_payload):
+            raise ValueError("ELF symbol table is truncated")
+        values = struct.unpack_from(symbol_format, symbol_payload, offset)
+        name = string_at(symbol_strings, values[0])
+        if name in wanted:
+            symbols[name] = values[4]
+    missing = sorted(wanted - symbols.keys())
+    if missing:
+        raise ValueError(f"ELF workload symbols are missing: {', '.join(missing)}")
+
+    start_symbol = "dirtygen_perf_guest_entry"
+    end_symbol = "dirtygen_perf_trap_handler"
+    start = symbols[start_symbol]
+    end = symbols[end_symbol]
+    if end <= start:
+        raise ValueError("ELF workload symbol range is empty or reversed")
+    workload_section = None
+    for section in sections:
+        address = int(section["address"])
+        size = int(section["size"])
+        if address <= start and end <= address + size:
+            workload_section = section
+            break
+    if workload_section is None:
+        raise ValueError("ELF workload symbol range does not fit one section")
+    section_data = section_payload(workload_section)
+    workload_offset = start - int(workload_section["address"])
+    workload = section_data[workload_offset:workload_offset + end - start]
+
+    text = section_payload(named_sections[".text"])
+    text_init = section_payload(named_sections[".text.init"])
+    return {
+        "elf_sha256": sha256_bytes(payload),
+        "text_sha256": sha256_bytes(text),
+        "text_size": len(text),
+        "text_init_sha256": sha256_bytes(text_init),
+        "text_init_size": len(text_init),
+        "workload_code_sha256": sha256_bytes(workload),
+        "workload_symbol_range": {
+            "start_symbol": start_symbol,
+            "end_symbol": end_symbol,
+            "start_address": f"0x{start:016x}",
+            "end_address": f"0x{end:016x}",
+            "size": len(workload),
+            "section": str(workload_section["name"]),
+        },
+    }
+
+
 def version_record(executable: str, *arguments: str) -> dict[str, Any]:
     path = shutil.which(executable)
     record: dict[str, Any] = {
@@ -363,13 +588,15 @@ def initial_metadata(
     report: list[str],
     schedule_id: str = "legacy",
     seed: int = 2,
+    isolation: IsolationSpec | None = None,
 ) -> dict[str, Any]:
     repositories = repository_states(repo_root)
     trace_required = mode == "rvls"
     trace_requested = "--with-rvls-log" in mill
-    return {
+    run_id = isolation.process_run_id if isolation is not None else uuid.uuid4().hex
+    metadata = {
         "schema": "shdlt-dirtygen-perf-campaign-v2",
-        "run_id": uuid.uuid4().hex,
+        "run_id": run_id,
         "schedule_id": schedule_id,
         "suite": suite,
         "mode": mode,
@@ -394,13 +621,32 @@ def initial_metadata(
             "report": command_record(report),
         },
         "artifact": {
-            "elf": str(elf_path(repo_root, suite, schedule_id)),
+            "elf": str(elf_path(repo_root, suite, schedule_id, isolation)),
             "sha256": None,
+            "elf_sha256": None,
+            "text_sha256": None,
+            "text_size": None,
+            "text_init_sha256": None,
+            "text_init_size": None,
+            "workload_code_sha256": None,
+            "workload_symbol_range": None,
         },
         "build_exit_code": None,
         "simulation_exit_code": None,
         "report_exit_code": None,
     }
+    if isolation is not None:
+        metadata.update({
+            "experiment_id": isolation.experiment_id,
+            "isolation_block_id": isolation.block_id,
+            "config_id": isolation.config_id,
+            "baseline": isolation.baseline,
+            "fresh_reset": True,
+            "launch_order": list(isolation.launch_order),
+            "launch_position": isolation.launch_position,
+            "process_run_id": isolation.process_run_id,
+        })
+    return metadata
 
 
 def write_metadata(path: Path, metadata: dict[str, Any]) -> None:
@@ -484,12 +730,13 @@ def rvls_trace_path(
     mode: str,
     schedule_id: str = "legacy",
     seed: int = 2,
+    isolation: IsolationSpec | None = None,
 ) -> Path:
     return (
         repo_root
         / "simWorkspace"
         / "TestBenchDut"
-        / simulation_name(suite, mode, schedule_id, seed)
+        / simulation_name(suite, mode, schedule_id, seed, isolation)
         / "tracer.log"
     )
 
@@ -509,10 +756,13 @@ def copy_rvls_trace(
     previous_signature: tuple[int, int] | None,
     schedule_id: str = "legacy",
     seed: int = 2,
+    isolation: IsolationSpec | None = None,
 ) -> Path | None:
     if mode != "rvls":
         return None
-    source = rvls_trace_path(repo_root, suite, mode, schedule_id, seed)
+    source = rvls_trace_path(
+        repo_root, suite, mode, schedule_id, seed, isolation
+    )
     if not source.is_file():
         return None
     if trace_signature(source) == previous_signature:
@@ -528,13 +778,23 @@ def default_output_root(
     mode: str,
     schedule_id: str = "legacy",
     seed: int = 2,
+    isolation: IsolationSpec | None = None,
 ) -> Path:
+    if suite == "isolated":
+        if isolation is None:
+            raise ValueError("isolated suite requires an isolation specification")
+        leaf = (
+            f"isolated-{mode}-{isolation.experiment_id}-"
+            f"{isolation.block_id.lower()}-c{isolation.config_id}-seed{seed}"
+        )
+    else:
+        leaf = f"{suite}-{mode}-{schedule_id.lower()}-seed{seed}"
     return (
         dirtygen_dir(repo_root)
         / "build"
         / "campaign"
         / "dirtygen-perf"
-        / f"{suite}-{mode}-{schedule_id.lower()}-seed{seed}"
+        / leaf
     )
 
 
@@ -542,9 +802,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Run one reproducible SHDLT dirtygen performance campaign"
     )
-    parser.add_argument("--suite", choices=tuple(SUITE_MASKS), required=True)
+    parser.add_argument("--suite", choices=SUITES, required=True)
     parser.add_argument("--mode", choices=("architecture", "rvls"), required=True)
-    parser.add_argument("--schedule-id", choices=SCHEDULE_IDS, default="legacy")
+    parser.add_argument("--schedule-id", choices=SCHEDULE_IDS)
+    parser.add_argument("--config-id", type=int)
+    parser.add_argument("--experiment-id")
+    parser.add_argument("--isolation-block-id", choices=tuple(ISOLATION_BLOCKS))
     parser.add_argument("--seed", type=int, default=2)
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--dry-run", action="store_true")
@@ -554,6 +817,44 @@ def main(argv: list[str] | None = None) -> int:
     metadata_path: Path | None = None
     original_handlers: dict[int, Any] = {}
     active_stage: str | None = "setup"
+
+    isolation: IsolationSpec | None = None
+    if args.suite == "isolated":
+        if args.schedule_id is not None:
+            parser.error("--suite isolated does not accept --schedule-id")
+        missing = [
+            option
+            for option, value in (
+                ("--config-id", args.config_id),
+                ("--experiment-id", args.experiment_id),
+                ("--isolation-block-id", args.isolation_block_id),
+            )
+            if value is None
+        ]
+        if missing:
+            parser.error(f"--suite isolated requires {', '.join(missing)}")
+        try:
+            isolation = IsolationSpec(
+                config_id=args.config_id,
+                experiment_id=args.experiment_id,
+                block_id=args.isolation_block_id,
+                process_run_id=uuid.uuid4().hex,
+            )
+        except ValueError as error:
+            parser.error(str(error))
+        schedule_id = "isolated"
+    else:
+        isolated_values = (
+            args.config_id,
+            args.experiment_id,
+            args.isolation_block_id,
+        )
+        if any(value is not None for value in isolated_values):
+            parser.error(
+                "--config-id, --experiment-id and --isolation-block-id "
+                "require --suite isolated"
+            )
+        schedule_id = args.schedule_id or "legacy"
 
     def interrupt_handler(signum: int, _frame: Any) -> None:
         raise CampaignInterrupted(signum)
@@ -572,17 +873,20 @@ def main(argv: list[str] | None = None) -> int:
             args.output_root.resolve()
             if args.output_root is not None
             else default_output_root(
-                repo_root, args.suite, args.mode, args.schedule_id, args.seed
+                repo_root, args.suite, args.mode, schedule_id, args.seed,
+                isolation,
             )
         )
-        build = build_command(repo_root, args.suite, args.schedule_id)
+        build = build_command(repo_root, args.suite, schedule_id, isolation)
         mill = mill_command(
-            repo_root, args.suite, args.mode, args.schedule_id, args.seed
+            repo_root, args.suite, args.mode, schedule_id, args.seed,
+            isolation,
         )
         console = output / "console.log"
         report_dir = output / "report"
         report = report_command(
-            repo_root, args.suite, console, report_dir, args.schedule_id
+            repo_root, args.suite, console, report_dir, schedule_id,
+            isolation,
         )
 
         if args.dry_run:
@@ -605,8 +909,9 @@ def main(argv: list[str] | None = None) -> int:
             build,
             mill,
             report,
-            args.schedule_id,
+            schedule_id,
             args.seed,
+            isolation,
         )
         write_metadata(metadata_path, metadata)
 
@@ -627,10 +932,17 @@ def main(argv: list[str] | None = None) -> int:
             )
 
         active_stage = "artifact"
-        elf = elf_path(repo_root, args.suite, args.schedule_id)
+        elf = elf_path(repo_root, args.suite, schedule_id, isolation)
         if not elf.is_file():
             raise CampaignFailure("artifact", f"ELF is missing: {elf}")
-        metadata["artifact"]["sha256"] = sha256(elf)
+        try:
+            fingerprint = elf_fingerprints(elf)
+        except (OSError, ValueError) as error:
+            raise CampaignFailure(
+                "artifact", f"could not fingerprint ELF {elf}: {error}"
+            ) from error
+        metadata["artifact"].update(fingerprint)
+        metadata["artifact"]["sha256"] = fingerprint["elf_sha256"]
         write_metadata(metadata_path, metadata)
 
         trace_before = trace_signature(
@@ -638,8 +950,9 @@ def main(argv: list[str] | None = None) -> int:
                 repo_root,
                 args.suite,
                 args.mode,
-                args.schedule_id,
+                schedule_id,
                 args.seed,
+                isolation,
             )
         ) if args.mode == "rvls" else None
 
@@ -656,8 +969,9 @@ def main(argv: list[str] | None = None) -> int:
                 args.mode,
                 output,
                 trace_before,
-                args.schedule_id,
+                schedule_id,
                 args.seed,
+                isolation,
             )
         except OSError as error:
             if simulation_exit != 0:

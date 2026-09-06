@@ -102,8 +102,10 @@ def record(prefix, fields):
     return f"{prefix} {' '.join(tokens)}\n"
 
 
-def valid_log(suite, schedule_id="legacy"):
-    configs = dirtygen_perf_report.ordered_configs(suite, schedule_id)
+def valid_log(suite, schedule_id="legacy", config_id=None):
+    configs = dirtygen_perf_report.ordered_configs(
+        suite, schedule_id, config_id
+    )
     rows = []
     for config in configs:
         rows.append(sample(config, 1, 0))
@@ -131,11 +133,11 @@ def valid_log(suite, schedule_id="legacy"):
     return "".join(lines)
 
 
-def parse_valid(suite="smoke", schedule_id="legacy"):
+def parse_valid(suite="smoke", schedule_id="legacy", config_id=None):
     report = dirtygen_perf_report.parse_lines(
-        io.StringIO(valid_log(suite, schedule_id))
+        io.StringIO(valid_log(suite, schedule_id, config_id))
     )
-    report.validate(suite, schedule_id)
+    report.validate(suite, schedule_id, config_id)
     return report
 
 
@@ -157,6 +159,33 @@ class DirtygenPerfReportTest(unittest.TestCase):
             {int(row["config"]) for row in report.samples},
             set(range(12, 16)) | set(range(28, 32)),
         )
+
+    def test_valid_isolated_report(self):
+        report = parse_valid("isolated", "isolated", 12)
+        self.assertEqual(len(report.samples), 6)
+        self.assertEqual(len(report.measured_samples()), 5)
+        self.assertEqual({row["config"] for row in report.samples}, {12})
+        self.assertEqual(
+            dirtygen_perf_report.report_document(report)["suite"],
+            "isolated",
+        )
+
+    def test_isolated_report_requires_the_exact_config(self):
+        report = dirtygen_perf_report.parse_lines(
+            io.StringIO(valid_log("isolated", "isolated", 12))
+        )
+        with self.assertRaisesRegex(
+            dirtygen_perf_report.ReportError, "unexpected config"
+        ):
+            report.validate("isolated", "isolated", 13)
+        with self.assertRaisesRegex(
+            dirtygen_perf_report.ReportError, "requires a config id"
+        ):
+            report.validate("isolated", "isolated")
+        with self.assertRaisesRegex(
+            dirtygen_perf_report.ReportError, "requires schedule"
+        ):
+            report.validate("isolated", "legacy", 12)
 
     def test_balanced_schedules_and_sample_order(self):
         scheduled = {

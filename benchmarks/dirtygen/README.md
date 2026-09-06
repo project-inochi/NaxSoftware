@@ -90,6 +90,7 @@ make phase1
 make phase6
 make perf
 make perf-rvls-smoke
+make perf-isolated PERF_ISOLATED_CONFIG=12
 ```
 
 The performance targets produce, respectively:
@@ -97,11 +98,22 @@ The performance targets produce, respectively:
 ```text
 build/perf/dirtygen_perf.elf
 build/perf-rvls-smoke/dirtygen_perf.elf
+build/perf-isolated-c12/dirtygen_perf.elf
 ```
 
 The full image contains 32 configurations and 192 samples.  The smoke image
 contains UNIQUE/pages=8 and REPEAT/operations=128 for B0--B3, for 48 samples.
 Each configuration has one warmup followed by five measured repetitions.
+
+An isolated image selects exactly one config ID (0--31) and therefore emits
+one warmup plus five measured samples without first running another workload
+or baseline.  The selected ID is stored in a fixed-size
+`.data.perf_selection` object.  It is not compiled into the coordinator or
+guest workload, so isolated variants must have identical `.text`,
+`.text.init`, workload code, and key symbol addresses; only their selection
+data and complete ELF hashes may differ.  Isolated result parsing and
+cross-process B0--B3 pairing are separate from the existing full, smoke, and
+sensitivity report interface.
 
 Scheduled builds use the same firmware and select only the order in which the
 four baselines run within each workload group:
@@ -206,8 +218,27 @@ one simulation process, so a schedule/seed pair begins from a fresh CPU reset.
 Results are written under the ignored `build/campaign/dirtygen-perf/` tree
 unless `--output-root` is given.  Simulation names, default output paths,
 metadata, and trace source paths include both schedule and seed.
+
+The isolated suite starts exactly one config/baseline in a fresh process:
+
+```bash
+python3 tools/run_dirtygen_perf.py \
+  --suite isolated --mode architecture --config-id 12 \
+  --experiment-id unique128-isolation --isolation-block-id I0 --seed 2
+```
+
+`config-id` selects one of the existing 32 configurations; its low two bits
+select B0--B3.  The four block launch orders are I0=`B0 B1 B3 B2`,
+I1=`B1 B2 B0 B3`, I2=`B2 B3 B1 B0`, and I3=`B3 B0 B2 B1`.  The runner records
+the experiment and block IDs, derived baseline, declared launch position,
+`fresh_reset=true`, and a process run ID.  Its simulation name includes those
+identifiers so an RVLS tracer from another isolated process cannot be reused.
+The isolated parser accepts only the selected config's one warmup and five
+measured samples; the UART protocol and samples schema remain unchanged.
 The campaign metadata records the four repository states, ELF checksum,
-toolchain, exact commands, and fixed TestBench configuration.  Metadata schema
+`.text` and `.text.init` checksums, the measured guest-workload checksum and
+symbol range, toolchain, exact commands, and fixed TestBench configuration.
+Metadata schema
 v2 distinguishes each submodule's actual HEAD from the gitlink recorded by the
 top-level commit, and separates tracked changes from untracked files.  It also
 records the campaign lifecycle (`initialized`, `running`, `passed`, `failed`,
