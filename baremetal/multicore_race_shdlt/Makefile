@@ -5,6 +5,13 @@ RISCV_PATH ?= /usr
 RISCV_NAME ?= riscv64-elf
 MARCH ?= rv64gc
 MABI ?= lp64d
+PROFILE ?= legacy
+ifeq ($(PROFILE),isa)
+OBJDIR ?= build/isa/cpu$(CPU_COUNT)_$(CASE)
+ISA_FLAGS := -DSHDLT_ISA_PROFILE=1 -I../rtl_directed_shdlt/include
+else ifneq ($(PROFILE),legacy)
+$(error PROFILE must be legacy or isa)
+endif
 OBJDIR ?= build/cpu$(CPU_COUNT)_$(CASE)
 
 CASE_ID_different_pages := 0
@@ -28,6 +35,7 @@ CC := $(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
 OBJCOPY := $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
 OBJDUMP := $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
 CPPFLAGS := -Iinclude -DCPU_COUNT=$(CPU_COUNT) -DSHDLT_RACE_CASE=$(CASE_ID)
+CPPFLAGS += $(ISA_FLAGS)
 COMMON_FLAGS := -march=$(MARCH)_zicsr -mabi=$(MABI) -mcmodel=medany -mno-relax -Os \
                 -ffreestanding -fno-builtin -fno-stack-protector -ffunction-sections -fdata-sections
 CFLAGS := $(COMMON_FLAGS) -std=c11 -Wall -Wextra -Werror

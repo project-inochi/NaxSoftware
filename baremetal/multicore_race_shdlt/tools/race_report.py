@@ -73,6 +73,7 @@ class RaceReport:
     end: dict[str, Any] | None = None
     harts: list[dict[str, Any]] = field(default_factory=list)
     errors: list[dict[str, Any]] = field(default_factory=list)
+    profile: str = "legacy"
 
     def validate(self, require_pass: bool = True) -> None:
         if self.begin is None:
@@ -175,6 +176,8 @@ class RaceReport:
             raise ValueError("skewed completion endpoints mismatch")
         if case == 6 and not (1 <= total_entries <= cpus and recorded != 0):
             raise ValueError("shared-PTE logs must total 1..CPU_COUNT")
+        if self.profile == "isa" and case == 6 and total_entries != 1:
+            raise ValueError("shared-PTE epoch must have exactly one global committed log")
 
         global_record = self.global_record
         expected_global = {
@@ -196,8 +199,13 @@ class RaceReport:
             raise ValueError(f"race report failed: failed_harts={failed_harts} failures={failures}")
 
 
-def parse_text(text: str, validate: bool = True, require_pass: bool = True) -> RaceReport:
-    report = RaceReport()
+def parse_text(text: str, validate: bool = True, require_pass: bool = True,
+               profile: str = "legacy") -> RaceReport:
+    if profile not in ("legacy", "isa"):
+        raise ValueError("unknown test profile")
+    if profile == "isa" and text.splitlines().count("SHDLT_TEST_PROFILE profile=isa version=1") != 1:
+        raise ValueError("missing/duplicate ISA profile marker")
+    report = RaceReport(profile=profile)
     for line in text.splitlines():
         item = _record(line)
         if item is None:
@@ -230,10 +238,12 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("log", type=Path)
     parser.add_argument("--format", choices=("table", "json"), default="table")
+    parser.add_argument("--profile", choices=("legacy", "isa"), default="legacy")
     parser.add_argument("--allow-failed", action="store_true", help="validate structure while retaining failed hart records")
     args = parser.parse_args(argv)
     try:
-        report = parse_text(args.log.read_text(errors="replace"), require_pass=not args.allow_failed)
+        report = parse_text(args.log.read_text(errors="replace"), require_pass=not args.allow_failed,
+                            profile=args.profile)
     except (OSError, ValueError) as error:
         print(f"SHDLT race report error: {error}", file=sys.stderr)
         return 1

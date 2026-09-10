@@ -1,5 +1,13 @@
 # multicore_race_shdlt
 
+The default remains the frozen legacy profile. Use `PROFILE=isa` for per-hart
+FENCE.I, unmasked log-word validation and exactly one global valid commit in
+the single-PTE epoch. ISA images use `build/isa/*`; the parser requires
+`--profile isa`. Legal physical `pending -> superseded` attempts are diagnostic
+events outside the valid log, not extra committed entries. See
+[the Phase-2 audit](../../benchmarks/dirtygen/SHDLT_ISA_CONSISTENCY_AUDIT.md)
+for the separate profile-checking runner and preserved baseline guarantees.
+
 Independent 2/4-hart directed tests for concurrent Svadu G-stage dirty updates
 and per-hart SHDLT buffers.  The package does not alter the legacy
 `multicore_smoke` or `multicore_smoke_shdlt` images.

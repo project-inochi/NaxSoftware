@@ -77,8 +77,14 @@ class CtcReport:
     global_record: dict[str, Any] | None = None
     end: dict[str, Any] | None = None
     errors: list[dict[str, Any]] = field(default_factory=list)
+    profile: str = "legacy"
 
     def validate(self, require_observer: bool = False) -> None:
+        if self.profile not in ("legacy", "isa"):
+            raise ValueError("unknown test profile")
+        isa = self.profile == "isa"
+        if isa and self.text.splitlines().count("SHDLT_TEST_PROFILE profile=isa version=1") != 1:
+            raise ValueError("missing/duplicate ISA profile marker")
         if any(marker.lower() in self.text.lower() for marker in RVLS_FAILURE_MARKERS):
             raise ValueError("RVLS mismatch text detected")
         if self.begin is None or self.global_record is None or self.end is None:
@@ -89,6 +95,7 @@ class CtcReport:
         cpus = _num(self.begin, "cpus", "BEGIN")
         if case not in range(len(CASE_NAMES)) or cpus not in (2, 4):
             raise ValueError("case/cpus out of range")
+        expected_outcome = PASS if isa else EXPECTED_OUTCOME[case]
         if _num(self.begin, "abi_version", "BEGIN") != ABI_VERSION or \
            _num(self.begin, "result_bytes", "BEGIN") != RESULT_BYTES:
             raise ValueError("ABI version/size mismatch")
@@ -108,18 +115,18 @@ class CtcReport:
                 raise ValueError(f"hart {hart}: identity mismatch")
             if r["phase"] != EXPECTED_PHASE[case]:
                 raise ValueError(f"hart {hart}: phase mismatch")
-            if r["outcome"] != EXPECTED_OUTCOME[case]:
+            if r["outcome"] != expected_outcome:
                 label = "XPASS" if r["outcome"] == XPASS else "unexpected outcome"
                 raise ValueError(f"hart {hart}: {label} {r['outcome']}")
             if r["status"] != 0:
                 raise ValueError(f"hart {hart}: failed status")
-            low, high = EXPECTED_ENTRIES[case]
+            low, high = (1, 1) if isa and case == 5 else EXPECTED_ENTRIES[case]
             if not low <= r["entries"] <= high or r["initial_index"] != 0 or r["final_index"] != r["entries"]:
                 raise ValueError(f"hart {hart}: dirty-log index/count mismatch")
             for name in ("duplicates", "missing", "extra", "data_errors", "pte_errors", "faults"):
                 if r[name]:
                     raise ValueError(f"hart {hart}: {name}={r[name]}")
-            if EXPECTED_OUTCOME[case] == XFAIL:
+            if expected_outcome == XFAIL:
                 if r["fence_errors"] != 1:
                     raise ValueError(f"hart {hart}: XFAIL evidence is not exact")
                 if case == 6 and r["new_mapping_bitmap"] != 3:
@@ -128,12 +135,26 @@ class CtcReport:
                     raise ValueError(f"hart {hart}: VMID XFAIL lacks WARL/global-flush evidence")
             elif r["fence_errors"]:
                 raise ValueError(f"hart {hart}: fence_errors={r['fence_errors']}")
+            if isa:
+                if not 0 <= r["readback_vmid"] <= 0x3fff:
+                    raise ValueError(f"hart {hart}: invalid VMID readback")
+                if case == 4 and r["log_bitmap"] != r["entries"]:
+                    raise ValueError(f"hart {hart}: shared-PTE log bitmap mismatch")
+                if case == 6 and (r["new_mapping_bitmap"], r["old_mapping_bitmap"]) not in ((1, 2), (3, 0)):
+                    raise ValueError(f"hart {hart}: GPA fence mapping mismatch")
+                if case in (7, 8) and (r["new_mapping_bitmap"] != 3 or r["old_mapping_bitmap"] != 0):
+                    raise ValueError(f"hart {hart}: all-address fence must update both mappings")
+                if case == 9 and (r["old_mapping_bitmap"] != 1 or
+                                  r["new_mapping_bitmap"] != (4 if hart & 1 else 6)):
+                    raise ValueError(f"hart {hart}: isolation bitmap must describe actual target accesses")
             counts[r["outcome"]] += 1
             total_entries += r["entries"]
         if set(by_hart) != set(range(cpus)):
             raise ValueError("hart coverage mismatch")
         if case == 4 and total_entries < 1:
             raise ValueError("CAS retry campaign produced no committed dirty transition")
+        if isa and case == 4 and total_entries != 1:
+            raise ValueError("shared-PTE epoch must have exactly one global committed log")
 
         # Every firmware phase must have exactly one begin/end marker. Observer
         # records are optional for the portable/no-whitebox backend.
@@ -220,8 +241,9 @@ class CtcReport:
             if _num(self.end, name, "END") != value:
                 raise ValueError(f"END {name} mismatch")
 
-def parse_text(text: str, validate: bool = True, require_observer: bool = False) -> CtcReport:
-    report = CtcReport(text=text)
+def parse_text(text: str, validate: bool = True, require_observer: bool = False,
+               profile: str = "legacy") -> CtcReport:
+    report = CtcReport(text=text, profile=profile)
     singles = {"begin": "begin", "global": "global_record", "end": "end"}
     for line in text.splitlines():
         item = _record(line)
@@ -242,8 +264,10 @@ def parse_text(text: str, validate: bool = True, require_observer: bool = False)
         report.validate(require_observer=require_observer)
     return report
 
-def validate_campaign(paths: list[Path], require_observer: bool = False) -> list[CtcReport]:
-    reports = [parse_text(p.read_text(errors="replace"), require_observer=require_observer) for p in paths]
+def validate_campaign(paths: list[Path], require_observer: bool = False,
+                       profile: str = "legacy") -> list[CtcReport]:
+    reports = [parse_text(p.read_text(errors="replace"), require_observer=require_observer,
+                          profile=profile) for p in paths]
     # CAS/coherence counters are an optional simulation diagnostic.  A
     # portable architecture-only campaign has no observer records and must
     # still be able to validate the complete case set.  Apply this lower bound
@@ -260,11 +284,13 @@ def main(argv=None) -> int:
     ap.add_argument("logs", nargs="+", type=Path)
     ap.add_argument("--require-observer", action="store_true")
     ap.add_argument("--campaign", action="store_true")
+    ap.add_argument("--profile", choices=("legacy", "isa"), default="legacy")
     ap.add_argument("--format", choices=("table", "json"), default="table")
     args = ap.parse_args(argv)
     try:
-        reports = validate_campaign(args.logs, args.require_observer) if args.campaign else \
-                  [parse_text(p.read_text(errors="replace"), require_observer=args.require_observer) for p in args.logs]
+        reports = validate_campaign(args.logs, args.require_observer, args.profile) if args.campaign else \
+                  [parse_text(p.read_text(errors="replace"), require_observer=args.require_observer,
+                              profile=args.profile) for p in args.logs]
     except (OSError, ValueError) as error:
         print(f"SHDLT CTC report error: {error}", file=sys.stderr)
         return 1
@@ -275,7 +301,7 @@ def main(argv=None) -> int:
     else:
         for r in reports:
             case = r.begin["case"]
-            label = "XFAIL" if EXPECTED_OUTCOME[case] == XFAIL else "PASS"
+            label = "XFAIL" if args.profile == "legacy" and EXPECTED_OUTCOME[case] == XFAIL else "PASS"
             print(f"case={CASE_NAMES[case]} cpus={r.begin['cpus']} outcome={label} "
                   f"entries={r.global_record['total_entries']} observers={len(r.observers)}")
     return 0

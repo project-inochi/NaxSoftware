@@ -5,6 +5,17 @@ RISCV_PATH ?= /usr
 RISCV_NAME ?= riscv64-elf
 MARCH ?= rv64gc
 MABI ?= lp64d
+PROFILE ?= legacy
+PRODUCER_DELAY ?= 0
+CONSUMER_DELAY ?= 0
+ifeq ($(PROFILE),isa)
+OBJDIR ?= build/isa/cpu$(CPU_COUNT)_$(CASE)_p$(PRODUCER_DELAY)_c$(CONSUMER_DELAY)
+ISA_FLAGS := -DSHDLT_ISA_PROFILE=1 -I../../baremetal/rtl_directed_shdlt/include \
+             -DSHDLT_ISA_PRODUCER_DELAY=$(PRODUCER_DELAY) \
+             -DSHDLT_ISA_CONSUMER_DELAY=$(CONSUMER_DELAY)
+else ifneq ($(PROFILE),legacy)
+$(error PROFILE must be legacy or isa)
+endif
 OBJDIR ?= build/cpu$(CPU_COUNT)_$(CASE)
 
 CASE_ID_pte_cache_hit_miss := 0
@@ -30,6 +41,7 @@ CC := $(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
 OBJCOPY := $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
 OBJDUMP := $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
 CPPFLAGS := -Iinclude -DCPU_COUNT=$(CPU_COUNT) -DCTC_CASE=$(CASE_ID)
+CPPFLAGS += $(ISA_FLAGS)
 COMMON_FLAGS := -march=$(MARCH)_zicsr -mabi=$(MABI) -mcmodel=medany -mno-relax -Os \
                 -ffreestanding -fno-builtin -fno-stack-protector -ffunction-sections -fdata-sections
 CFLAGS := $(COMMON_FLAGS) -std=c11 -Wall -Wextra -Werror

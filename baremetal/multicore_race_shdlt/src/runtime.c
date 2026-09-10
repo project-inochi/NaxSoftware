@@ -1,5 +1,8 @@
 #include "runtime.h"
 #include "page_table.h"
+#ifdef SHDLT_ISA_PROFILE
+#include "shdlt_isa.h"
+#endif
 
 static volatile uint64_t prep_count;
 static volatile uint64_t boot_ready;
@@ -159,7 +162,12 @@ static void record_result(uint64_t hart, uint64_t final_index,
   }
 
   for (uint64_t i = 0; i < final_index && i < 512; ++i) {
+#ifdef SHDLT_ISA_PROFILE
+    const uint64_t gpa = log[i];
+    if (!shdlt_isa_log_word_valid(gpa)) { extra++; continue; }
+#else
     const uint64_t gpa = log[i] & ~UINT64_C(0xfff);
+#endif
     uint64_t matched = 0;
     for (unsigned phase = 0; phase < phases; ++phase) {
       if (gpa == race_target_gpa(hart, phase)) {
@@ -313,7 +321,11 @@ static uint64_t global_checks(uint64_t *total_entries, uint64_t *recorded,
   }
 
   if (SHDLT_RACE_CASE == SHDLT_RACE_CASE_SAME_PTE) {
+#ifdef SHDLT_ISA_PROFILE
+    if (*total_entries != 1 || *recorded == 0) failures++;
+#else
     if (*total_entries < 1 || *total_entries > CPU_COUNT || *recorded == 0) failures++;
+#endif
     for (unsigned h = 0; h < CPU_COUNT; ++h)
       if (result_ptr(h)->entries > 1) failures++;
   }
@@ -334,6 +346,9 @@ static uint64_t global_checks(uint64_t *total_entries, uint64_t *recorded,
 
 uint64_t race_finish(uint64_t hart) {
   if (hart == 0) {
+#ifdef SHDLT_ISA_PROFILE
+    puts_race(SHDLT_ISA_PROFILE_TEXT);
+#endif
     for (unsigned h = 0; h < CPU_COUNT; ++h)
       while (!acquire_load(&result_ptr(h)->done)) {}
 

@@ -24,6 +24,11 @@ _start:
   la t0, guest_template_end
   sub a2, t0, a1
   call race_prepare
+#ifdef SHDLT_ISA_PROFILE
+  .globl shdlt_isa_profile_v1
+  .set shdlt_isa_profile_v1, 1
+  .word 0x0000100f /* FENCE.I after observing the copied code publication. */
+#endif
 
   li t0, MENVCFG_ADUE
   csrs 0x30a, t0

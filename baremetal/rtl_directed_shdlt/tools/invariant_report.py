@@ -133,7 +133,7 @@ def _check_arch(family: str, case: str, cpus: int, arch: Any,
         checks["retry_no_duplicate_architectural_commit"] = (
             not _nonzero(records, "duplicates") and
             (not single_pte or all(e <= 1 for e in entries)) and
-            (not shared_pte or sum(entries) <= 1)
+            (not (shared_pte or (cas_retry and arch.get("profile") == "isa")) or sum(entries) <= 1)
         )
         return
 

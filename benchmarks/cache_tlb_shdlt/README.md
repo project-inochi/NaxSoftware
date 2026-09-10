@@ -5,22 +5,45 @@ TLB invalidation, dirty-update CAS, and coherent LSU-L1 behavior.  It does not
 modify or reuse the output directories of `multicore_smoke_shdlt` or
 `multicore_race_shdlt`.
 
-## Cases
+## Corrected ISA profile
+
+The default build and the existing matrix remain **legacy** for historical
+reproducibility. Use `make PROFILE=isa CPU_COUNT=2 CASE=hfence_gpa` for corrected
+firmware and `ctc_report.py --profile isa` for its parser. The new images use
+`build/isa/*` and a mandatory ISA-profile marker. The old matrix's `--profile`
+option selects memory-pressure parameters, not this firmware profile.
+
+For the complete corrected 2/4-hart runner and audit, see
+[Phase-2 ISA consistency](../dirtygen/SHDLT_ISA_CONSISTENCY_AUDIT.md).
+The corrected result is published only after validation, with release/acquire
+ordering and actual reloads in wait loops. Every fetching hart executes local
+FENCE.I after copied-code publication. GPA non-target pages may retain or
+reload their mapping; both pages in the VMID case must reload because they
+share the fenced VMID. The actual HGATP WARL readback is reported. These are
+PASS cases in the ISA profile, not ISA XFAILs.
+
+The `hfence_before_after` unfenced interval is target-memory-idle (FENCE/ECALL).
+It does not demonstrate a target access retaining cached D. The corrected
+case validates the first epoch, freezes and clears the valid log and resets
+INDEX, then validates the next D transition after the software write and
+local HFENCE. It does not require duplicate GPAs in one nonempty buffer.
+
+## Cases (legacy compatibility expectations below)
 
 | ID | `CASE` | Architectural intent |
 |---:|---|---|
 | 0 | `pte_cache_hit_miss` | First store misses/refills and performs one D transition; second store hits without another entry. |
-| 1 | `remote_pte_reread` | Another hart changes the leaf PPN; old mapping remains before local fence and new mapping is read after it. |
+| 1 | `remote_pte_reread` | Another hart changes the leaf PPN; target-memory-idle interval precedes each local fence, then the new mapping is read. |
 | 2 | `ownership_transfer` | Harts take turns dirtying distinct PTEs in one cache line. |
 | 3 | `coherence_pressure` | 64 leaves per hart, deterministic probe plus configurable random stalls/latency. |
 | 4 | `cas_retry` | Harts race on one PTE; only `[0, HDLTIDX)` is architectural log state. |
-| 5 | `hfence_before_after` | Clearing memory D without a fence keeps cached D; after global fence D transitions again. |
+| 5 | `hfence_before_after` | Clear memory D, remain target-memory-idle, fence locally, then trigger the second D transition. Legacy requires two retained log entries. |
 | 6 | `hfence_gpa` | GPA-selective invalidation conformance case (strict XFAIL on current RTL). |
 | 7 | `hfence_vmid` | VMID-selective invalidation/WARL conformance case (strict XFAIL on current RTL). |
 | 8 | `hfence_global` | `HFENCE.GVMA x0,x0` reloads all changed mappings. |
-| 9 | `fence_hart_isolation` | One hart's fence does not invalidate the paired hart's cached mapping. |
+| 9 | `fence_hart_isolation` | Even harts fence/access first; odd harts remain target-memory-idle until their own fence. |
 
-The current production configuration advertises neither an invalidation
+For historical legacy compatibility only, the production configuration advertises neither an invalidation
 address nor a VMID (`requestAddress=false`, `vmidWidth=0`).  Cases 6 and 7
 therefore require exact, evidence-bearing `XFAIL`: the unselected mapping is
 also reloaded, and VMID reads back as zero.  Correct selective behavior becomes

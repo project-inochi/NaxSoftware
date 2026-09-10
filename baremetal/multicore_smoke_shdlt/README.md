@@ -1,5 +1,13 @@
 # multicore_smoke_shdlt
 
+The default remains the frozen legacy profile. Use `PROFILE=isa` for the
+corrected initialization barrier, release/acquire result publication, per-hart
+FENCE.I, raw reserved-bit checks and serialized reporting. ISA images use
+`build/isa/*`; `PRODUCER_DELAY`/`CONSUMER_DELAY` enable synchronization stress.
+Use the profile-checking runner documented in
+[the Phase-2 audit](../../benchmarks/dirtygen/SHDLT_ISA_CONSISTENCY_AUDIT.md),
+not a legacy ELF or the old matrix, for corrected validation.
+
 Independent 2/4-hart smoke image for the `h,svadu,shdlt` path.  Each hart owns
 16 contiguous Sv39x4 G-stage leaves (GPA `0x30000..0x3f000`), starts with
 `D=0`, performs one ordered VS store per page, then repeats page 0 twice, page 7

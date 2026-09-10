@@ -5,6 +5,18 @@ RISCV_PATH ?= /usr
 RISCV_NAME ?= riscv64-elf
 MARCH ?= rv64gc
 MABI ?= lp64d
+PROFILE ?= legacy
+PRODUCER_DELAY ?= 0
+CONSUMER_DELAY ?= 0
+ifeq ($(PROFILE),isa)
+.DEFAULT_GOAL := all
+OBJDIR ?= build/isa/cpu$(CPU_COUNT)_$(CASE)_p$(PRODUCER_DELAY)_c$(CONSUMER_DELAY)
+ISA_FLAGS := -DSHDLT_ISA_PROFILE=1 -I../rtl_directed_shdlt/include \
+             -DSHDLT_ISA_PRODUCER_DELAY=$(PRODUCER_DELAY) \
+             -DSHDLT_ISA_CONSUMER_DELAY=$(CONSUMER_DELAY)
+else ifneq ($(PROFILE),legacy)
+$(error PROFILE must be legacy or isa)
+endif
 SUPERVISOR ?= yes
 ifeq ($(CASE),legacy)
 OBJDIR ?= build/cpu$(CPU_COUNT)s_$(MARCH)_shdlt
@@ -38,10 +50,14 @@ OBJDUMP := $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
 CFLAGS := -march=$(MARCH)_zicsr -mabi=$(MABI) -mcmodel=medany -mno-relax -Os \
           -ffreestanding -fno-builtin -fno-stack-protector \
           -Iinclude -DCPU_COUNT=$(CPU_COUNT) -DSHDLT_CASE=$(CASE_ID) $(CFLAGS_SUPERVISOR)
+CFLAGS += $(ISA_FLAGS)
 LDFLAGS := -march=$(MARCH)_zicsr -mabi=$(MABI) -mcmodel=medany -nostdlib \
            -nostartfiles -Wl,-Bstatic,-T,linker.ld,-Map,$(OBJDIR)/$(PROJ_NAME).map,--build-id=none
 
 OBJS := $(OBJDIR)/startup.o $(OBJDIR)/page_table.o $(OBJDIR)/dirty_log.o $(OBJDIR)/multicore_shdlt.o
+ifeq ($(PROFILE),isa)
+$(OBJS): ../rtl_directed_shdlt/include/shdlt_isa.h
+endif
 
 .PHONY: all compile clean
 all: compile

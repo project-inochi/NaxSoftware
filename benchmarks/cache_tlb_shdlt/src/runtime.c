@@ -1,5 +1,8 @@
 #include "runtime.h"
 #include "ctc_platform.h"
+#ifdef SHDLT_ISA_PROFILE
+#include "shdlt_isa.h"
+#endif
 
 static volatile uint64_t terminal_decision;
 static volatile uint64_t hart_phase[CPU_COUNT];
@@ -9,7 +12,13 @@ static struct ctc_hart_result *result_ptr(uint64_t hart) {
   return (struct ctc_hart_result *)(uintptr_t)HART_RESULT(hart);
 }
 static uint64_t read_hdltidx(void) { uint64_t v; __asm__ volatile("csrr %0, 0x682" : "=r"(v)); return v; }
-static void freeze_logger(void) { uint64_t one = 1; __asm__ volatile("csrc 0x681, %0" :: "r"(one) : "memory"); }
+static void freeze_logger(void) {
+  uint64_t one = 1;
+  __asm__ volatile("csrc 0x681, %0" :: "r"(one) : "memory");
+#ifdef SHDLT_ISA_PROFILE
+  __asm__ volatile("fence iorw,iorw" ::: "memory");
+#endif
+}
 static unsigned popcount64(uint64_t v) { unsigned n = 0; while (v) { n += v & 1; v >>= 1; } return n; }
 static void zero_words(uint64_t address, unsigned words) {
   volatile uint64_t *p = (volatile uint64_t *)(uintptr_t)address;
@@ -97,14 +106,23 @@ static void record_log(struct ctc_hart_result *r, uint64_t hart) {
   r->final_index = read_hdltidx();
   r->entries = r->final_index;
   for (uint64_t i = 0; i < r->final_index && i < 512; ++i) {
+#ifdef SHDLT_ISA_PROFILE
+    uint64_t gpa = log[i];
+    if (!shdlt_isa_log_word_valid(gpa)) { r->extra++; continue; }
+#else
     uint64_t gpa = log[i] & ~UINT64_C(0xfff);
+#endif
     int match = -1;
     for (unsigned page = 0; page < case_pages(); ++page)
       if (gpa == target_gpa(hart, page)) match = (int)page;
     if (match < 0 && CTC_CASE == CTC_CASE_CAS_RETRY && gpa == BASE_GPA) match = 0;
     if (match < 0) { r->extra++; continue; }
     uint64_t bit = UINT64_C(1) << match;
+#ifdef SHDLT_ISA_PROFILE
+    if (seen & bit) r->duplicates++;
+#else
     if ((seen & bit) && !(CTC_CASE == CTC_CASE_HFENCE_BEFORE_AFTER && i == 1)) r->duplicates++;
+#endif
     seen |= bit;
   }
   r->log_bitmap = seen;
@@ -129,22 +147,38 @@ static void validate_mapping_observations(struct ctc_hart_result *r, uint64_t ha
     if (p1 == old_value(hart, 1)) r->old_mapping_bitmap |= 2;
     if (CTC_CASE == CTC_CASE_HFENCE_GLOBAL && r->new_mapping_bitmap != 3) r->fence_errors++;
     if (CTC_CASE == CTC_CASE_HFENCE_GPA) {
+#ifdef SHDLT_ISA_PROFILE
+      /* The second page may be retained or over-fenced, never corrupted. */
+      if (p1 != old_value(hart, 1) && p1 != new_value(hart, 1)) r->fence_errors++;
+#else
       /* Current RTL flushes both entries.  This is the strict XFAIL evidence. */
       if (r->new_mapping_bitmap == 3) r->fence_errors = 1;
       else if (r->new_mapping_bitmap == 1 && r->old_mapping_bitmap == 2) r->fence_errors = 0;
       else r->fence_errors += 2;
+#endif
     }
     if (CTC_CASE == CTC_CASE_HFENCE_VMID) {
+#ifdef SHDLT_ISA_PROFILE
+      /* Both pages use this VMID: rs1=x0 covers both, even with VMIDLEN=0. */
+      if (r->new_mapping_bitmap != 3) r->fence_errors++;
+#else
       if (r->readback_vmid == 0 && r->new_mapping_bitmap == 3) r->fence_errors = 1;
       else if (r->new_mapping_bitmap == 1 && r->old_mapping_bitmap == 2) r->fence_errors = 0;
       else r->fence_errors += 2;
+#endif
     }
   } else if (CTC_CASE == CTC_CASE_FENCE_HART_ISOLATION) {
     uint64_t middle = *observation(hart, 1, 0);
     uint64_t last = *observation(hart, 2, 0);
     if ((hart & 1) == 0 && new_value(hart, 0) != middle) r->fence_errors++;
     if (last != new_value(hart, 0)) r->fence_errors++;
+#ifdef SHDLT_ISA_PROFILE
+    if (*observation(hart, 0, 0) != old_value(hart, 0)) r->data_errors++;
+    /* Only phase 0 actually reads the old mapping; odd phase 1 is idle. */
+    r->old_mapping_bitmap = 1;
+#else
     r->old_mapping_bitmap = (hart & 1) ? 2 : 1;
+#endif
     r->new_mapping_bitmap = (hart & 1) ? 4 : 6;
   }
 }
@@ -155,18 +189,24 @@ static void record_result(uint64_t hart, uint64_t scause, uint64_t sepc, uint64_
   r->abi_version = CTC_ABI_VERSION;
   r->case_id = CTC_CASE;
   r->outcome = d->expected_outcome;
+#ifndef SHDLT_ISA_PROFILE
   r->done = 1;
+#endif
   r->hart_id = hart;
   r->cpu_count = CPU_COUNT;
   r->phase = hart_phase[hart];
   r->requested_gpa = BASE_GPA;
   r->requested_vmid = CTC_CASE == CTC_CASE_HFENCE_VMID ? hart + 1 : 0;
-  /* vmidWidth is zero in this production configuration.  RVLS/Spike models a
+#ifdef SHDLT_ISA_PROFILE
+  r->readback_vmid = (ctc_baremetal_ops.hgatp_read() >> 44) & UINT64_C(0x3fff);
+#else
+  /* Legacy compatibility: vmidWidth is zero in this production configuration. RVLS/Spike models a
      nonzero VMID and would mismatch on a literal CSR read, so the conformance
      result records the elaborated WARL width here while the selective-flush
      behavior remains dynamically observed through both mappings. */
   r->readback_vmid = CTC_CASE == CTC_CASE_HFENCE_VMID ? 0 :
                      ((ctc_baremetal_ops.hgatp_read() >> 44) & UINT64_C(0x3fff));
+#endif
   r->pte_before = initial_pte[hart][0];
   r->pte_after = *(volatile uint64_t *)(uintptr_t)ctc_target_pte(hart, 0);
   r->pte_modified = r->pte_after;
@@ -214,6 +254,10 @@ static void record_result(uint64_t hart, uint64_t scause, uint64_t sepc, uint64_
   r->observer_available_mask = 0;
   r->observer_valid_mask = 0;
   ctc_validate_arch(r);
+#ifdef SHDLT_ISA_PROFILE
+  if (hart == CPU_COUNT - 1) shdlt_isa_delay(SHDLT_ISA_PRODUCER_DELAY);
+  shdlt_isa_publish(&r->done, 1);
+#endif
 }
 
 uint64_t ctc_handle_trap(uint64_t hart, uint64_t scause, uint64_t sepc,
@@ -234,6 +278,20 @@ uint64_t ctc_handle_trap(uint64_t hart, uint64_t scause, uint64_t sepc,
     return continue_phase(hart, 2);
   }
   if (CTC_CASE == CTC_CASE_HFENCE_BEFORE_AFTER && phase == 0) {
+#ifdef SHDLT_ISA_PROFILE
+    /* Validate the first epoch before reusing an empty log. This does not
+       require an implementation to retain duplicate GPAs in a nonempty log. */
+    struct ctc_hart_result *r = result_ptr(hart);
+    freeze_logger();
+    if (read_hdltidx() != 1 ||
+        *(volatile uint64_t *)(uintptr_t)DLT_BUFFER(hart) != BASE_GPA) r->extra++;
+    if (*(volatile uint64_t *)(uintptr_t)ctc_target_pte(hart, 0) !=
+        (initial_pte[hart][0] | PTE_D)) r->pte_errors++;
+    if (*(volatile uint64_t *)(uintptr_t)ctc_target_pa(hart, 0, 0) !=
+        token(hart, 0, 0)) r->data_errors++;
+    zero_words(DLT_BUFFER(hart), 512);
+    __asm__ volatile("fence rw,ow\ncsrw 0x682, zero" ::: "memory");
+#endif
     uint64_t *pte = (uint64_t *)(uintptr_t)ctc_target_pte(hart, 0);
     *pte &= ~PTE_D; __asm__ volatile("fence rw,rw" ::: "memory");
     return continue_phase(hart, 1);
@@ -241,12 +299,22 @@ uint64_t ctc_handle_trap(uint64_t hart, uint64_t scause, uint64_t sepc,
   if (CTC_CASE == CTC_CASE_HFENCE_BEFORE_AFTER && phase == 1) {
     if (*(volatile uint64_t *)(uintptr_t)ctc_target_pte(hart, 0) & PTE_D) result_ptr(hart)->fence_errors++;
     ctc_baremetal_ops.hfence_gvma(0, 0, 0);
+#ifdef SHDLT_ISA_PROFILE
+    __asm__ volatile("csrsi 0x681, 1" ::: "memory");
+#endif
     return continue_phase(hart, 2);
   }
   if ((CTC_CASE == CTC_CASE_HFENCE_GPA || CTC_CASE == CTC_CASE_HFENCE_VMID || CTC_CASE == CTC_CASE_HFENCE_GLOBAL) && phase == 0) {
     remap(hart, 2);
     if (CTC_CASE == CTC_CASE_HFENCE_GPA) ctc_baremetal_ops.hfence_gvma(BASE_GPA, 0, 1);
-    else if (CTC_CASE == CTC_CASE_HFENCE_VMID) ctc_baremetal_ops.hfence_gvma(0, hart + 1, 2);
+    else if (CTC_CASE == CTC_CASE_HFENCE_VMID) {
+#ifdef SHDLT_ISA_PROFILE
+      uint64_t actual_vmid = (ctc_baremetal_ops.hgatp_read() >> 44) & UINT64_C(0x3fff);
+      ctc_baremetal_ops.hfence_gvma(0, actual_vmid, 2);
+#else
+      ctc_baremetal_ops.hfence_gvma(0, hart + 1, 2);
+#endif
+    }
     else ctc_baremetal_ops.hfence_gvma(0, 0, 0);
     return continue_phase(hart, 1);
   }
@@ -290,7 +358,13 @@ static void print_hart(const struct ctc_hart_result *r) {
 
 uint64_t ctc_finish(uint64_t hart) {
   if (hart == 0) {
+#ifdef SHDLT_ISA_PROFILE
+    shdlt_isa_delay(SHDLT_ISA_CONSUMER_DELAY);
+    for (unsigned h = 0; h < CPU_COUNT; ++h) shdlt_isa_wait_ready(&result_ptr(h)->done);
+    puts_ctc(SHDLT_ISA_PROFILE_TEXT);
+#else
     for (unsigned h = 0; h < CPU_COUNT; ++h) while (!result_ptr(h)->done) {}
+#endif
     uint64_t failures = 0, xfails = 0, xpasses = 0, total_entries = 0;
     puts_ctc("SHDLT_CTC_BEGIN "); field("abi_version", CTC_ABI_VERSION); field("case", CTC_CASE); field("cpus", CPU_COUNT); field("result_bytes", 512); puts_ctc("\n");
     for (unsigned h = 0; h < CPU_COUNT; ++h) {
@@ -298,17 +372,29 @@ uint64_t ctc_finish(uint64_t hart) {
       failures += r->outcome == CTC_FAIL; xfails += r->outcome == CTC_XFAIL;
       xpasses += r->outcome == CTC_XPASS; total_entries += r->entries;
     }
+#ifdef SHDLT_ISA_PROFILE
+    if (CTC_CASE == CTC_CASE_CAS_RETRY && total_entries != 1) failures++;
+#else
     if (CTC_CASE == CTC_CASE_CAS_RETRY && total_entries < 1) failures++;
+#endif
     puts_ctc("SHDLT_CTC_GLOBAL "); field("case", CTC_CASE); field("cpus", CPU_COUNT);
     field("completed", CPU_COUNT); field("pass", CPU_COUNT - failures - xfails - xpasses);
     field("fail", failures); field("xfail", xfails); field("xpass", xpasses);
     field("total_entries", total_entries); field("status", failures || xpasses); puts_ctc("\n");
     puts_ctc("SHDLT_CTC_END "); field("completed", CPU_COUNT); field("fail", failures);
     field("xfail", xfails); field("xpass", xpasses); field("status", failures || xpasses); puts_ctc("\n");
+#ifdef SHDLT_ISA_PROFILE
+    shdlt_isa_publish(&terminal_decision, (failures || xpasses) ? 2 : 1);
+#else
     terminal_decision = (failures || xpasses) ? 2 : 1;
     __asm__ volatile("fence rw,w" ::: "memory");
+#endif
   } else {
+#ifdef SHDLT_ISA_PROFILE
+    shdlt_isa_wait_ready(&terminal_decision);
+#else
     while (!terminal_decision) {}
+#endif
   }
   return terminal_decision == 1;
 }

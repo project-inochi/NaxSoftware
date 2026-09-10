@@ -19,6 +19,11 @@ _start:
   csrw stvec, t0
   mv a0, tp
   call prepare_hart
+#ifdef SHDLT_ISA_PROFILE
+  .globl shdlt_isa_profile_v1
+  .set shdlt_isa_profile_v1, 1
+  .word 0x0000100f /* FENCE.I for this hart's freshly copied guest image. */
+#endif
 
   /* Enable automatic A/D updates in M and HS control layers. */
   li t0, MENVCFG_ADUE
@@ -220,19 +225,23 @@ secondary_park:
 .align 2
 .globl pass
 pass:
+#ifndef SHDLT_ISA_PROFILE
   li t0, 0x10000000
   li t1, 'P'
   sb t1, 0(t0)
   fence rw,rw
+#endif
   j pass
 
 .align 2
 .globl fail
 fail:
+#ifndef SHDLT_ISA_PROFILE
   li t0, 0x10000000
   li t1, 'F'
   sb t1, 0(t0)
   fence rw,rw
+#endif
   j fail
 
 /* Position-independent guest payload copied into each hart window. */

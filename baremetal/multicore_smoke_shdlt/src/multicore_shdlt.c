@@ -1,6 +1,10 @@
 #include "runtime.h"
 #include "page_table.h"
 #include "dirty_log.h"
+#ifdef SHDLT_ISA_PROFILE
+#include "shdlt_isa.h"
+static struct shdlt_isa_barrier init_barrier;
+#endif
 
 static void putc_shdlt(char c) { *(volatile uint8_t *)(uintptr_t)0x10000000 = (uint8_t)c; }
 void shdlt_puts(const char *s) { while (*s) putc_shdlt(*s++); }
@@ -21,6 +25,9 @@ void prepare_hart(uint64_t hart) {
   struct hart_result *r = result_ptr(hart);
   for (unsigned i = 0; i < sizeof(*r) / sizeof(uint64_t); i++)
     ((volatile uint64_t *)r)[i] = 0;
+#ifdef SHDLT_ISA_PROFILE
+  shdlt_isa_barrier_wait(&init_barrier, CPU_COUNT);
+#endif
 }
 
 static uint64_t expected_pte_d_bitmap(void) {
@@ -121,7 +128,12 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
   uint64_t actual = 0, duplicates = 0, extra = 0;
   const uint64_t entries = final_index >= initial_index ? final_index - initial_index : 0;
   for (uint64_t i = initial_index; i < final_index; i++) {
+#ifdef SHDLT_ISA_PROFILE
+    uint64_t gpa = log[i];
+    if (!shdlt_isa_log_word_valid(gpa)) { extra++; continue; }
+#else
     uint64_t gpa = log[i] & ~UINT64_C(0xfff);
+#endif
     if (gpa < TRACKED_GPA || gpa >= TRACKED_GPA + ((uint64_t)TRACKED_PAGE_COUNT << 12) ||
         (gpa & 0xfff) != 0) {
       extra++;
@@ -168,13 +180,22 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
   r->data_errors = data_errors;
   r->faults = 0;
   const uint64_t all_a = (UINT64_C(1) << TRACKED_PAGE_COUNT) - 1;
-  r->status = (r->case_id == SHDLT_CASE && pte_a_bitmap == all_a &&
+#ifdef SHDLT_ISA_PROFILE
+  uint64_t status =
+#else
+  r->status =
+#endif
+              (r->case_id == SHDLT_CASE && pte_a_bitmap == all_a &&
                pte_d_bitmap == expected_pte_d && initial_index == expected_initial_index() &&
                final_index == initial_index + expected_entries() &&
                entries == expected_entries() &&
                actual == expected_log && unique == expected_entries() &&
                duplicates == 0 && missing == 0 && extra == 0 && data_errors == 0)
                   ? STATUS_READY : STATUS_FAIL;
+#ifdef SHDLT_ISA_PROFILE
+  if (hart == CPU_COUNT - 1) shdlt_isa_delay(SHDLT_ISA_PRODUCER_DELAY);
+  shdlt_isa_publish(&r->status, status);
+#else
   shdlt_puts("SHDLT_MC_SAMPLE case="); shdlt_puthex(SHDLT_CASE);
   shdlt_puts(" hart="); shdlt_puthex(hart);
   shdlt_puts(" a="); shdlt_puthex(pte_a_bitmap);
@@ -191,14 +212,39 @@ void record_result(uint64_t hart, uint64_t pte_a_bitmap, uint64_t pte_d_bitmap,
   shdlt_puts(" data_errors="); shdlt_puthex(data_errors);
   shdlt_puts(" status="); shdlt_puthex(r->status);
   shdlt_puts(" faults="); shdlt_puthex(r->faults); shdlt_puts("\n");
+#endif
 }
+
+#ifdef SHDLT_ISA_PROFILE
+static void emit_isa_result(volatile struct hart_result *r) {
+  shdlt_puts("SHDLT_MC_SAMPLE");
+#define F(name, member) shdlt_puts(" " name "=0x"); shdlt_puthex(r->member)
+  F("case", case_id); F("hart", hart_id); F("a", a_bitmap); F("d", d_bitmap);
+  F("expected", expected_bitmap); F("actual", actual_bitmap);
+  F("initial", initial_index); F("final", final_index); F("entries", entries);
+  F("unique", unique); F("dup", duplicates); F("missing", missing);
+  F("extra", extra); F("data_errors", data_errors); F("status", status);
+  F("faults", faults);
+#undef F
+  shdlt_puts("\n");
+}
+#endif
 
 void wait_and_finish(uint64_t hart) {
   if (hart != 0) return;
+#ifdef SHDLT_ISA_PROFILE
+  shdlt_isa_delay(SHDLT_ISA_CONSUMER_DELAY);
+  shdlt_puts(SHDLT_ISA_PROFILE_TEXT);
+#endif
   shdlt_puts("SHDLT_MC_BEGIN\n");
   for (uint64_t h = 0; h < CPU_COUNT; h++) {
     volatile struct hart_result *r = result_ptr(h);
+#ifdef SHDLT_ISA_PROFILE
+    shdlt_isa_wait_ready(&r->status);
+    emit_isa_result(r);
+#else
     while (r->status == 0) { __asm__ volatile("fence rw,rw"); }
+#endif
     if (r->status != STATUS_READY) goto fail;
     uint64_t expected_pte_d = expected_pte_d_bitmap();
     uint64_t expected_log = expected_log_bitmap();
