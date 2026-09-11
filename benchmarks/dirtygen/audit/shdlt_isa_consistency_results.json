@@ -1,0 +1,3714 @@
+{
+  "accepted_family_runs": [
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-load_only-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-load_only-p0-c0.json",
+        "sha256": "00647576efa99014fb3ab255fe8478230f1b8963acea9ea946cb026c59197c18"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-load_only-p0-c0/run.json",
+        "sha256": "b81fb497d4fec6e35df1d6b004e1782d7d520aad5db2d59303ba944dad9fbd7a"
+      },
+      "selection": {
+        "case": "load_only",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-log_off-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-log_off-p0-c0.json",
+        "sha256": "e6dbd1df0882b8d756b1f0a9c10b96561c89f32e153679b7bda72affc6947b55"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-log_off-p0-c0/run.json",
+        "sha256": "799043308feeb4657d0977f8829a1b6ca97d7232cc943f1fc52efe36510539b7"
+      },
+      "selection": {
+        "case": "log_off",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-predirty-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-predirty-p0-c0.json",
+        "sha256": "51788c8a271a01d2c1e1dc930d78001d9209309245b4e4e3a70e1d33292416a0"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-predirty-p0-c0/run.json",
+        "sha256": "7573363cb3ff9c28b1cb4487999c038729932a54be4094bd3cbcd02e64b075d8"
+      },
+      "selection": {
+        "case": "predirty",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-widths-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h2-widths-p0-c0.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h2-widths-p0-c0/run.json",
+        "sha256": "891971037d0029bac8d29fffa8bfee92d557fca8273b17ed7843c6a0e806b11c"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-nonzero_index-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-nonzero_index-p0-c0.json",
+        "sha256": "60adca6f340eec262eb6b097837dc42aaba062e9a4f919d1cfbe2695151ff64a"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-nonzero_index-p0-c0/run.json",
+        "sha256": "486dcb15a2ad7bd9313f7c864680c8eaa826eab2f1a551705cbcd9253985dfab"
+      },
+      "selection": {
+        "case": "nonzero_index",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-freeze-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-freeze-p0-c0.json",
+        "sha256": "d2fcae7f98f697f2db977538ccee1bba46b5b7c3ea572a3de8bfb3a634f416c1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-freeze-p0-c0/run.json",
+        "sha256": "7155d8d2e86d42aab4d29cd22d782f90ce97ce43c4ebceb74e361d1da6cfede7"
+      },
+      "selection": {
+        "case": "freeze",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-reset_resume-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-reset_resume-p0-c0.json",
+        "sha256": "22cd37339ab5ef8ca5b465e284662235335e39b485728f97898d5342a0a152a1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-reset_resume-p0-c0/run.json",
+        "sha256": "5a9becd8612756f23cff8ee58487cd61b9003881697ba452beedc482daa724c7"
+      },
+      "selection": {
+        "case": "reset_resume",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-load_only-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-load_only-p0-c0.json",
+        "sha256": "6d937bc8fa42dea76d643014704dbd0e5413eb0aadf3d370f37633c82aaf84fd"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-load_only-p0-c0/run.json",
+        "sha256": "13813eb0a06abaa8694eee31c94497534cb5985471c7dc8282e85d9f18d28f26"
+      },
+      "selection": {
+        "case": "load_only",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-log_off-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-log_off-p0-c0.json",
+        "sha256": "a271576b5118f669ea07ac7a584a927fb90360dae145d0a7cea85ebc5afc1069"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-log_off-p0-c0/run.json",
+        "sha256": "43f06ab91d675e058a11224507eb9f4fd10a4680fd4eedb74a53b42962871475"
+      },
+      "selection": {
+        "case": "log_off",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-predirty-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-predirty-p0-c0.json",
+        "sha256": "78be309570120023e7c9374c9b0d2909bf9e5b79254ce6afaf510e84f366834c"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-predirty-p0-c0/run.json",
+        "sha256": "05ca71879a9b94696349dff5a8909617b7dbba0ff41d4f02aebb160ff0a313f0"
+      },
+      "selection": {
+        "case": "predirty",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-widths-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h4-widths-p0-c0.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h4-widths-p0-c0/run.json",
+        "sha256": "7f3c2a6768eed08a0075f98acd9959e2657e7fae03e463c331620f548ca51746"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-nonzero_index-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-nonzero_index-p0-c0.json",
+        "sha256": "ba585cf561b60cf2d021a41a32d1a54476fa27ba9192dbcab931b3428f86fb8e"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-nonzero_index-p0-c0/run.json",
+        "sha256": "09af69032f5ae704078a90324005739aa3879bf5bc7b16d53a66eb4c7876c9ff"
+      },
+      "selection": {
+        "case": "nonzero_index",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-freeze-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-freeze-p0-c0.json",
+        "sha256": "7b96496ee5ff7e8b011fc3174dd225e69ca965bd34a9088b46e06de9e572a72f"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-freeze-p0-c0/run.json",
+        "sha256": "0b2a097935c209b24f56a50758ed11187c6640a8afa52f05bed428ac9a658371"
+      },
+      "selection": {
+        "case": "freeze",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-reset_resume-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-reset_resume-p0-c0.json",
+        "sha256": "e7f2e7291b19b08d76e2439bf27b1571bc53e274f9cec0967903f20c606d9254"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-reset_resume-p0-c0/run.json",
+        "sha256": "86d9d8c07f38cc4a2fc0ddf4e5cb21f6725114da264735c7d5c4c03ba88be07c"
+      },
+      "selection": {
+        "case": "reset_resume",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-same_pte-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-same_pte-p0-c0.json",
+        "sha256": "9b8081bbcb872a3177431827e613b8309226f7c4f4476e9193e2d644923125aa"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-same_pte-p0-c0/run.json",
+        "sha256": "270922622f3f0a8101c2a8085a2ced1cb0c4c918eefe0f23a62e8a19372c83ed"
+      },
+      "selection": {
+        "case": "same_pte",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-same_pte-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-same_pte-p0-c0.json",
+        "sha256": "bd618f1cb4eeae7b67a777bf55b01e06c4a333f5c9c56556e7a47cabcdce0982"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-same_pte-p0-c0/run.json",
+        "sha256": "8bf8766d7045a11408ed50d0ffd8e1e12243c60235fe1053e1c4546882dd02f7"
+      },
+      "selection": {
+        "case": "same_pte",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-pte_cache_hit_miss-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-pte_cache_hit_miss-p0-c0.json",
+        "sha256": "d538152291b1acc9973f2c903310c477383b6b7e630ae89059f1f750a23c29be"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-pte_cache_hit_miss-p0-c0/run.json",
+        "sha256": "f3e5a8582647cddf4eb294fb7ac491c66bbfc4e0c72d67086b868135d3b83898"
+      },
+      "selection": {
+        "case": "pte_cache_hit_miss",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-remote_pte_reread-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-remote_pte_reread-p0-c0.json",
+        "sha256": "6d06d7c445316530596be5b3f58ac239b6b062811b9b38955af358a7ce1839c0"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-remote_pte_reread-p0-c0/run.json",
+        "sha256": "7550fd75f09c0c4e2fe25af72c9f8a3175dc6a6eaae19c6dc1be154f63fad554"
+      },
+      "selection": {
+        "case": "remote_pte_reread",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-ownership_transfer-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-ownership_transfer-p0-c0.json",
+        "sha256": "d484ee2aa17438fe013adcd592cd71e6f8e27cdc87f2a23dc27902068673378b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-ownership_transfer-p0-c0/run.json",
+        "sha256": "e514ebee763d90b90be0af39158ce1001cf512a79477846a56544b8af66f7418"
+      },
+      "selection": {
+        "case": "ownership_transfer",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-cas_retry-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-cas_retry-p0-c0.json",
+        "sha256": "10cec8fb3883da7997a3c9c32727fd4d753ab50978bfddd57a3d12eabc81e69b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-cas_retry-p0-c0/run.json",
+        "sha256": "780b8ea44a62ca852acc05d1a84bdd7e9b74c0b19cb64f04da78654a9c2ad20d"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_before_after-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_before_after-p0-c0.json",
+        "sha256": "6741c9e0e047ab5c4129fcd2b0aee43c19388a4474699f6a56340adf00ff1bc1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_before_after-p0-c0/run.json",
+        "sha256": "f2382763862a722e10364aa9f7fa9f0b8666b4e63b8374c134607f2fc20d6b4e"
+      },
+      "selection": {
+        "case": "hfence_before_after",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_gpa-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_gpa-p0-c0.json",
+        "sha256": "3a0190c748ab47c0ae54b9904678cde74f155153698655ba98dac0d2b73df1ae"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_gpa-p0-c0/run.json",
+        "sha256": "961f6e57adf06111375533936323da359ec89b281b4f871925a4bd8673d3ba1c"
+      },
+      "selection": {
+        "case": "hfence_gpa",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_vmid-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_vmid-p0-c0.json",
+        "sha256": "934d6cb55e38b10a49c9971a52b57a199a448b8a1c8be12aa06260aea3b178a6"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_vmid-p0-c0/run.json",
+        "sha256": "bc05e6f897802eee1f4272a5175444281eac5024f8f035c20d9d05173125f2bd"
+      },
+      "selection": {
+        "case": "hfence_vmid",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 1
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 2
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_global-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_global-p0-c0.json",
+        "sha256": "b43a60cd64b3c8183e746b0e8d3c205f645f179a53174310d6f06e350d6dde6d"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_global-p0-c0/run.json",
+        "sha256": "bf6c12b36075d183290e6531f62e52811229429d12334d050a9cf992731b4b9e"
+      },
+      "selection": {
+        "case": "hfence_global",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-pte_cache_hit_miss-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-pte_cache_hit_miss-p0-c0.json",
+        "sha256": "f3cbabefcf8c05bee6a046526fca1abf0e64efbc3acd4c3a1c8e844849f033d6"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-pte_cache_hit_miss-p0-c0/run.json",
+        "sha256": "be7978008f5c35b357088e2b5fc719cccf59a613622d7f66b55b5f954edc0c9d"
+      },
+      "selection": {
+        "case": "pte_cache_hit_miss",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-remote_pte_reread-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-remote_pte_reread-p0-c0.json",
+        "sha256": "07b27d2b7e368d5f6460a76b488ae937510b5a402519f786c3e4e8dc66cfc280"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-remote_pte_reread-p0-c0/run.json",
+        "sha256": "66601a651cbba44dd9951bdd5eb0743d91a8819a391287176155e5e4bca01def"
+      },
+      "selection": {
+        "case": "remote_pte_reread",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-ownership_transfer-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-ownership_transfer-p0-c0.json",
+        "sha256": "573c90ea27c3e24ab4dcaf6a2e6d5329f43b86c34a8aa4d302018e1307f6d3bf"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-ownership_transfer-p0-c0/run.json",
+        "sha256": "b520a8ce11a8ef0764c96ae4885d98f37a3d926850eba4924efee68bfd8944f8"
+      },
+      "selection": {
+        "case": "ownership_transfer",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-cas_retry-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-cas_retry-p0-c0.json",
+        "sha256": "58580b717b6535749b31c0051f93ba221af3a57821704138ed88d098e0495edd"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-cas_retry-p0-c0/run.json",
+        "sha256": "33671edc823e435c5c8f29f64bfd9d9cb765864c86278742f4181aaa279d983b"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_before_after-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_before_after-p0-c0.json",
+        "sha256": "cafa4678c4559e6e29cdb2a015a1b012380241c970e649b95cd1dd5014da7301"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_before_after-p0-c0/run.json",
+        "sha256": "32629c90e8c04557c92ce8e9d84dd00a85d97f80a684c6544fd5313b23751556"
+      },
+      "selection": {
+        "case": "hfence_before_after",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_gpa-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_gpa-p0-c0.json",
+        "sha256": "e81b3a5e7140cbc34d6509bbc97166c35e5d9f151e0ccd561af76cb092f594fc"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_gpa-p0-c0/run.json",
+        "sha256": "03534de38cbe1ddd3808c5d8de2d4feaa121e7de1362b54c38e04b4c570640c0"
+      },
+      "selection": {
+        "case": "hfence_gpa",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 2,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 3,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_vmid-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_vmid-p0-c0.json",
+        "sha256": "3839dfb91e14676ba4c53462380768712df872568dba4c3e8a8dfd4d4a0dff58"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_vmid-p0-c0/run.json",
+        "sha256": "0c27767fe0c56fb506b8ce6f26115c4d3116c8c761180fc80e7607d86201f288"
+      },
+      "selection": {
+        "case": "hfence_vmid",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 1
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 2
+          },
+          {
+            "hart": 2,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 3
+          },
+          {
+            "hart": 3,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 4
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_global-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_global-p0-c0.json",
+        "sha256": "7affcb85b630c235b66784ee8291832b6b0aeec9c2cf51b8bd18331e0095f947"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_global-p0-c0/run.json",
+        "sha256": "45be4d30594f9bc93cacd89dbcce2dad7c7d261eb2a53e16bd9a7e482310e0ca"
+      },
+      "selection": {
+        "case": "hfence_global",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-cas_retry-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-cas_retry-p65536-c0.json",
+        "sha256": "10cec8fb3883da7997a3c9c32727fd4d753ab50978bfddd57a3d12eabc81e69b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-cas_retry-p65536-c0/run.json",
+        "sha256": "7e1160ff9112940ba7b5458ecf04f5b71fe32f8fc9d24aa0f52b86cf5ab30dab"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-cas_retry-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-cas_retry-p0-c65536.json",
+        "sha256": "10cec8fb3883da7997a3c9c32727fd4d753ab50978bfddd57a3d12eabc81e69b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-cas_retry-p0-c65536/run.json",
+        "sha256": "e607f423644c4f6eb016d46e5b436e59e7a00b5899f604cb840d1fceb4d5ad39"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 65536,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-cas_retry-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-cas_retry-p65536-c0.json",
+        "sha256": "1994030e7b1c848b1bdaf985bb80f7d678a5c0801b4906bc7d27c963acc56aaa"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-cas_retry-p65536-c0/run.json",
+        "sha256": "78814058d68aa89f6c4e0651d33d738475a87ef9c05d5366b9bbfb65c0649447"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-cas_retry-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-cas_retry-p0-c65536.json",
+        "sha256": "58580b717b6535749b31c0051f93ba221af3a57821704138ed88d098e0495edd"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-cas_retry-p0-c65536/run.json",
+        "sha256": "0ac89f2b5930b4c28acd4953a079de8371d4a4d41fbdbc96e780558cf8f737a0"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 65536,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-coherence_pressure-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-3-ctc-h2-coherence_pressure-p0-c0.json",
+        "sha256": "3179af45e0edc97d21c05e59b4a44e597d57149908a8e713e9446d45c7b74a7f"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/pressure-final/runs/ctc-h2-coherence_pressure-p0-c0/run.json",
+        "sha256": "d172a5926097cf32bfb11a149ef4315574f4fa9a4f9e073c64fa0590fd7b682b"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-coherence_pressure-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-3-ctc-h4-coherence_pressure-p0-c0.json",
+        "sha256": "c3b571dc6aa86ac6fe0e28a6a56af93cb8859910fcf2200354a397ddd0343880"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/pressure-final/runs/ctc-h4-coherence_pressure-p0-c0/run.json",
+        "sha256": "ea0e826d7d6bef99d0eb5aaabb909b8f06773edc4d7e4eb019378eeceb28743f"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-fence_hart_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-4-ctc-h2-fence_hart_isolation-p0-c0.json",
+        "sha256": "fa34dd33be56dd9c78ed3775a8e7e2250b40192ffb32d9ee8485e3231656e0e4"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/isolation-final/runs/ctc-h2-fence_hart_isolation-p0-c0/run.json",
+        "sha256": "3c27ca9eb9420d78d091ed772d897cdcf9cd54248a0d508244be93cdbd4a2d5b"
+      },
+      "selection": {
+        "case": "fence_hart_isolation",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-fence_hart_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-4-ctc-h4-fence_hart_isolation-p0-c0.json",
+        "sha256": "e57bfebad82dae1611f69ba98ba57e09b472518d373e2b05b0bd26e412c9ce41"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/isolation-final/runs/ctc-h4-fence_hart_isolation-p0-c0/run.json",
+        "sha256": "b824dda0f40ebb968d48727a0adab14fb69fe944a4ad26b044ace87000bd481a"
+      },
+      "selection": {
+        "case": "fence_hart_isolation",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-widths-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h2-widths-p65536-c0.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h2-widths-p65536-c0/run.json",
+        "sha256": "0a0270964e08af384fdccbecd540a44699742eb30757412445ec13d48337e431"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-widths-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h2-widths-p0-c65536.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h2-widths-p0-c65536/run.json",
+        "sha256": "2ef79241bab3afe1008f253e2ed3d048c27cae58baef44d1ce10bc1396196fa6"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 65536,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-widths-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h4-widths-p65536-c0.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h4-widths-p65536-c0/run.json",
+        "sha256": "0d1983e834524949869b982c567f260cfaee580406a0428549588a214bc94d01"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-widths-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h4-widths-p0-c65536.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h4-widths-p0-c65536/run.json",
+        "sha256": "53e820eda698bf549b8533ab238b25731020fbc3ef11475393c395023ec91047"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 65536,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-different_pages-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-different_pages-p0-c0.json",
+        "sha256": "580f2d0ad130a41f2fd212c2f9d58a40e40df3d33fcb41f1a67b64b0b4a80790"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-different_pages-p0-c0/run.json",
+        "sha256": "52bba2571d326d9a6fcafd8f9601250828d89b3e5f3ca665b29edb2334e8a152"
+      },
+      "selection": {
+        "case": "different_pages",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-buffer_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-buffer_isolation-p0-c0.json",
+        "sha256": "209cb9ffdf0b674ccc47c961aebe33b6d13db75cca92ed5486847b48bad76d05"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-buffer_isolation-p0-c0/run.json",
+        "sha256": "2f3129a41cabdd72a48378d2cbc087ad0b0ec623252b9ec87fc98d3bfad025e9"
+      },
+      "selection": {
+        "case": "buffer_isolation",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-same_cacheline_ptes-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-same_cacheline_ptes-p0-c0.json",
+        "sha256": "8eba873054456a49a801465618482ea2f99afacef5a13fe871bbb7c84157beef"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-same_cacheline_ptes-p0-c0/run.json",
+        "sha256": "370fd4392d563261ac05176efe2f7e7a17a1bb6086ff076a7f633290b90209a8"
+      },
+      "selection": {
+        "case": "same_cacheline_ptes",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-different_pages-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-different_pages-p0-c0.json",
+        "sha256": "d80307e6ebf974296f6af7ea1e5491d4a31f6c2d00e936bae1d6a2a613be3378"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-different_pages-p0-c0/run.json",
+        "sha256": "52a6d4fec1ed2c42c5298070dc4dc6571b400b75e8b22c6b22e05820287c9dbd"
+      },
+      "selection": {
+        "case": "different_pages",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-buffer_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-buffer_isolation-p0-c0.json",
+        "sha256": "3ea67a9134094877e05a654257b139e615d74d43657157ec3431ed803ac88ae1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-buffer_isolation-p0-c0/run.json",
+        "sha256": "7f56d31ad12e413fb20d9681d0f472701acf7c5687c6c13058e4d16c03b1be3b"
+      },
+      "selection": {
+        "case": "buffer_isolation",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-same_cacheline_ptes-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-same_cacheline_ptes-p0-c0.json",
+        "sha256": "ff1ebe5f485b72680da117b8c88ccaba2cb95ea80d777e0aa21cb03e30c2c042"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-same_cacheline_ptes-p0-c0/run.json",
+        "sha256": "db3165c0869e7b2be8dac35eecedb15d0b3a9b8a98370ab757d35f1939edad52"
+      },
+      "selection": {
+        "case": "same_cacheline_ptes",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    }
+  ],
+  "all_family_attempts": [
+    {
+      "error": "missing/duplicate ISA profile marker; legacy ELF is not accepted",
+      "name": "smoke-h2-load_only-p0-c0",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign/runs/smoke-h2-load_only-p0-c0/run.json",
+        "sha256": "2f056d3a0fee566ada0bebdc9d520b23d11640a284feb3b007ac510586a21240"
+      },
+      "selection": {
+        "case": "load_only",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "FAIL"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-load_only-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-load_only-p0-c0.json",
+        "sha256": "00647576efa99014fb3ab255fe8478230f1b8963acea9ea946cb026c59197c18"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-load_only-p0-c0/run.json",
+        "sha256": "b81fb497d4fec6e35df1d6b004e1782d7d520aad5db2d59303ba944dad9fbd7a"
+      },
+      "selection": {
+        "case": "load_only",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-log_off-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-log_off-p0-c0.json",
+        "sha256": "e6dbd1df0882b8d756b1f0a9c10b96561c89f32e153679b7bda72affc6947b55"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-log_off-p0-c0/run.json",
+        "sha256": "799043308feeb4657d0977f8829a1b6ca97d7232cc943f1fc52efe36510539b7"
+      },
+      "selection": {
+        "case": "log_off",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-predirty-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-predirty-p0-c0.json",
+        "sha256": "51788c8a271a01d2c1e1dc930d78001d9209309245b4e4e3a70e1d33292416a0"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-predirty-p0-c0/run.json",
+        "sha256": "7573363cb3ff9c28b1cb4487999c038729932a54be4094bd3cbcd02e64b075d8"
+      },
+      "selection": {
+        "case": "predirty",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "name": "smoke-h2-widths-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-widths-p0-c0.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-widths-p0-c0/run.json",
+        "sha256": "bccb358c02b1bb606ff1479eeb718acab52441b8f486f9377fd739a2684077b2"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-nonzero_index-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-nonzero_index-p0-c0.json",
+        "sha256": "60adca6f340eec262eb6b097837dc42aaba062e9a4f919d1cfbe2695151ff64a"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-nonzero_index-p0-c0/run.json",
+        "sha256": "486dcb15a2ad7bd9313f7c864680c8eaa826eab2f1a551705cbcd9253985dfab"
+      },
+      "selection": {
+        "case": "nonzero_index",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-freeze-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-freeze-p0-c0.json",
+        "sha256": "d2fcae7f98f697f2db977538ccee1bba46b5b7c3ea572a3de8bfb3a634f416c1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-freeze-p0-c0/run.json",
+        "sha256": "7155d8d2e86d42aab4d29cd22d782f90ce97ce43c4ebceb74e361d1da6cfede7"
+      },
+      "selection": {
+        "case": "freeze",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-reset_resume-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h2-reset_resume-p0-c0.json",
+        "sha256": "22cd37339ab5ef8ca5b465e284662235335e39b485728f97898d5342a0a152a1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h2-reset_resume-p0-c0/run.json",
+        "sha256": "5a9becd8612756f23cff8ee58487cd61b9003881697ba452beedc482daa724c7"
+      },
+      "selection": {
+        "case": "reset_resume",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-load_only-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-load_only-p0-c0.json",
+        "sha256": "6d937bc8fa42dea76d643014704dbd0e5413eb0aadf3d370f37633c82aaf84fd"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-load_only-p0-c0/run.json",
+        "sha256": "13813eb0a06abaa8694eee31c94497534cb5985471c7dc8282e85d9f18d28f26"
+      },
+      "selection": {
+        "case": "load_only",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-log_off-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-log_off-p0-c0.json",
+        "sha256": "a271576b5118f669ea07ac7a584a927fb90360dae145d0a7cea85ebc5afc1069"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-log_off-p0-c0/run.json",
+        "sha256": "43f06ab91d675e058a11224507eb9f4fd10a4680fd4eedb74a53b42962871475"
+      },
+      "selection": {
+        "case": "log_off",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-predirty-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-predirty-p0-c0.json",
+        "sha256": "78be309570120023e7c9374c9b0d2909bf9e5b79254ce6afaf510e84f366834c"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-predirty-p0-c0/run.json",
+        "sha256": "05ca71879a9b94696349dff5a8909617b7dbba0ff41d4f02aebb160ff0a313f0"
+      },
+      "selection": {
+        "case": "predirty",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "name": "smoke-h4-widths-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-widths-p0-c0.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-widths-p0-c0/run.json",
+        "sha256": "05f269b679527eca004c16e9b85ae0b31ac7bbbcf30dd455ef1b9e50c605f5c2"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-nonzero_index-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-nonzero_index-p0-c0.json",
+        "sha256": "ba585cf561b60cf2d021a41a32d1a54476fa27ba9192dbcab931b3428f86fb8e"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-nonzero_index-p0-c0/run.json",
+        "sha256": "09af69032f5ae704078a90324005739aa3879bf5bc7b16d53a66eb4c7876c9ff"
+      },
+      "selection": {
+        "case": "nonzero_index",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-freeze-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-freeze-p0-c0.json",
+        "sha256": "7b96496ee5ff7e8b011fc3174dd225e69ca965bd34a9088b46e06de9e572a72f"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-freeze-p0-c0/run.json",
+        "sha256": "0b2a097935c209b24f56a50758ed11187c6640a8afa52f05bed428ac9a658371"
+      },
+      "selection": {
+        "case": "freeze",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-reset_resume-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-smoke-h4-reset_resume-p0-c0.json",
+        "sha256": "e7f2e7291b19b08d76e2439bf27b1571bc53e274f9cec0967903f20c606d9254"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/smoke-h4-reset_resume-p0-c0/run.json",
+        "sha256": "86d9d8c07f38cc4a2fc0ddf4e5cb21f6725114da264735c7d5c4c03ba88be07c"
+      },
+      "selection": {
+        "case": "reset_resume",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "race-h2-different_pages-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h2-different_pages-p0-c0/run.json",
+        "sha256": "8cf53487b2cb5c9cf16d810671e699aacece2fa853bd1e9a8a0481f9a0e118ee"
+      },
+      "selection": {
+        "case": "different_pages",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "name": "race-h2-buffer_isolation-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h2-buffer_isolation-p0-c0/run.json",
+        "sha256": "be68d1e0ebaec0db7801cf37d3216231c4587001c06d5f9538c3246459aeb638"
+      },
+      "selection": {
+        "case": "buffer_isolation",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "name": "race-h2-same_pte-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-race-h2-same_pte-p0-c0.json",
+        "sha256": "9b8081bbcb872a3177431827e613b8309226f7c4f4476e9193e2d644923125aa"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h2-same_pte-p0-c0/run.json",
+        "sha256": "314447294e4bf4d77f1641162baaa20adfac77facba152337ff02f3dd4521f0f"
+      },
+      "selection": {
+        "case": "same_pte",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "race-h2-same_cacheline_ptes-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h2-same_cacheline_ptes-p0-c0/run.json",
+        "sha256": "54a03df4a8b62452b06fd736ca2c98560a17f4846ce7ad3f11bc958aa4be9ad6"
+      },
+      "selection": {
+        "case": "same_cacheline_ptes",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "name": "race-h4-different_pages-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h4-different_pages-p0-c0/run.json",
+        "sha256": "1e23958b9e7ad963899b10400e19f63e74df6fa67ec1c6cefa4069021f212c26"
+      },
+      "selection": {
+        "case": "different_pages",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "name": "race-h4-buffer_isolation-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h4-buffer_isolation-p0-c0/run.json",
+        "sha256": "e5011159ecd733ccbd03caf3af84e07783ae1de1082ca7ab013a9e46afd64eda"
+      },
+      "selection": {
+        "case": "buffer_isolation",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "name": "race-h4-same_pte-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-1-race-h4-same_pte-p0-c0.json",
+        "sha256": "bd618f1cb4eeae7b67a777bf55b01e06c4a333f5c9c56556e7a47cabcdce0982"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h4-same_pte-p0-c0/run.json",
+        "sha256": "d5d766890da60093dcf29abba3453ddc401c50412233d7c67226db6419c0fbaa"
+      },
+      "selection": {
+        "case": "same_pte",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "race-h4-same_cacheline_ptes-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/race-h4-same_cacheline_ptes-p0-c0/run.json",
+        "sha256": "123b0b0de4c738ffc6064a2f273ac25f315e663dda1ff01dd381d84bddf660e6"
+      },
+      "selection": {
+        "case": "same_cacheline_ptes",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "name": "ctc-h2-pte_cache_hit_miss-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/ctc-h2-pte_cache_hit_miss-p0-c0/run.json",
+        "sha256": "2c881ce7cadab5742e7384f193015d3fd1828dd1d618f4560e2ae3a1560807f0"
+      },
+      "selection": {
+        "case": "pte_cache_hit_miss",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "name": "ctc-h2-remote_pte_reread-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/ctc-h2-remote_pte_reread-p0-c0/run.json",
+        "sha256": "f05197166e92885671e1796c674dda53f1ad28f386ba4d4a7f1b6d9a0eacb0a5"
+      },
+      "selection": {
+        "case": "remote_pte_reread",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "name": "ctc-h2-ownership_transfer-p0-c0",
+      "recheck_error": "required CTC/race physical trace was not archived",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/ctc-h2-ownership_transfer-p0-c0/run.json",
+        "sha256": "13420166397fad8e85214450035b937b26ecb7df0d384403d13919062f2558fa"
+      },
+      "selection": {
+        "case": "ownership_transfer",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "classification": "budget exhausted; not an ISA verdict",
+      "error": "simulation failed",
+      "name": "ctc-h2-coherence_pressure-p0-c0",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/campaign-v2/runs/ctc-h2-coherence_pressure-p0-c0/run.json",
+        "sha256": "c55e0ffa2c8830c564d556bef6da46958d309203afb31d6275e8fcdebf5dc034"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "FAIL"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-pte_cache_hit_miss-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-pte_cache_hit_miss-p0-c0.json",
+        "sha256": "d538152291b1acc9973f2c903310c477383b6b7e630ae89059f1f750a23c29be"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-pte_cache_hit_miss-p0-c0/run.json",
+        "sha256": "f3e5a8582647cddf4eb294fb7ac491c66bbfc4e0c72d67086b868135d3b83898"
+      },
+      "selection": {
+        "case": "pte_cache_hit_miss",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-remote_pte_reread-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-remote_pte_reread-p0-c0.json",
+        "sha256": "6d06d7c445316530596be5b3f58ac239b6b062811b9b38955af358a7ce1839c0"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-remote_pte_reread-p0-c0/run.json",
+        "sha256": "7550fd75f09c0c4e2fe25af72c9f8a3175dc6a6eaae19c6dc1be154f63fad554"
+      },
+      "selection": {
+        "case": "remote_pte_reread",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-ownership_transfer-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-ownership_transfer-p0-c0.json",
+        "sha256": "d484ee2aa17438fe013adcd592cd71e6f8e27cdc87f2a23dc27902068673378b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-ownership_transfer-p0-c0/run.json",
+        "sha256": "e514ebee763d90b90be0af39158ce1001cf512a79477846a56544b8af66f7418"
+      },
+      "selection": {
+        "case": "ownership_transfer",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "classification": "budget exhausted; not an ISA verdict",
+      "error": "simulation failed",
+      "name": "ctc-h2-coherence_pressure-p0-c0",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-coherence_pressure-p0-c0/run.json",
+        "sha256": "6fb9fb55e385658b8319bb9c6f37d1945a740b29640c6d071b615e9ac2c8cc0a"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "FAIL"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-cas_retry-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-cas_retry-p0-c0.json",
+        "sha256": "10cec8fb3883da7997a3c9c32727fd4d753ab50978bfddd57a3d12eabc81e69b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-cas_retry-p0-c0/run.json",
+        "sha256": "780b8ea44a62ca852acc05d1a84bdd7e9b74c0b19cb64f04da78654a9c2ad20d"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_before_after-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_before_after-p0-c0.json",
+        "sha256": "6741c9e0e047ab5c4129fcd2b0aee43c19388a4474699f6a56340adf00ff1bc1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_before_after-p0-c0/run.json",
+        "sha256": "f2382763862a722e10364aa9f7fa9f0b8666b4e63b8374c134607f2fc20d6b4e"
+      },
+      "selection": {
+        "case": "hfence_before_after",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_gpa-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_gpa-p0-c0.json",
+        "sha256": "3a0190c748ab47c0ae54b9904678cde74f155153698655ba98dac0d2b73df1ae"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_gpa-p0-c0/run.json",
+        "sha256": "961f6e57adf06111375533936323da359ec89b281b4f871925a4bd8673d3ba1c"
+      },
+      "selection": {
+        "case": "hfence_gpa",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_vmid-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_vmid-p0-c0.json",
+        "sha256": "934d6cb55e38b10a49c9971a52b57a199a448b8a1c8be12aa06260aea3b178a6"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_vmid-p0-c0/run.json",
+        "sha256": "bc05e6f897802eee1f4272a5175444281eac5024f8f035c20d9d05173125f2bd"
+      },
+      "selection": {
+        "case": "hfence_vmid",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 1
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 2
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-hfence_global-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-hfence_global-p0-c0.json",
+        "sha256": "b43a60cd64b3c8183e746b0e8d3c205f645f179a53174310d6f06e350d6dde6d"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-hfence_global-p0-c0/run.json",
+        "sha256": "bf6c12b36075d183290e6531f62e52811229429d12334d050a9cf992731b4b9e"
+      },
+      "selection": {
+        "case": "hfence_global",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "ctc-h2-fence_hart_isolation-p0-c0",
+      "recheck_error": "hart 1: isolation bitmap must describe actual target accesses",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-fence_hart_isolation-p0-c0/run.json",
+        "sha256": "5485be2c99265835c07a2556f3c807eb84f08e6f028d936b310e77deccb7e032"
+      },
+      "selection": {
+        "case": "fence_hart_isolation",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-pte_cache_hit_miss-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-pte_cache_hit_miss-p0-c0.json",
+        "sha256": "f3cbabefcf8c05bee6a046526fca1abf0e64efbc3acd4c3a1c8e844849f033d6"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-pte_cache_hit_miss-p0-c0/run.json",
+        "sha256": "be7978008f5c35b357088e2b5fc719cccf59a613622d7f66b55b5f954edc0c9d"
+      },
+      "selection": {
+        "case": "pte_cache_hit_miss",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-remote_pte_reread-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-remote_pte_reread-p0-c0.json",
+        "sha256": "07b27d2b7e368d5f6460a76b488ae937510b5a402519f786c3e4e8dc66cfc280"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-remote_pte_reread-p0-c0/run.json",
+        "sha256": "66601a651cbba44dd9951bdd5eb0743d91a8819a391287176155e5e4bca01def"
+      },
+      "selection": {
+        "case": "remote_pte_reread",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-ownership_transfer-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-ownership_transfer-p0-c0.json",
+        "sha256": "573c90ea27c3e24ab4dcaf6a2e6d5329f43b86c34a8aa4d302018e1307f6d3bf"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-ownership_transfer-p0-c0/run.json",
+        "sha256": "b520a8ce11a8ef0764c96ae4885d98f37a3d926850eba4924efee68bfd8944f8"
+      },
+      "selection": {
+        "case": "ownership_transfer",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "classification": "budget exhausted; not an ISA verdict",
+      "error": "simulation failed",
+      "name": "ctc-h4-coherence_pressure-p0-c0",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-coherence_pressure-p0-c0/run.json",
+        "sha256": "4c7cefaad5b0423bc014fcfdce04e3cda641225639bf0da178143fd7873fcc3a"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "FAIL"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-cas_retry-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-cas_retry-p0-c0.json",
+        "sha256": "58580b717b6535749b31c0051f93ba221af3a57821704138ed88d098e0495edd"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-cas_retry-p0-c0/run.json",
+        "sha256": "33671edc823e435c5c8f29f64bfd9d9cb765864c86278742f4181aaa279d983b"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_before_after-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_before_after-p0-c0.json",
+        "sha256": "cafa4678c4559e6e29cdb2a015a1b012380241c970e649b95cd1dd5014da7301"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_before_after-p0-c0/run.json",
+        "sha256": "32629c90e8c04557c92ce8e9d84dd00a85d97f80a684c6544fd5313b23751556"
+      },
+      "selection": {
+        "case": "hfence_before_after",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_gpa-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_gpa-p0-c0.json",
+        "sha256": "e81b3a5e7140cbc34d6509bbc97166c35e5d9f151e0ccd561af76cb092f594fc"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_gpa-p0-c0/run.json",
+        "sha256": "03534de38cbe1ddd3808c5d8de2d4feaa121e7de1362b54c38e04b4c570640c0"
+      },
+      "selection": {
+        "case": "hfence_gpa",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 2,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          },
+          {
+            "hart": 3,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 0
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_vmid-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_vmid-p0-c0.json",
+        "sha256": "3839dfb91e14676ba4c53462380768712df872568dba4c3e8a8dfd4d4a0dff58"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_vmid-p0-c0/run.json",
+        "sha256": "0c27767fe0c56fb506b8ce6f26115c4d3116c8c761180fc80e7607d86201f288"
+      },
+      "selection": {
+        "case": "hfence_vmid",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS",
+      "translation_observations": {
+        "classification": "diagnostic only; new non-target data does not prove over-fencing",
+        "harts": [
+          {
+            "hart": 0,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 1
+          },
+          {
+            "hart": 1,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 2
+          },
+          {
+            "hart": 2,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 3
+          },
+          {
+            "hart": 3,
+            "new_mapping_bitmap": 3,
+            "old_mapping_bitmap": 0,
+            "readback_vmid": 0,
+            "requested_vmid": 4
+          }
+        ],
+        "same_vmid_pages": true
+      }
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-hfence_global-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-hfence_global-p0-c0.json",
+        "sha256": "7affcb85b630c235b66784ee8291832b6b0aeec9c2cf51b8bd18331e0095f947"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-hfence_global-p0-c0/run.json",
+        "sha256": "45be4d30594f9bc93cacd89dbcce2dad7c7d261eb2a53e16bd9a7e482310e0ca"
+      },
+      "selection": {
+        "case": "hfence_global",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "ctc-h4-fence_hart_isolation-p0-c0",
+      "recheck_error": "hart 1: isolation bitmap must describe actual target accesses",
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-fence_hart_isolation-p0-c0/run.json",
+        "sha256": "233b61d0a616da2a6cd7eb6fd4df9a262787832ded9c629f3b9edbbfa8da8e12"
+      },
+      "selection": {
+        "case": "fence_hart_isolation",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "SUPERSEDED_OR_REJECTED"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-cas_retry-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-cas_retry-p65536-c0.json",
+        "sha256": "10cec8fb3883da7997a3c9c32727fd4d753ab50978bfddd57a3d12eabc81e69b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-cas_retry-p65536-c0/run.json",
+        "sha256": "7e1160ff9112940ba7b5458ecf04f5b71fe32f8fc9d24aa0f52b86cf5ab30dab"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-cas_retry-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h2-cas_retry-p0-c65536.json",
+        "sha256": "10cec8fb3883da7997a3c9c32727fd4d753ab50978bfddd57a3d12eabc81e69b"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h2-cas_retry-p0-c65536/run.json",
+        "sha256": "e607f423644c4f6eb016d46e5b436e59e7a00b5899f604cb840d1fceb4d5ad39"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 65536,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-cas_retry-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-cas_retry-p65536-c0.json",
+        "sha256": "1994030e7b1c848b1bdaf985bb80f7d678a5c0801b4906bc7d27c963acc56aaa"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-cas_retry-p65536-c0/run.json",
+        "sha256": "78814058d68aa89f6c4e0651d33d738475a87ef9c05d5366b9bbfb65c0649447"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-cas_retry-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-2-ctc-h4-cas_retry-p0-c65536.json",
+        "sha256": "58580b717b6535749b31c0051f93ba221af3a57821704138ed88d098e0495edd"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/ctc-v3/runs/ctc-h4-cas_retry-p0-c65536/run.json",
+        "sha256": "0ac89f2b5930b4c28acd4953a079de8371d4a4d41fbdbc96e780558cf8f737a0"
+      },
+      "selection": {
+        "case": "cas_retry",
+        "consumer_delay": 65536,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-coherence_pressure-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-3-ctc-h2-coherence_pressure-p0-c0.json",
+        "sha256": "3179af45e0edc97d21c05e59b4a44e597d57149908a8e713e9446d45c7b74a7f"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/pressure-final/runs/ctc-h2-coherence_pressure-p0-c0/run.json",
+        "sha256": "d172a5926097cf32bfb11a149ef4315574f4fa9a4f9e073c64fa0590fd7b682b"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-coherence_pressure-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-3-ctc-h4-coherence_pressure-p0-c0.json",
+        "sha256": "c3b571dc6aa86ac6fe0e28a6a56af93cb8859910fcf2200354a397ddd0343880"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/pressure-final/runs/ctc-h4-coherence_pressure-p0-c0/run.json",
+        "sha256": "ea0e826d7d6bef99d0eb5aaabb909b8f06773edc4d7e4eb019378eeceb28743f"
+      },
+      "selection": {
+        "case": "coherence_pressure",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h2-fence_hart_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-4-ctc-h2-fence_hart_isolation-p0-c0.json",
+        "sha256": "fa34dd33be56dd9c78ed3775a8e7e2250b40192ffb32d9ee8485e3231656e0e4"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/isolation-final/runs/ctc-h2-fence_hart_isolation-p0-c0/run.json",
+        "sha256": "3c27ca9eb9420d78d091ed772d897cdcf9cd54248a0d508244be93cdbd4a2d5b"
+      },
+      "selection": {
+        "case": "fence_hart_isolation",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "ctc-h4-fence_hart_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-4-ctc-h4-fence_hart_isolation-p0-c0.json",
+        "sha256": "e57bfebad82dae1611f69ba98ba57e09b472518d373e2b05b0bd26e412c9ce41"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/isolation-final/runs/ctc-h4-fence_hart_isolation-p0-c0/run.json",
+        "sha256": "b824dda0f40ebb968d48727a0adab14fb69fe944a4ad26b044ace87000bd481a"
+      },
+      "selection": {
+        "case": "fence_hart_isolation",
+        "consumer_delay": 0,
+        "family": "ctc",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-widths-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h2-widths-p0-c0.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h2-widths-p0-c0/run.json",
+        "sha256": "891971037d0029bac8d29fffa8bfee92d557fca8273b17ed7843c6a0e806b11c"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-widths-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h4-widths-p0-c0.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h4-widths-p0-c0/run.json",
+        "sha256": "7f3c2a6768eed08a0075f98acd9959e2657e7fae03e463c331620f548ca51746"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-widths-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h2-widths-p65536-c0.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h2-widths-p65536-c0/run.json",
+        "sha256": "0a0270964e08af384fdccbecd540a44699742eb30757412445ec13d48337e431"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h2-widths-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h2-widths-p0-c65536.json",
+        "sha256": "af4330005c3f744c5fb3e1a7daacc72cc90e598ba994b93ae045060863b881ec"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h2-widths-p0-c65536/run.json",
+        "sha256": "2ef79241bab3afe1008f253e2ed3d048c27cae58baef44d1ce10bc1396196fa6"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 65536,
+        "family": "smoke",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-widths-p65536-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h4-widths-p65536-c0.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h4-widths-p65536-c0/run.json",
+        "sha256": "0d1983e834524949869b982c567f260cfaee580406a0428549588a214bc94d01"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 0,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 65536
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "smoke-h4-widths-p0-c65536",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-5-smoke-h4-widths-p0-c65536.json",
+        "sha256": "f05517b98d4d5b7ea6cde601cdece6d27d2679071580f228e1f4a0b8bfab0a65"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/smoke-stress-final/runs/smoke-h4-widths-p0-c65536/run.json",
+        "sha256": "53e820eda698bf549b8533ab238b25731020fbc3ef11475393c395023ec91047"
+      },
+      "selection": {
+        "case": "widths",
+        "consumer_delay": 65536,
+        "family": "smoke",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-different_pages-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-different_pages-p0-c0.json",
+        "sha256": "580f2d0ad130a41f2fd212c2f9d58a40e40df3d33fcb41f1a67b64b0b4a80790"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-different_pages-p0-c0/run.json",
+        "sha256": "52bba2571d326d9a6fcafd8f9601250828d89b3e5f3ca665b29edb2334e8a152"
+      },
+      "selection": {
+        "case": "different_pages",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-buffer_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-buffer_isolation-p0-c0.json",
+        "sha256": "209cb9ffdf0b674ccc47c961aebe33b6d13db75cca92ed5486847b48bad76d05"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-buffer_isolation-p0-c0/run.json",
+        "sha256": "2f3129a41cabdd72a48378d2cbc087ad0b0ec623252b9ec87fc98d3bfad025e9"
+      },
+      "selection": {
+        "case": "buffer_isolation",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-same_pte-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-same_pte-p0-c0.json",
+        "sha256": "9b8081bbcb872a3177431827e613b8309226f7c4f4476e9193e2d644923125aa"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-same_pte-p0-c0/run.json",
+        "sha256": "270922622f3f0a8101c2a8085a2ced1cb0c4c918eefe0f23a62e8a19372c83ed"
+      },
+      "selection": {
+        "case": "same_pte",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h2-same_cacheline_ptes-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h2-same_cacheline_ptes-p0-c0.json",
+        "sha256": "8eba873054456a49a801465618482ea2f99afacef5a13fe871bbb7c84157beef"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h2-same_cacheline_ptes-p0-c0/run.json",
+        "sha256": "370fd4392d563261ac05176efe2f7e7a17a1bb6086ff076a7f633290b90209a8"
+      },
+      "selection": {
+        "case": "same_cacheline_ptes",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 2,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-different_pages-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-different_pages-p0-c0.json",
+        "sha256": "d80307e6ebf974296f6af7ea1e5491d4a31f6c2d00e936bae1d6a2a613be3378"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-different_pages-p0-c0/run.json",
+        "sha256": "52a6d4fec1ed2c42c5298070dc4dc6571b400b75e8b22c6b22e05820287c9dbd"
+      },
+      "selection": {
+        "case": "different_pages",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-buffer_isolation-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-buffer_isolation-p0-c0.json",
+        "sha256": "3ea67a9134094877e05a654257b139e615d74d43657157ec3431ed803ac88ae1"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-buffer_isolation-p0-c0/run.json",
+        "sha256": "7f56d31ad12e413fb20d9681d0f472701acf7c5687c6c13058e4d16c03b1be3b"
+      },
+      "selection": {
+        "case": "buffer_isolation",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "attempts_by_hart": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "committed": 1,
+        "physical_attempts": 2,
+        "profile": "vexii-shdlt-physical-v1",
+        "status": "PASS",
+        "superseded": 1
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-same_pte-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-same_pte-p0-c0.json",
+        "sha256": "bd618f1cb4eeae7b67a777bf55b01e06c4a333f5c9c56556e7a47cabcdce0982"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-same_pte-p0-c0/run.json",
+        "sha256": "8bf8766d7045a11408ed50d0ffd8e1e12243c60235fe1053e1c4546882dd02f7"
+      },
+      "selection": {
+        "case": "same_pte",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "architecture_status": "PASS",
+      "diagnostics": {
+        "status": "NOT_REQUESTED"
+      },
+      "final_source_rebuild": "IDENTICAL",
+      "name": "race-h4-same_cacheline_ptes-p0-c0",
+      "rechecked_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-6-race-h4-same_cacheline_ptes-p0-c0.json",
+        "sha256": "ff1ebe5f485b72680da117b8c88ccaba2cb95ea80d777e0aa21cb03e30c2c042"
+      },
+      "record": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/race-trace-final/runs/race-h4-same_cacheline_ptes-p0-c0/run.json",
+        "sha256": "db3165c0869e7b2be8dac35eecedb15d0b3a9b8a98370ab757d35f1939edad52"
+      },
+      "selection": {
+        "case": "same_cacheline_ptes",
+        "consumer_delay": 0,
+        "family": "race",
+        "harts": 4,
+        "producer_delay": 0
+      },
+      "status": "PASS"
+    }
+  ],
+  "basic_pass": 42,
+  "basic_required": 42,
+  "legacy_rebuild_pass": 42,
+  "mc_build_pass": 40,
+  "mc_build_required": 40,
+  "mc_run_pass": 18,
+  "mc_run_required": 18,
+  "mc_runs": [
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b0/console.log",
+        "sha256": "44893917174e3a225577aefdee64126e6bb0b2147ac2d4ccdffd302f465c0539"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 0,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b0/metadata.json",
+        "sha256": "3da0e11152ed1d36c4c267814af23db7194a48745c48f8c771ff20a0d140da4f"
+      },
+      "name": "h1-private-weak-b0",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b0/tracer.log",
+        "sha256": "3e8aa516df7e6b7e8bc21b1c74d214c72b876c0c37dea5cd81d68e11921ca1dc"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h1-private-weak-b0/trace-report.json",
+        "sha256": "845fc15adedcfb4d1a9b6e431b422a1319964a40b6e9d1629a9f98a7eecb063d"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b0/report/trace-report.json",
+        "sha256": "845fc15adedcfb4d1a9b6e431b422a1319964a40b6e9d1629a9f98a7eecb063d"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b1/console.log",
+        "sha256": "665bd48eb574a70c39313244e594d5c2cd586a27e1d0ea76be60a72d8e8ad3d6"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 0,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b1/metadata.json",
+        "sha256": "a9a4c13033cba5f05de98b3482ca8bae41c0c160e802a2e8ab317c8cd096ae60"
+      },
+      "name": "h1-private-weak-b1",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b1/tracer.log",
+        "sha256": "35d7d645f7331f5056b0660c7ad110549bc8d77dfb20b67919a4452ea63f4cf7"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h1-private-weak-b1/trace-report.json",
+        "sha256": "845fc15adedcfb4d1a9b6e431b422a1319964a40b6e9d1629a9f98a7eecb063d"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b1/report/trace-report.json",
+        "sha256": "845fc15adedcfb4d1a9b6e431b422a1319964a40b6e9d1629a9f98a7eecb063d"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b2/console.log",
+        "sha256": "7aaf6cc3f3533f44cfbd1deb3f4fdf40611230f2439af7fbb787c49dfa744b60"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 192,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b2/metadata.json",
+        "sha256": "5a60f86cfd0ec354bc9165e02755d961a14049eea701d43f984e8dd8dd3aede8"
+      },
+      "name": "h1-private-weak-b2",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b2/tracer.log",
+        "sha256": "7210ac8b1a90263ccc45ac7e79c33de78aea4fcd5828901fd18df576f296491f"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h1-private-weak-b2/trace-report.json",
+        "sha256": "913f84d37f3b7fb32359da1684b0428c3490ee45bc4fa4256787e1f980b55297"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b2/report/trace-report.json",
+        "sha256": "913f84d37f3b7fb32359da1684b0428c3490ee45bc4fa4256787e1f980b55297"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b3/console.log",
+        "sha256": "939ec4f242c248215f098586d94d075f577447e587c2ea7d6cf16724fe04e28a"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 384,
+        "committed": 192,
+        "errors": 0,
+        "physical_attempts": 192,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b3/metadata.json",
+        "sha256": "d0e0512490524da38db3fa0943adce21d13a995420bba334a68a168bdccd5a81"
+      },
+      "name": "h1-private-weak-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b3/tracer.log",
+        "sha256": "3c47be74d8647e2ad6681909ec736528a072545ce5daa410f2dfa587b1ea2da9"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h1-private-weak-b3/trace-report.json",
+        "sha256": "54203099cd893189c36d2a44f5679b3c4b31dc53d58ff1218d165da02cd3d88b"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h1-private-weak-b3/report/trace-report.json",
+        "sha256": "54203099cd893189c36d2a44f5679b3c4b31dc53d58ff1218d165da02cd3d88b"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b0/console.log",
+        "sha256": "928f5c7b7a8a91f83678048f1d7dd7afc6519802e9d04384bf194b3b2704b302"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 0,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b0/metadata.json",
+        "sha256": "418248902f7f18090b2fd6065bf7520822707d62e1c469c799371f9199e5d173"
+      },
+      "name": "h2-same-pte-b0",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b0/tracer.log",
+        "sha256": "d1e3513a257bfdb862da768ee687d1cc63d6ded6a09f0feb74d8fa21af8f5db0"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-same-pte-b0/trace-report.json",
+        "sha256": "f296aa9c6faf867436968ed0540985463d7a7029e705117107a68cbb17479020"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b0/report/trace-report.json",
+        "sha256": "f296aa9c6faf867436968ed0540985463d7a7029e705117107a68cbb17479020"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b1/console.log",
+        "sha256": "fbb27bc470c3e9e2ef1fff255eeec64b722a4a8005eb19759858ec9faf7f12ce"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 0,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b1/metadata.json",
+        "sha256": "24bece3f99a38acbeb2d1d133a2c5edb617474ff697c5cf7af3e07493bde0200"
+      },
+      "name": "h2-same-pte-b1",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b1/tracer.log",
+        "sha256": "ce3b0703de0e317d1781d50bc05cf9072cef7b56401538afc0df8ebf17fede32"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-same-pte-b1/trace-report.json",
+        "sha256": "f296aa9c6faf867436968ed0540985463d7a7029e705117107a68cbb17479020"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b1/report/trace-report.json",
+        "sha256": "f296aa9c6faf867436968ed0540985463d7a7029e705117107a68cbb17479020"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b2/console.log",
+        "sha256": "dd6db18917ed4f4eb45d404a0b32de338c22528c901342baba67082e47fd7ab2"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 6,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b2/metadata.json",
+        "sha256": "e3488134820369e354a5896ab5dabc6580eda46453d31e268e3dd65eb3d51a99"
+      },
+      "name": "h2-same-pte-b2",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b2/tracer.log",
+        "sha256": "c834b2dc3fd5900f3ea24aeee8c254e8f3e4cee2487768f4b72bdc00f2f95f98"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-same-pte-b2/trace-report.json",
+        "sha256": "d495b8f5c71f4289a6b206bff10136be1ad11b5082416824da006da88e0adf51"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b2/report/trace-report.json",
+        "sha256": "d495b8f5c71f4289a6b206bff10136be1ad11b5082416824da006da88e0adf51"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b3/console.log",
+        "sha256": "84eddce30a46ea1330358ef31190f555f733f7b4e5e4cf6c497fede6e567ead8"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 12,
+        "committed": 6,
+        "errors": 0,
+        "physical_attempts": 6,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b3/metadata.json",
+        "sha256": "d27423ab667871537af97468512601d03940b2d911363ed6a4c2e3810c41766a"
+      },
+      "name": "h2-same-pte-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b3/tracer.log",
+        "sha256": "c59371db68d5593e7ce36a1548f56ed667d3e5d8a2ff7a109d8dc3dea6b61d70"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-same-pte-b3/trace-report.json",
+        "sha256": "10934a8d953d96fa62334305b63e85880aa6c7e5bedafa9f194382b9a935c015"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-same-pte-b3/report/trace-report.json",
+        "sha256": "10934a8d953d96fa62334305b63e85880aa6c7e5bedafa9f194382b9a935c015"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b0/console.log",
+        "sha256": "81930eed25d164419a4aec73a8a49f8fc07cd8cd7db6a80c55faa838202d2ad4"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 0,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b0/metadata.json",
+        "sha256": "c01179ffa86e2a549bb1a8a941034e62439cba8489503ad6e4e2984ab6286040"
+      },
+      "name": "h4-same-pte-b0",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b0/tracer.log",
+        "sha256": "139d4f8a54fc4dc44ae9dbce0cdbe467fc57067776cb6ab3e2168212a665779f"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-same-pte-b0/trace-report.json",
+        "sha256": "f27c03e3717b4035792f4dc512e91bcbe5ff1108b821bfa29114db47436e0f02"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b0/report/trace-report.json",
+        "sha256": "f27c03e3717b4035792f4dc512e91bcbe5ff1108b821bfa29114db47436e0f02"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b1/console.log",
+        "sha256": "2fad27404823bad4a285a5ae2fe673e1cb87ac870f62a395e1cc0ddd5ccfee20"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 0,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b1/metadata.json",
+        "sha256": "1bbd55f705a3ffcbdcdc6e8da537406996c7a6809d0822f1e7a6c7352d54be12"
+      },
+      "name": "h4-same-pte-b1",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b1/tracer.log",
+        "sha256": "5b4a725e13aed45cd636a6ae687cfda29b729414bb6606a69f501a7751c49fea"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-same-pte-b1/trace-report.json",
+        "sha256": "f27c03e3717b4035792f4dc512e91bcbe5ff1108b821bfa29114db47436e0f02"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b1/report/trace-report.json",
+        "sha256": "f27c03e3717b4035792f4dc512e91bcbe5ff1108b821bfa29114db47436e0f02"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b2/console.log",
+        "sha256": "b3493476c4d71eeeb9989d9c5a3a02eebb490e2d718bc8db1ed92d1455d2d900"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 6,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b2/metadata.json",
+        "sha256": "2668d856c1cfd18d59f168de9366af77eb6824b0317919fbd5427b38bfecf3bc"
+      },
+      "name": "h4-same-pte-b2",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b2/tracer.log",
+        "sha256": "1d77a3bc099efeeedd091c50aaf0d0476952df04eeccc7ddfb164c564ac78d1e"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-same-pte-b2/trace-report.json",
+        "sha256": "55e7e92cca8cfb7ab4661c89c3c62f04d2e5ad269ecf844e477f9e82f2235691"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b2/report/trace-report.json",
+        "sha256": "55e7e92cca8cfb7ab4661c89c3c62f04d2e5ad269ecf844e477f9e82f2235691"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b3/console.log",
+        "sha256": "72394a3f8691bd426b0458f6f51024013feb8c2a32b89f9ea5a4a558fb4a6901"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 12,
+        "committed": 6,
+        "errors": 0,
+        "physical_attempts": 11,
+        "superseded": 5
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b3/metadata.json",
+        "sha256": "ef8143f4ac8cb7a52e96369077edd4302107da68b5c37a688185fce2d8e9aa8c"
+      },
+      "name": "h4-same-pte-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b3/tracer.log",
+        "sha256": "7cb8ef2dd4c8f696455b0eb3c28231678172234f3c21ca3867baa6889be10225"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-same-pte-b3/trace-report.json",
+        "sha256": "c0e96c3f2baa5b857b48f00a59f0c8727a4b6ab470c9b3c51b1425681d7522e3"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-same-pte-b3/report/trace-report.json",
+        "sha256": "c0e96c3f2baa5b857b48f00a59f0c8727a4b6ab470c9b3c51b1425681d7522e3"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b2/console.log",
+        "sha256": "2b54a9592d37710d35d2e03b2f4c1a689bb8ab2172b529b5ce12a507f39f438b"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 6,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b2/metadata.json",
+        "sha256": "164f7de1bfb642a1abc495169476ea3d37352e2ac350b447d6045e34abc14271"
+      },
+      "name": "h2-prefilled-same-pte-b2",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b2/tracer.log",
+        "sha256": "a8acf1022e0e543b7661a687101547decff0e90e1ffc914126b03f85c90940d4"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-prefilled-same-pte-b2/trace-report.json",
+        "sha256": "d3b31d323aa9d13305184591800255252d6ad2d98edeb170f761425ca099544b"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b2/report/trace-report.json",
+        "sha256": "d3b31d323aa9d13305184591800255252d6ad2d98edeb170f761425ca099544b"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b3/console.log",
+        "sha256": "0cfc254cbb45ba7f011b3f44a295e668c3674dc3243a705c0bd716f8d1a08e84"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 12,
+        "committed": 6,
+        "errors": 0,
+        "physical_attempts": 9,
+        "superseded": 3
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b3/metadata.json",
+        "sha256": "8c6e46e0e06628b87d4f585d084f5acd7c479130d9e61ea87b12279984250d14"
+      },
+      "name": "h2-prefilled-same-pte-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b3/tracer.log",
+        "sha256": "e85b9a807a15fc8197931867560da45d464eca04afc4c9171a71580d2cfb300b"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-prefilled-same-pte-b3/trace-report.json",
+        "sha256": "b6c466897a2bd57a8b98f0dde1f95a8a580f4a465d6323267e6b271acc0ec0a5"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-prefilled-same-pte-b3/report/trace-report.json",
+        "sha256": "b6c466897a2bd57a8b98f0dde1f95a8a580f4a465d6323267e6b271acc0ec0a5"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b2/console.log",
+        "sha256": "2a4af142638a1c6b9a18c4de2d7cb4e7f1fd15bbc48952a8219dc3675bd7ccdb"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 6,
+        "committed": 0,
+        "errors": 0,
+        "physical_attempts": 0,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b2/metadata.json",
+        "sha256": "b82df5e6c7b7fba6a9e2f2c4dc6963aece90d105625e8c61e1333568bfe4e041"
+      },
+      "name": "h4-prefilled-same-pte-b2",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b2/tracer.log",
+        "sha256": "91b94d62372bdb9637f05bcd23d754e0bc7e16f3a84da734c02e68b4e63042f7"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-prefilled-same-pte-b2/trace-report.json",
+        "sha256": "0120a479c95e1c03091acad81684ae87b324f71d40750db8804123a171e82711"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b2/report/trace-report.json",
+        "sha256": "0120a479c95e1c03091acad81684ae87b324f71d40750db8804123a171e82711"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b3/console.log",
+        "sha256": "776a18ed4345e27d81e7fdc077ee1287a82bc134de4ed07e35b3049720127b8a"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 12,
+        "committed": 6,
+        "errors": 0,
+        "physical_attempts": 12,
+        "superseded": 6
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b3/metadata.json",
+        "sha256": "3e69f25fcf7b226914391e3693811a028a0a3a2a45a4d90a3123f51f7f1bdd80"
+      },
+      "name": "h4-prefilled-same-pte-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b3/tracer.log",
+        "sha256": "da65974fd5226f41fd59481f260384d6f22b7d9b58069cfc6362e74c2323f853"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-prefilled-same-pte-b3/trace-report.json",
+        "sha256": "7ba110badcb3c80135e86923eb59058d57571e7fff264def39eb7a00d8cc59c5"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-prefilled-same-pte-b3/report/trace-report.json",
+        "sha256": "7ba110badcb3c80135e86923eb59058d57571e7fff264def39eb7a00d8cc59c5"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-private-strong-b3/console.log",
+        "sha256": "c40d08f7f458b42e2cc65a2582e2bd9d528d43516a0cd96c98d89f8f7ce27b31"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 1536,
+        "committed": 768,
+        "errors": 0,
+        "physical_attempts": 768,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-private-strong-b3/metadata.json",
+        "sha256": "dee6ea1b2a8a68197eab3ca1556fe47dd7158835c9e978921f13e4a7dfe6da2a"
+      },
+      "name": "h2-private-strong-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-private-strong-b3/tracer.log",
+        "sha256": "eafaffd92162c0d6e75880a42c334d6bf396cf67e5d0446bb166b3d83ad906f9"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h2-private-strong-b3/trace-report.json",
+        "sha256": "a26337763a58499a67c4b2f22c4fb97ca2d0a4493148b721af643812c39361f0"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h2-private-strong-b3/report/trace-report.json",
+        "sha256": "a26337763a58499a67c4b2f22c4fb97ca2d0a4493148b721af643812c39361f0"
+      }
+    },
+    {
+      "console": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-private-strong-b3/console.log",
+        "sha256": "f305600dd12900cc7dfbbf57e7af2926067fb0dc9464535556fc577d899294a7"
+      },
+      "diagnostic_totals": {
+        "architectural_stores": 1536,
+        "committed": 768,
+        "errors": 0,
+        "physical_attempts": 768,
+        "superseded": 0
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-private-strong-b3/metadata.json",
+        "sha256": "5d52ab73ef8ac4dc40c15bce6303c0d22af287217bc55bf4147e5e59df262069"
+      },
+      "name": "h4-private-strong-b3",
+      "outside_timed_events": 0,
+      "raw_trace": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-private-strong-b3/tracer.log",
+        "sha256": "cd9c4442d0cc2a29101912252b5a39711c03aef2e8b4c36e2e04531e15a4cb22"
+      },
+      "rechecked_trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/audit-final/rechecked-mc-h4-private-strong-b3/trace-report.json",
+        "sha256": "7dcdfe4af601fcbd9f182580f40701407b2d997659ef64faecf0ef4f12aca8b6"
+      },
+      "status": "passed",
+      "trace_report": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-validation-v2/h4-private-strong-b3/report/trace-report.json",
+        "sha256": "7dcdfe4af601fcbd9f182580f40701407b2d997659ef64faecf0ef4f12aca8b6"
+      }
+    }
+  ],
+  "phase2_status": "COMPLETE",
+  "protected_files": 61,
+  "protected_status": "PASS",
+  "rvls": "UNVERIFIED: current source interface mismatch; no RVLS comparison performed",
+  "schema": "shdlt-isa-consistency-results-v1",
+  "spike_pass": 12,
+  "spike_required": 12,
+  "stress_pass": 8,
+  "stress_required": 8,
+  "unit_test_pass": 212
+}
