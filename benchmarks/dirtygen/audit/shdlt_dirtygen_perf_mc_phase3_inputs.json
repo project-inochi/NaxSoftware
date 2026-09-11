@@ -1,0 +1,2794 @@
+{
+  "campaigns": {
+    "architecture": {
+      "comparison": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-architecture-fixed/architecture-comparison/comparison.json",
+        "sha256": "381ef9fd14ac3a4f7afab953f552e0dd207071192a4029b07dddc1d077f96023"
+      },
+      "end_time": "2026-09-10T02:39:55.839199+00:00",
+      "experiment_id": "phase3-20260909-architecture-fixed",
+      "h1_compatibility": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-architecture-fixed/h1-compatibility.json",
+        "sha256": "42a2f62a8d71b30caefec2e8509d125d70a9824f2299be2a98674750e2b0715d"
+      },
+      "manifest": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-architecture-fixed/manifest.json",
+        "sha256": "4a09cbf32c19afa16032e5da4782bb12ac0ba21ac7db9cee1e905cc453b28ea0"
+      },
+      "maximum_parallel_jobs": 2,
+      "planned_raw_sample_count": 648,
+      "planned_selection_count": 108,
+      "seed": 2,
+      "start_time": "2026-09-09T03:05:17.250139+00:00"
+    },
+    "rvls_gate": {
+      "end_time": "2026-09-09T03:03:47.089014+00:00",
+      "experiment_id": "phase3-20260909-rvls-gate-fixed",
+      "manifest": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/manifest.json",
+        "sha256": "b0464d005df127d0e8b7e81fe519cac1b79f80afd224a03b35feab374772cee6"
+      },
+      "maximum_parallel_jobs": 2,
+      "planned_raw_sample_count": 144,
+      "planned_selection_count": 24,
+      "result": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/rvls-gate.json",
+        "sha256": "27b6b89c3f187803aa903c56cf21a281369e7bffc302b76375e705d90cd4abe8"
+      },
+      "seed": 2,
+      "start_time": "2026-09-09T00:05:43.502033+00:00"
+    }
+  },
+  "commands": {
+    "architecture_resume": [
+      "python3",
+      "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_perf_mc_phase3.py",
+      "--phase",
+      "architecture",
+      "--experiment-id",
+      "phase3-20260909-architecture-fixed",
+      "--jobs",
+      "2",
+      "--resume"
+    ],
+    "collect": [
+      "python3",
+      "ext/NaxSoftware/benchmarks/dirtygen/tools/collect_dirtygen_perf_mc_phase3.py"
+    ],
+    "rvls_gate": [
+      "python3",
+      "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_perf_mc_phase3.py",
+      "--phase",
+      "rvls-gate",
+      "--experiment-id",
+      "phase3-20260909-rvls-gate-fixed",
+      "--jobs",
+      "2"
+    ],
+    "rvls_pte_cas_minimum": [
+      "python3",
+      "ext/NaxSoftware/benchmarks/dirtygen/tools/run_rvls_pte_cas_minimal.py"
+    ],
+    "spike_default_minima": [
+      "python3",
+      "ext/NaxSoftware/benchmarks/dirtygen/tools/run_spike_isa_minimals.py",
+      "--spike",
+      "ext/riscv-isa-sim/build/spike",
+      "--output-root",
+      "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/spike-minimals"
+    ]
+  },
+  "counter_contract": {
+    "abi_version": 2,
+    "instret": "5*N+5",
+    "ordering": "CSR-I-fences",
+    "timed_window_bytes": 48,
+    "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761"
+  },
+  "executables": {
+    "rvls": {
+      "path": "ext/rvls/build/apps/rvls.so",
+      "sha256": "2d2dc757e44cbc814e04f7033752e151071e9592cf197bfe7784bc3d15780923"
+    },
+    "rvls_pte_cas_minimum": {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/rvls-pte-cas-minimal/pte_cas_callbacks",
+      "sha256": "9f597b386b0fa60933b8cb7e5a259f52fc3b431ca9023623bead2c88cbe27620"
+    },
+    "spike": {
+      "path": "ext/riscv-isa-sim/build/spike",
+      "sha256": "fdbf7d4cec1de1b7a3b2cc11ad4d566badf76259f559eec71072bdac119fbd27"
+    }
+  },
+  "large_artifacts_ignored": true,
+  "mc_elf_count": 40,
+  "mc_elfs": [
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-strong-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "39834b47c02564fee2d6749e8d115aed6cce2ac1b70ebe885acfe2502600a884",
+      "sha256": "3ef4ee4a18e8ec074f9ea724f2fc2c1a74eecb71c47fcd2a4fc9f4fbe02ad67a",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-strong-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "3ae34daf97266a46f2db80646e068c110871f1519354c359d9ab3a74470dd107",
+      "sha256": "38fd1cceb46e026004d46eba9a730974303160773b57a3898d61100ba1110bb1",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-strong-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "aca2e724916786d3fb14862ad56e650e7a827de8e7aa153ba4debe49614a6c68",
+      "sha256": "c70a00c0143979284d24ebe3e0fbcd461c407067dad822b975142375c8f255c8",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-strong-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "512af16bbd054b0cfb810f1cd601810a4ca36e22a61e9606e77de6f40055b941",
+      "sha256": "7f9236c3cbbcfd864479e6e258dbe7bb47eb93fc25cdbe58418165ded90cf52b",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-weak-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "5628b9dae1c0fbd8ca9ef4dfe9eaa58a620c34f24635c489d6780c55780f40cb",
+      "sha256": "8ea9f10ddb88db3f9fe0c9d9a81d228cf94ab932ed3f4ecd433937db32cbe2cd",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-weak-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "bc0a62ec9be832ad46f7d27e20079b09049d45facc6f21ec4db2a615351846d7",
+      "sha256": "1c92ef04becf0a6dd30a93e33bc9c72f4ffbe8f4ee4565b6dc3ba1bb444d8979",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-weak-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "b06909643d1dd01212c2e1cd28cceb5700de3c39c3b437c19d0e25e0531ffc0c",
+      "sha256": "47cf3b19bc74df58f25e08cda93971df71aa50a71485e4648afdfe5c22753196",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-private-weak-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "1fe998434353c8e408e7dcf7c3d58f787619ccd2a8bd4574c9cf634fbdefe912",
+      "sha256": "4e7e2bb1acba893ebd3bfb2194f8e5d949922d1c38ea637aa08421c5434a1be9",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-same-pte-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "6a48fca7ae36cf8508896131ddfd5f82d5cd1eeabd2a92b21c073f9463f91e81",
+      "sha256": "393c9906829ed611c39d5df37da03e4cd0b6a39215a732c3b77a5d0b48c3fdf9",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-same-pte-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "83f8aae50c8fd576f4e29b227515ee1d2a0ec86ad4c449c75edecb07dfdf587c",
+      "sha256": "a17e479bc304d30369f415f57648d1ab6f20850e46896a809fdeb526ebdae710",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-same-pte-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "f5209866cd9523bd62dde6b983bbdce55ff10b2a338f59fc138b0739920b50a4",
+      "sha256": "772a0534b021d4ea3c1145d101a8e766d78bd62764b467d29f6299b859a8e8c1",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h1-same-pte-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 1,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "68ddcc7c46623b50a6e5d1b74d079ebb643ddb91a7e5ea31d6205ad40efd7c28",
+      "sha256": "694c648d0480f390a1f2beb2bcb54f135a6041948f60b62268664c48983f33f8",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 1,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-strong-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "ad1dddef55e72e13145116335a6dcc9d77fc491479a9396bcf6cbd87a63725bb",
+      "sha256": "10c05b7357e0cfe33fce0dcda82113912c0791d6566b19e0a18a1a24a160f059",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-strong-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "f5c1a312ba281c815c3fc0c9ffabded976c00f95bbeefbb8e67a462cb3e8d427",
+      "sha256": "d92b815518ba0096065eb4b2408f29450975f85b453bbec181d178631b224b36",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-strong-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "d15cf1f29c51e8dbcb1a3f3517f5275ea8627ae5f7959b98f4eae59524736e6f",
+      "sha256": "0ea2bd02b7e4725c4dcd0b2889a5d05782c6f0de866c11156e622348cfffe014",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-strong-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "9fc69ff5deca9353cef6f40a627aeee74fdb36113d30f0b8608310cf3a3645b2",
+      "sha256": "e972f0df7d04c0f1246251ee45c430b577980889b033c2e8f3b066aa48fe7ef7",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-weak-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "77c654cee824bc48c3f9f1410afb560f09898aa844c3a1e9f8047661cfe0415d",
+      "sha256": "35f222e67e82dca15a9eeff95e5c0a590035b1e52426e9f796fa0d73feaf9996",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-weak-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "57c801caa077932b061a64f5e9f0a927f7c0e76e9ac0b36cb10035c3c8ea11d6",
+      "sha256": "40bb5caec66e82896035b212bcad11b5411189a756aa96f64540b5eb7239b01e",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-weak-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "73904ae658da95e8fffdfeb8a06efb4d16abd052695c64756969f7958937c7e8",
+      "sha256": "3261ccb9e4e90f25cbfe2eb2f3b418be9d619339385af07f8d722b1b7c414ef8",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-private-weak-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "0a32ba470d053ec2a09b72236be194c5009b75c52b1d2a1b2505cf146c6521e7",
+      "sha256": "0426c77463c283929b5055356e97db8bc97323d31195bd04f59ce1af200cc15f",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-same-pte-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "ba1d39c1fe38dad71ab1478832ba1404f6da2ca3e3c5c94f8c3143f7be4af88e",
+      "sha256": "910235d3e45f690447a9c10648defd60420b4008f5fb8d14bf0c2e8f5478b1ad",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-same-pte-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "bf2bbc45e164726bf715dc5765ae27c1ed17aa8e04efd20b745d9ac5e60b7c21",
+      "sha256": "fad68a56d898cb9e22813063f45c766b521f6c449cb57364179e9e2791b321c7",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-same-pte-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "ecd386a2c8093ece0f465a9624c2a0ca424aaf1af4bb06945cbd4797c8b856d4",
+      "sha256": "3c91acb4126840ef97bc996e05ca087393aa3823d36d5d2d29fbcdadbd3c0295",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h2-same-pte-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "845b3715552ef9a2bc72faec4d644b7b68aeb2d4af247d55d549fb1d91ff50ae",
+      "sha256": "653a3ae80b8359d19e1a6b4694978a962d9c8139b5294657d98b958b488fdf06",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-strong-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "6091e050ef75a2c0f9499a5c217e07bb2cdf816d29951c1f4bbe41c9cfb9d3bb",
+      "sha256": "4e2c2b5256bf67fa1021cc4bfdd3233dffba8a2676d20eeb5e7567f8260d3c06",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-strong-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "c8de7527c7e35ba90b4071734d4b65f5ab4720884e724c4be525281e583d5552",
+      "sha256": "f2239cf8a04d7fee1a168c228697ba2c7237ab0e92c0818c0964b2b0f9672b3c",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-strong-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "9a64c001023d26b0d7a88d2e725313bafa98f39695310040c55e43aa5252337b",
+      "sha256": "505ff4266a5f4eb21dff823bb912d047d09c6a245b47c439adec82ae243d0b64",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-strong-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 0
+      },
+      "selection_sha256": "43e41d788a22038173547237d3c06ddc9f0139bd0482161b02c45abc44ff5f74",
+      "sha256": "79b026ff89896f768c9408ce6ec65028ddd7896d19671fb12999cba15b7aecba",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-strong"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-weak-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "9395416305f166e686ff9a267a117535c3d9ef1da76c980f3aafd72be24a6b15",
+      "sha256": "ea8725291b5fa62a9a945cbede34750c74b3f09742ebf40618a7019e8008777e",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-weak-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "93754eee8cb2847fb2658f53c81b3bb9bdd6c6996446bf21257b716b659aa844",
+      "sha256": "fb71952876bcb3ccb939711dc4f42ee70d17231800ea995a1d0947fba448c312",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-weak-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "c30906e68a61b2f4a670f5ba9a204c930ed90802aaf68c94418f30ec32c9cadd",
+      "sha256": "8fc49390ef1190a40c206981a13da6a8331f6e7e657578eb50606b589d37e62a",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-private-weak-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 1
+      },
+      "selection_sha256": "40da25d7ce31f440c9fc5163fb51ec7bca728f72debf4d6880c9ea4f62054bea",
+      "sha256": "47ee64aa0f180df3f9809cbb4929c4d99b4d917edd7de76024e1880859a713d0",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "private-weak"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-same-pte-b0/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 0,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "4ab52fc541c70641e86178d0ed03f20343aa6570502d72d246fa7a88f6c32006",
+      "sha256": "1af8fa050931926e3aa77c08505f84894ac361cd7ef23ce6707739ee1bdc507b",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B0",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-same-pte-b1/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 1,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "3826a892fbf3fd9a68314fac622ad94ea3dfdf503d8d32a66d8b6d2ac773ecf0",
+      "sha256": "bcc1d353b4978633d8266765f06f2d30385e06e38c711d5c3e5b6a590402727a",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B1",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-same-pte-b2/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "f347afc99c030fde5f8313d3e15051b6a38cc0381a5869a02b702920a6e2003a",
+      "sha256": "25a9740828b6e80376fec42236d13efa55eab2e19188d79f2da030fb6625be72",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-h4-same-pte-b3/dirtygen_perf_mc.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 2
+      },
+      "selection_sha256": "fe7496753d64c04574d231ca28a86e12d8fed6da697cbe0763a29e0806ed26fd",
+      "sha256": "145e406e95f3a2b4a254dd718b8ec3f499aff99b964cd54eab8bcc5ba2efa7bf",
+      "text_init_sha256": "c7fbddad8789a6ce53a1c847a99ebe3e9b46a38e685df32c57830fef0286a9d5",
+      "text_sha256": "1d21573888fc309594a3f8aeb966dc54b86ed7ed5757c23ea6e99bf72a6685c7",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "architecture",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "same-pte"
+        }
+      ],
+      "workload_code_sha256": "f801bf1381398ca0816052f7f041c540a8a2929f920fcbaaa54ca118cae412ce",
+      "workload_symbol_range": {
+        "end_address": "0x0000000080001094",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 148,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x0000000080001074",
+        "timed_start_address": "0x0000000080001044"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-prefilled-h2-b2/dirtygen_perf_mc_prefilled.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 3
+      },
+      "selection_sha256": "300927c63096c43c8fde40130cda3d1371d34e28ac68f201c5f04f3183e92e89",
+      "sha256": "0e0250ccf71160e6cf8508c7dd2beab4593edbc19b9a9ece4ef5b5125b7f2706",
+      "text_init_sha256": "bcddc9295205c7e7ae26f5170d429c23d26d73a9bccd5a81c937d08556724160",
+      "text_sha256": "e6ea1c3f2c168966ae1faae532529c92d46ac8f6320369aded9df6608778e842",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 2,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        }
+      ],
+      "workload_code_sha256": "24f8739dd4c0678d7c361e5aedd4fe019e7c6e83eaa19b9aedeec3a46173b7ab",
+      "workload_symbol_range": {
+        "end_address": "0x00000000800010d4",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 212,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x00000000800010b4",
+        "timed_start_address": "0x0000000080001084"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-prefilled-h2-b3/dirtygen_perf_mc_prefilled.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 2,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 3
+      },
+      "selection_sha256": "a07de0a051c9797bcef9a61977b55a9ec254f298bfd5d160cac044a640020254",
+      "sha256": "87435255caeb8d071c0cdacf3706f65adb2fc53c9080db8785b2ec9f9776eff9",
+      "text_init_sha256": "bcddc9295205c7e7ae26f5170d429c23d26d73a9bccd5a81c937d08556724160",
+      "text_sha256": "e6ea1c3f2c168966ae1faae532529c92d46ac8f6320369aded9df6608778e842",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 2,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        }
+      ],
+      "workload_code_sha256": "24f8739dd4c0678d7c361e5aedd4fe019e7c6e83eaa19b9aedeec3a46173b7ab",
+      "workload_symbol_range": {
+        "end_address": "0x00000000800010d4",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 212,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x00000000800010b4",
+        "timed_start_address": "0x0000000080001084"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-prefilled-h4-b2/dirtygen_perf_mc_prefilled.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 2,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 3
+      },
+      "selection_sha256": "d3770970e336621a5146671b82a73512f445e90ef02050ed4d8d55cb1f060a83",
+      "sha256": "4d7793a9af4aed7b9c6cb4042cd12aac902c4d9eb48fd9559f2a8694ada228ac",
+      "text_init_sha256": "bcddc9295205c7e7ae26f5170d429c23d26d73a9bccd5a81c937d08556724160",
+      "text_sha256": "e6ea1c3f2c168966ae1faae532529c92d46ac8f6320369aded9df6608778e842",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        },
+        {
+          "baseline": "B2",
+          "hart_count": 4,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        }
+      ],
+      "workload_code_sha256": "24f8739dd4c0678d7c361e5aedd4fe019e7c6e83eaa19b9aedeec3a46173b7ab",
+      "workload_symbol_range": {
+        "end_address": "0x00000000800010d4",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 212,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x00000000800010b4",
+        "timed_start_address": "0x0000000080001084"
+      }
+    },
+    {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-mc-v2-prefilled-h4-b3/dirtygen_perf_mc_prefilled.elf",
+      "selection": {
+        "abi_version": 2,
+        "baseline": 3,
+        "hart_count": 4,
+        "magic": "0x5348444c544d4331",
+        "runs": 6,
+        "workload": 3
+      },
+      "selection_sha256": "5c846adeedde77d414797a7b55614eb6e85c963443a3cfe95deae7d264797f13",
+      "sha256": "6abf4a654ae0c382d24ff20e97e9cf8bfaf98dbebd4cfc4c0ebc9dc98d4551ec",
+      "text_init_sha256": "bcddc9295205c7e7ae26f5170d429c23d26d73a9bccd5a81c937d08556724160",
+      "text_sha256": "e6ea1c3f2c168966ae1faae532529c92d46ac8f6320369aded9df6608778e842",
+      "timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+      "uses": [
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "architecture",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        },
+        {
+          "baseline": "B3",
+          "hart_count": 4,
+          "mode": "rvls",
+          "phase": "rvls-gate",
+          "workload": "prefilled-same-pte"
+        }
+      ],
+      "workload_code_sha256": "24f8739dd4c0678d7c361e5aedd4fe019e7c6e83eaa19b9aedeec3a46173b7ab",
+      "workload_symbol_range": {
+        "end_address": "0x00000000800010d4",
+        "end_symbol": "dirtygen_perf_mc_guest_end",
+        "size": 212,
+        "start_address": "0x0000000080001000",
+        "start_symbol": "dirtygen_perf_mc_guest_start",
+        "timed_end_address": "0x00000000800010b4",
+        "timed_start_address": "0x0000000080001084"
+      }
+    }
+  ],
+  "normative": {
+    "files": [
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/supervisor.adoc",
+        "sha256": "1e396de2eed8a0db9950ef0441aa3e77f21072584f72d32ef34e39804341cf41"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/hypervisor.adoc",
+        "sha256": "884928aebc45d13682a44e3298b297d1f484ca7185d454d8bfea362c3d4d729e"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/machine.adoc",
+        "sha256": "143a10da1ea3c8f197db44ced646742d3c19ff26fdd4c9ba45a2f84fc3875783"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/svadu.adoc",
+        "sha256": "02fcc825667913878596249c2ac996da767635714b27b6cf3d8e2156c2d48dbe"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/unpriv/zicsr.adoc",
+        "sha256": "a4682a79bee8f78c5e3c898ae5fcbc038036c08275a72d54b7bb8c935d4254e2"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/unpriv/zifencei.adoc",
+        "sha256": "9a57a3cfb90cff32c39a3c53df8e1c0d079f99993a41fa5bed35e707cd34e2f7"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/unpriv/rvwmo.adoc",
+        "sha256": "edcaa272870a145a8b20f0b599434cc7a42101fa91176cf1d94a1d0a60f80643"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-sbi-doc/src/ext-rfence.adoc",
+        "sha256": "c06b81b5218f2795a5e62d7282231be72c1ff8dcb5e2389f8f5e8e18eaecba76"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-sbi-doc/src/binary-encoding.adoc",
+        "sha256": "ed091f19ab64e04513a3353e27d9b124e09f229c80ed7ba3f1d33de2442e9b02"
+      },
+      {
+        "path": "/home/inochi/code/spec/presentation/riscv/shpgat/mail/shdlt.adoc",
+        "sha256": "28d3961d752f97338959641407462db0b16d8bc9cc1f4e0d4a7afc961b10bf3f"
+      }
+    ],
+    "isa_head": "e5c0c60fa1fbfcc1d343e314299d15693485f678",
+    "sbi_head": "8a545effe9b50484ff897d9815d7d9015cdef203"
+  },
+  "outputs": {
+    "inputs": "ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_dirtygen_perf_mc_phase3_inputs.json",
+    "report": "ext/NaxSoftware/benchmarks/dirtygen/SHDLT_DIRTYGEN_PERF_MC_REPORT.md",
+    "results": "ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_dirtygen_perf_mc_phase3_results.json"
+  },
+  "protected_baseline": {
+    "path": "ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_isa_consistency_inputs.json",
+    "sha256": "4c0745ef233c0832494d28c92d46d7c2c7c0da6ba27af6cbfa9edecce7edea21"
+  },
+  "recorded_at": "2026-09-10T02:39:55.839199+00:00",
+  "regression_evidence": {
+    "rvls_pte_cas_minimum": {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/rvls-pte-cas-minimal.log",
+      "sha256": "99a1547308806d72cb1e3c6c708610ab2bf9cb69e1c330dc37bcc61c6f65f07f"
+    },
+    "spike_minima": {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/spike-minimals/results.json",
+      "sha256": "f9312fc9c716eb0debc11133d6cd4a93d8c7e297add71aaa2175a2f00869344d"
+    },
+    "unit_tests": {
+      "ctc": {
+        "passed": 7,
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-ctc.log",
+        "sha256": "21c7e48d0b1ec908feef784bbce1fa55f2c9a7acf76382fa7578754a78bd1ed8",
+        "status": "PASS",
+        "total": 7
+      },
+      "dirtygen": {
+        "passed": 171,
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-dirtygen.log",
+        "sha256": "9101724797a62d94b1458a33b12cd0db6f8b64e90ae122726a93c1acb4308732",
+        "status": "PASS",
+        "total": 171
+      },
+      "race": {
+        "passed": 12,
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-race.log",
+        "sha256": "ddbc5bf15c26bf2c15a86c04aa1c4eb9dbb31a4d245c800b95a5282be426a476",
+        "status": "PASS",
+        "total": 12
+      },
+      "rtl": {
+        "passed": 32,
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-rtl.log",
+        "sha256": "5db358d6fad6c2406ed557e9bdaa89f7fa4e5163e5410923faa9837b27058517",
+        "status": "PASS",
+        "total": 32
+      }
+    }
+  },
+  "schema": "shdlt-dirtygen-perf-mc-phase3-inputs-v1",
+  "scope": "phase3-rvls-cas-and-multihart-performance",
+  "source_fingerprint": {
+    "NaxSoftware": {
+      "branch": "tmp/shdlt",
+      "digest": "861d40a93a8e9d4bc766bae337e1908a4e993529bcb5ba6de8fcde04ac498c8e",
+      "files": [
+        {
+          "path": "benchmarks/dirtygen/.gitignore",
+          "sha256": "ab44c6c834c98df1bf2cb3fe8074e33188413ca9debf706cdedc4949eea4d359"
+        },
+        {
+          "path": "benchmarks/dirtygen/AUDIT.md",
+          "sha256": "c0be845f4492d9f637055e4e9440300e03207d752f0ac350cd67f3d4d790cd57"
+        },
+        {
+          "path": "benchmarks/dirtygen/LICENSE",
+          "sha256": "c47753101c83aaf26e12bd6fd57b5624db11d25fb8a4c307af9e912e0775c986"
+        },
+        {
+          "path": "benchmarks/dirtygen/Makefile",
+          "sha256": "488e0e37ff7d8c2aa14d8ffa9ad5cbe0e308b82c7cfcf2162d84ba6a21e11402"
+        },
+        {
+          "path": "benchmarks/dirtygen/README.md",
+          "sha256": "c822670c7a35390633dd5f07cd3c6dbcb32eb4920c6187964ad771d49e6ef63b"
+        },
+        {
+          "path": "benchmarks/dirtygen/SHDLT_ISA_CONSISTENCY_AUDIT.md",
+          "sha256": "e208e14d7e58ef8559a928b0008a264bf14242b0f7f1d73a11dec5d3a498b32c"
+        },
+        {
+          "path": "benchmarks/dirtygen/SHDLT_VALIDATION_AUDIT.md",
+          "sha256": "2bd61baa5a4d3692f900cb03a5d04ed26164fdb2f5065db5ee875c05d8b58d9c"
+        },
+        {
+          "path": "benchmarks/dirtygen/audit/shdlt_isa_consistency_inputs.json",
+          "sha256": "4c0745ef233c0832494d28c92d46d7c2c7c0da6ba27af6cbfa9edecce7edea21"
+        },
+        {
+          "path": "benchmarks/dirtygen/audit/shdlt_isa_consistency_results.json",
+          "sha256": "a9ce2abcd897d0075eb2b9c801ea2384a9015024e24cdab014ea756405554d65"
+        },
+        {
+          "path": "benchmarks/dirtygen/audit/shdlt_validation_inputs.json",
+          "sha256": "79d7d497c00ca61d524c60152926e9a38a199191781570606ec8f1237b05e35f"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/dirty_log_check.h",
+          "sha256": "b7b21ab139a1ffa4d829f72122c344b9bcba1db6c1f83a601b92a51cc5573792"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/dirtygen.h",
+          "sha256": "6521ccabfcb1e392d1d6e61a002d1a10ac0353f551d36ef9b73537c10c76b3e1"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/dirtygen_perf.h",
+          "sha256": "7bed1e027a4f28c4932f9613868ea5e5152194c8fe4986d4c6bfa49bae2b0d9a"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/dirtygen_perf_mc.h",
+          "sha256": "3e1e7188eefd541fab67d42652e76ec2842e351ec2b4a1bc7b9a5f4815c6a88b"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/phase1.h",
+          "sha256": "d821015108f49175e02b3f997ce539ed09687488b44947e5a945b15b8f4450db"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/phase6.h",
+          "sha256": "e1d7386650edeb6a9906afa4a901453b411304fa3e16f6b681ed851f45c1994c"
+        },
+        {
+          "path": "benchmarks/dirtygen/include/runtime.h",
+          "sha256": "1321daf263b1fb704762ede8582468724e39fca19b4bbf604018dee726284a81"
+        },
+        {
+          "path": "benchmarks/dirtygen/linker.ld",
+          "sha256": "83de68fcbd10709f3934d70af4116d6048a80eddec588f5ae5e0bc1128652fee"
+        },
+        {
+          "path": "benchmarks/dirtygen/linker_perf_mc.ld",
+          "sha256": "3443d90932f8034f21b52efbd1344865fce514ae59784bbf33be903774d6e277"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirty_log_check.c",
+          "sha256": "5698540c81fc76e429b62ead0724c4d96aa290e825d4c4e66ff4dacdf932260a"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirty_log_random.c",
+          "sha256": "b98125139465e133c0aec7be6a9553d02ac26b58eda11640216595f7fb54e3b9"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen.c",
+          "sha256": "47cc4fd0c9202106347f790d5b455b8f211c2c08fd6963f2cbecdbea836f2fd6"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen.inc.S",
+          "sha256": "b2369533b707e73c9295afb89a90dfc16a6eb107da702af0b01430d13bb92c75"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf.c",
+          "sha256": "8d4a25f74c41df394cdca4f73e2a4887437f0fda7780075aa67d79b644b5a1db"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf.inc.S",
+          "sha256": "16cc1aaecf08fef45173d080e0b570bb4cd0473d375f43cfe615675e543f104d"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc.c",
+          "sha256": "0a9cf257d6e8d1d8ca7a6b4445ee871ad8ae0bc06d4599b8d9dc9b2ef6e55fcd"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc_guest.S",
+          "sha256": "8f7c6cf3a27b9bd80082afbb0a2c8f8904102354982a18f40306157abe013ebd"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc_page_table.c",
+          "sha256": "4f89effc7397e87f7d9f11aa00ccccf8525225e39b15f7486839230e548af05d"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc_prefilled_guest.S",
+          "sha256": "7680a9404b06f7018ab0f6b33d1cbf21e8909d55d1d22b18fd448977c50fac13"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc_prefilled_selection.c",
+          "sha256": "0e1ce895d55879ede9280c8e08acfbb977cb634961b3e54873d3027328abdf15"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc_selection.c",
+          "sha256": "3bf0182178c07826c6abd0cb381c1315a737d34999ef9d3bc6101ec3e6e38732"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_mc_startup.S",
+          "sha256": "c3923cc6ccbe93d8024104f9026c5e5cea914b2b5e2561e77cde0a4ab07cf7c0"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/dirtygen_perf_selection.c",
+          "sha256": "1bd126d9d628afcda7474104589f3c1c3452cdef0cc40c122434c18f35ec5b27"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/page_table.c",
+          "sha256": "dead6b9c57c41b467e65eb311fa80fd4e30fe25cf6f1ef67b85cc4870ab53a0d"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/phase1.c",
+          "sha256": "0ad13e3c96d0e31bdcbeb55d4b2f37a4c05c525d1ca3f7593167059630d58c4d"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/phase1.inc.S",
+          "sha256": "f0c9a3057ae62cc40978442290f633de53d1bafda8d9ddb13bd8aa1f6ad0eb54"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/phase6.c",
+          "sha256": "999157a9c02b5ac8c672cd0e894c49d8eeac8f6c2a6738affe43d62c5806bcea"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/phase6.inc.S",
+          "sha256": "3dc6686baa047fc25efb8d4aefc4f7c91e1e149342346dd126ecdc9da7f8a1aa"
+        },
+        {
+          "path": "benchmarks/dirtygen/src/startup.S",
+          "sha256": "dd05c3b3d662d6cc460bdb27ad6ae59018707c5a21e83b9ff9fa6cedfe2aeb67"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/log_word.c",
+          "sha256": "c059df71b840e84cfc9f90bca90ec9083e88b649e574f504badd5837a417a7e7"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/README.md",
+          "sha256": "266abd5c3faff349e97a5c672dbb14a23a1ba06c8377ff7ec792cb782c33bc06"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/fixtures.json",
+          "sha256": "6492c63714adaa9930ff918eed96a5d0fde500995efe6a99c67cfa3391354b1f"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/hardware-d-shared-a0.S",
+          "sha256": "63d2e562412c6c10a8487ee4096c160e67a09825dba21537d318297c3b739cda"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/hardware-d-shared-a0.ld",
+          "sha256": "94459a6c8b57c6a69894b2253c4e935bd548697927d73a29bed4cfe40fbbf78e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/hardware-d-shared-a1.S",
+          "sha256": "e74cc9e0bcae9ec7a4dfe968455572f2806c4cfe7b229e6dee8a155d8237a099"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/hardware-d-shared-a1.ld",
+          "sha256": "94459a6c8b57c6a69894b2253c4e935bd548697927d73a29bed4cfe40fbbf78e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/link.ld",
+          "sha256": "8d1d8bba6b5ccc5440775f41624194074286a5a1e7419fa77ae515aed9817c2c"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/predirty-a0-load.S",
+          "sha256": "347d153adcf0b361e1fd8ae2266cd1ef53c5a54e48c8c4de503a42e5ac9bd9a3"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/predirty-a0-load.ld",
+          "sha256": "f7af6fd61d0c08d33860c7714ae90a717ca25c3f8f27ec0283128d9cca28fcbb"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/pte_rsw.S",
+          "sha256": "c63f0200d325bbf111e8d6810135c6e5ba887de9f39c7cc8838d2981453ae89f"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/remote-fence-before-access.S",
+          "sha256": "70b615bf17b6996cc1a99795e8f854387d78a1d150cb1b077f6ffbf680850b22"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/remote-fence-before-access.ld",
+          "sha256": "94459a6c8b57c6a69894b2253c4e935bd548697927d73a29bed4cfe40fbbf78e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/store-then-load-fault0.S",
+          "sha256": "9e79953ab4bc5c5746992d36de2987a6eb96177402eb0e16fd5b8ff4f6d46ace"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/store-then-load-fault0.ld",
+          "sha256": "94459a6c8b57c6a69894b2253c4e935bd548697927d73a29bed4cfe40fbbf78e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/store-then-load-fault1.S",
+          "sha256": "d5e080852b883a57802919ff0df2823824742ca0109ef173758a6e327809f418"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/spike/store-then-load-fault1.ld",
+          "sha256": "94459a6c8b57c6a69894b2253c4e935bd548697927d73a29bed4cfe40fbbf78e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/isa/sync.c",
+          "sha256": "a3ce2a8f981c4972656fa6cb7248dbd4ac9d1bb09642888a7f65e91a25179a5b"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/rvls/pte_cas_callbacks.cpp",
+          "sha256": "78d8113764e453a69c9d70ff1573f3a44a888fc08912334a4a621052b5e1c28c"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_campaign.py",
+          "sha256": "bad661058a7754aec14b871bb5ae6b3ed029cffc94d11d52a5ad657e56677314"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_compare.py",
+          "sha256": "ac59b4ab154539d6219ff25f1dd49489b5ff3bc4b15f72b5bfe1af8809f8f6ee"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_mc_campaign.py",
+          "sha256": "dd78fc77f910ec5aa1de199d27e700783939c2eff0a3ae48bf90987b1b57cd19"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_mc_compare.py",
+          "sha256": "6279eadc4f8444d51e8822ab0311b920f92f3604c8adfcb6764d8ba3aaf11124"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_mc_phase3.py",
+          "sha256": "18da97e7d41e78e6f5aa0f92a2c5298f58806dd65227ceac40b349d9a78919a5"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_mc_report.py",
+          "sha256": "d964adcb40bb551ce215c281f9878c5988918996bb7d38090466d890edf74ebc"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_perf_report.py",
+          "sha256": "15c54533fe716fe5ea8d00084e51a0be4c6e89fc9ba5aba3d6a5ed90b3de6f8f"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_dirtygen_report.py",
+          "sha256": "6c2a42c58452640e9344ed2f5cdfa26ec7f525f5ac488fa00d5868508a884c06"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_phase1_report.py",
+          "sha256": "7444de0c1ac3680c04b9d9bfc93e0e594218dcd05fda408ea494eb18ab08fa67"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_phase6_report.py",
+          "sha256": "9d3ef174bc6c9c767855bca9430943c7ea920b77504ffaf16ff412baab871aa7"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_shdlt_isa.py",
+          "sha256": "eed4f1a3fb06bf45d2493a187321f78acec8ba7f1961d5d76d5d9d2ad9728d7b"
+        },
+        {
+          "path": "benchmarks/dirtygen/tests/test_shdlt_validation_audit.py",
+          "sha256": "0e9540df97ed30d59943b638ce518fc39d975682852366c85789f54510e9cff6"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/collect_shdlt_isa_audit.py",
+          "sha256": "abc2fa9a23fa6c98502d86e5066bd2e9d90a244d79c129601e3c5f5ff67db97c"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/dirtygen_perf_compare.py",
+          "sha256": "c7ce8413b2ef0a59ef28da2303ad722178b7f05c38cfd64c961c8202ae275465"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/dirtygen_perf_mc_compare.py",
+          "sha256": "76d430b1e57a904dd8fe53c753038d74f5c803249395d74a8310f83977e73427"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/dirtygen_perf_mc_report.py",
+          "sha256": "0a8ce897475d98ab64ce698fd98d74cdad4720114918237c91e701468eef8a9d"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/dirtygen_perf_report.py",
+          "sha256": "6bc9ec799d00611233d3e7fa46373816fca0460406a082ed2ec8cb42ef57142d"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/dirtygen_report.py",
+          "sha256": "ef7c6e5f74ab76e62b34f5663834d8af1b9fdcb5006ea4c45fd64f2970a53d33"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/phase1_report.py",
+          "sha256": "be53a44ffe30fd078e4134c59b3843b2d816486941f1d29fa3f07d78f88fbc9e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/phase6_report.py",
+          "sha256": "a2e456da4379385e5e90a212ef471e627f68be9268265d15e3809969e4eb9403"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_dirtygen_perf.py",
+          "sha256": "80b376add5767a71c4373abb799a6281a89af77e41ba15a86537430d81d0a53b"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_dirtygen_perf_mc.py",
+          "sha256": "20d6062a79d78557b8bd5f67a0d022cd0a8856c9595b8355aae33a454973539c"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_dirtygen_perf_mc_phase3.py",
+          "sha256": "a4f9aa2dd752cbe6d19bb066cd584ea5421ed10c01dd9d43fd00e602da890afa"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_rvls_pte_cas_minimal.py",
+          "sha256": "405572b61a3bcf89f310622b1234b3ae1b75f18b1d8bc8b43ead2d33780975df"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_shdlt_isa.py",
+          "sha256": "39bee3836f66fc91aa375819f130a813e25d31f83da972a8638651934169ea1e"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_shdlt_isa_mc.py",
+          "sha256": "24f34b05cbfc34c6d0e5dd6cd99d3185b5a7ca51a6307c988be40b5d4a56bdf7"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/run_spike_isa_minimals.py",
+          "sha256": "05889f37b1507e6eb63b42030134b45a0003a5d9c1c0574c9aff5b55609dd9af"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/shdlt_isa_audit.py",
+          "sha256": "f3622164588ae9b4f982a0fc4d1c552dff0706e131b8327870ceeb084dbd5bb2"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/shdlt_isa_report.py",
+          "sha256": "37b0edd07b28650a864d56cd98a6791cdcc175aa72ce053ed9a27433fa7865ab"
+        },
+        {
+          "path": "benchmarks/dirtygen/tools/shdlt_validation_audit.py",
+          "sha256": "64710d3afa4ea1eb0b3a9a3eaa7fb0a5dc99c655c7d7f3542a5bb214d3ca0af0"
+        }
+      ],
+      "head": "f915bb0532513361455c17228c2267411c66a7e1"
+    },
+    "RVLS": {
+      "branch": "tmp/shdlt",
+      "digest": "064ec0498892f5ea5a96dbd9adb007ac63faca6f9e78f444d0f38a5922a24ad7",
+      "files": [
+        {
+          "path": "bindings/jni/rvls/jni/Frontend.java",
+          "sha256": "b9f9878e923d0e02ef55f39eca2ceeec5b0af01c00430308584e2b7abc31e039"
+        },
+        {
+          "path": "bindings/spinal/rvls/spinal/Tracer.scala",
+          "sha256": "e5690b76d0f01b0e1bc9e6aba9dee75d498865316afa1ad3bd4595e041f96b6c"
+        },
+        {
+          "path": "src/CLI11.hpp",
+          "sha256": "ba83806399a66634ca8f8d292df031e5ed651315ceb9a6a09ba56f88d75f1797"
+        },
+        {
+          "path": "src/ascii_frontend.cpp",
+          "sha256": "50672ab15734e9d38a43d84c6d2164a96301ffae8680ac9f0af3be85597b7242"
+        },
+        {
+          "path": "src/ascii_frontend.hpp",
+          "sha256": "cd0f7a65e3929558a33691afd50d6d2fb27733c0338fd82cbb0d1876d3ad9b9f"
+        },
+        {
+          "path": "src/coherency.cpp",
+          "sha256": "f4ba395d7a836c9cda0bdd63a87d09cc337c2770d7e9422a63deecd5af171208"
+        },
+        {
+          "path": "src/coherency.hpp",
+          "sha256": "2e0cd17bc2dba179c409ebe4ee2367a8db10b4f422a7410b092100c4cf419cd6"
+        },
+        {
+          "path": "src/config.hpp",
+          "sha256": "7f99752beddd9fef960acc435580979eaa06b3cef2031e250d0db1a336aa33f2"
+        },
+        {
+          "path": "src/context.cpp",
+          "sha256": "521ea429ca8b1eb9095ae378dbb8afd54fc6d5f035c053a2fc37b9ebc5a22cb5"
+        },
+        {
+          "path": "src/context.hpp",
+          "sha256": "9d024297ab80edea66af417c9265681cb5926d782a2c872e4898b4a71ce9a384"
+        },
+        {
+          "path": "src/elf.cpp",
+          "sha256": "a2fe0e7853618caaef4c339d7c22d6969681b3a1a67878fe1e4f9736ac0d5fe0"
+        },
+        {
+          "path": "src/elf.hpp",
+          "sha256": "778968d2ae548d6bc671caca34f677d39cd4f218341e736afd131833a30ee638"
+        },
+        {
+          "path": "src/global.hpp",
+          "sha256": "3bf7b4cc24d69ce879776e68dab32e259efb59339f9171bf19ffc6264c36a22e"
+        },
+        {
+          "path": "src/hart.cpp",
+          "sha256": "1ebd1a3fea8b934b97fdde4acbb0bb2571b40c2d46e4da5119af606b38958ad0"
+        },
+        {
+          "path": "src/hart.hpp",
+          "sha256": "cd7e8be75f5cda81817fb19ad70c8ed252750e18236bb7f63b3202e0bd255318"
+        },
+        {
+          "path": "src/jni.hpp",
+          "sha256": "f8df1a84dd71098135c74268ec69d32b4c7ab564bdc9ec869459173242486acf"
+        },
+        {
+          "path": "src/jni_frontend.cpp",
+          "sha256": "96ae220287e71b847a667004418035069894b877c29ed0e9580340f399aeb4ff"
+        },
+        {
+          "path": "src/memory.cpp",
+          "sha256": "7b34cb63217e4f41e20d3c25e9e5d16f56bff47324d950b7e84c17e767fa334a"
+        },
+        {
+          "path": "src/memory.hpp",
+          "sha256": "ee3856d4a98e20b9ee5da54390c65d501409b8515d39f6b299eba6352bc70c14"
+        },
+        {
+          "path": "src/rvls.cpp",
+          "sha256": "f18a514afe283bff5b625fdf6e4cb1dbc61fd1651eb7ba5110c41847382537df"
+        },
+        {
+          "path": "src/snapshot.cpp",
+          "sha256": "f91780223229e0c11bb4c34534e5029576affb8b9908ec631f95d02d9cb7fc5e"
+        },
+        {
+          "path": "src/snapshot.hpp",
+          "sha256": "0693a3f510a81d9fc87b123cf9580dd9c66633759d9830c7408374b2cea6a6bb"
+        },
+        {
+          "path": "src/type.h",
+          "sha256": "cea412e14305b06cab84b6d4ebfed609c24db97fe55e964ae644026a14d47c53"
+        }
+      ],
+      "head": "f70cc0152fabde0829d3c267e1cd9915a4b9acd2"
+    },
+    "Spike": {
+      "branch": "tmp/shdlt",
+      "digest": "ebc7f4529f3c33294030fbdf503d997a9300178d55a7724601da2bca33bb7ec8",
+      "files": [
+        {
+          "path": "riscv/mmu.cc",
+          "sha256": "5c8e45c6c7c6c6708a45f935e8134c00a3c8be07fffa930b65258c0fbf70be88"
+        },
+        {
+          "path": "riscv/mmu.h",
+          "sha256": "7ebf5a4efe5454e814cf0dac6b5eeea4509c58df678b35d3d787145db18c380b"
+        },
+        {
+          "path": "riscv/simif.h",
+          "sha256": "d8e3ddcd874a93657887ac6869b4a8317a07ced57872267a2317b1ec7b6f27cd"
+        }
+      ],
+      "head": "75246fed826e4b64ada3a484bfecdf37510925bb"
+    },
+    "VexiiRiscv": {
+      "branch": "ext/shdlt",
+      "digest": "872b13df2fffca1078f062c331093433634473cc5d3d6b0ba3cab85fde6539bc",
+      "files": [
+        {
+          "path": "src/main/scala/vexiiriscv/test/VexiiRiscvProbe.scala",
+          "sha256": "7c8f32acf84a6c50aab61a92347053b5a9e5aa081248c8711923ea6d4d916567"
+        },
+        {
+          "path": "src/main/scala/vexiiriscv/test/WhiteboxerPlugin.scala",
+          "sha256": "0d84237b565248737fd7e1d6ba4189c0cb218d2ac2183a48ba83619b2e4336e8"
+        }
+      ],
+      "head": "139c15eec129a194d7c080e7369ed51de7740f59"
+    },
+    "digest": "ef041f2ea52129c0e3755ccfd756491b16ab64fa5211fbdd37914f99699ab813"
+  },
+  "toolchain": {
+    "java": {
+      "argv": [
+        "/usr/bin/java",
+        "-version"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "path": "/usr/bin/java",
+      "version": "openjdk version \"26.0.2.1\" 2026-08-18\nOpenJDK Runtime Environment (build 26.0.2.1)\nOpenJDK 64-Bit Server VM (build 26.0.2.1, mixed mode, sharing)"
+    },
+    "mill": {
+      "available": true,
+      "path": "/usr/bin/mill",
+      "sha256": "5f117ed78d8ab848717e9f2f476aa4d1aef888691d9ddae762602b74200686a4"
+    },
+    "python": {
+      "available": true,
+      "path": "/usr/bin/python3",
+      "version": "3.14.7 (main, Aug 10 2026, 07:46:56) [GCC 16.1.1 20260728]"
+    },
+    "riscv_gcc": {
+      "argv": [
+        "/usr/bin/riscv64-elf-gcc",
+        "--version"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "path": "/usr/bin/riscv64-elf-gcc",
+      "version": "riscv64-elf-gcc (Arch Linux Repositories) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    },
+    "verilator": {
+      "argv": [
+        "/usr/bin/verilator",
+        "--version"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "path": "/usr/bin/verilator",
+      "version": "Verilator 5.052 2026-09-05 rev v5.052"
+    }
+  },
+  "unit_test_commands": {
+    "ctc": "python3 -m unittest discover -s ext/NaxSoftware/benchmarks/cache_tlb_shdlt/tests -p test_*.py",
+    "dirtygen": "python3 -m unittest discover -s ext/NaxSoftware/benchmarks/dirtygen/tests -p test_*.py",
+    "race": "python3 -m unittest discover -s ext/NaxSoftware/baremetal/multicore_race_shdlt/tests -p test_*.py",
+    "rtl": "python3 -m unittest discover -s ext/NaxSoftware/baremetal/rtl_directed_shdlt/tests -p test_*.py"
+  }
+}

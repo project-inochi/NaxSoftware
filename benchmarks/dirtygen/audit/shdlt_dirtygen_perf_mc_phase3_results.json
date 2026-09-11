@@ -1,0 +1,2000 @@
+{
+  "architecture": {
+    "comparison_counts": {
+      "distributions": 6,
+      "main_pairings": 120,
+      "main_summaries": 24,
+      "reference_pairings": 15,
+      "sources": 108,
+      "summaries": 27
+    },
+    "h1_reference": {
+      "raw_sample_count": 72,
+      "selection_count": 12
+    },
+    "interrupted_and_resumed": [
+      {
+        "attempts": [
+          {
+            "end_time": "2026-09-09T12:17:46.797566+00:00",
+            "exit_code": null,
+            "path": "runs/078-architecture-i2-h4-private-weak-b1-architecture",
+            "start_time": "2026-09-09T12:04:20.999875+00:00",
+            "status": "interrupted"
+          },
+          {
+            "end_time": "2026-09-09T12:34:10.670023+00:00",
+            "exit_code": 0,
+            "path": "runs/078-architecture-i2-h4-private-weak-b1-architecture-retry1",
+            "start_time": "2026-09-09T12:21:41.385533+00:00",
+            "status": "passed"
+          }
+        ],
+        "key": "architecture:I2:h4:private-weak:B1:architecture"
+      }
+    ],
+    "main_matrix": {
+      "raw_sample_count": 576,
+      "selection_count": 96
+    },
+    "performance": {
+      "cross_block_distributions": [
+        {
+          "block_medians": {
+            "active_total": {
+              "I0": 1147,
+              "I1": 1147,
+              "I2": 1147,
+              "I3": 1147
+            },
+            "enable_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "log_cycles": {
+              "I0": 896,
+              "I1": 896,
+              "I2": 896,
+              "I3": 896
+            },
+            "svadu_cycles": {
+              "I0": 289,
+              "I1": 289,
+              "I2": 289,
+              "I3": 289
+            },
+            "total_cycles": {
+              "I0": 1147,
+              "I1": 1147,
+              "I2": 1147,
+              "I3": 1147
+            }
+          },
+          "experiment_id": "phase3-20260909-architecture-fixed",
+          "hart_count": 2,
+          "mode": "architecture",
+          "simulation_seed": 2,
+          "workload": "private-strong"
+        },
+        {
+          "block_medians": {
+            "active_total": {
+              "I0": 610,
+              "I1": 610,
+              "I2": 610,
+              "I3": 610
+            },
+            "enable_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "log_cycles": {
+              "I0": 486,
+              "I1": 486,
+              "I2": 486,
+              "I3": 486
+            },
+            "svadu_cycles": {
+              "I0": 172,
+              "I1": 172,
+              "I2": 172,
+              "I3": 172
+            },
+            "total_cycles": {
+              "I0": 610,
+              "I1": 610,
+              "I2": 610,
+              "I3": 610
+            }
+          },
+          "experiment_id": "phase3-20260909-architecture-fixed",
+          "hart_count": 2,
+          "mode": "architecture",
+          "simulation_seed": 2,
+          "workload": "private-weak"
+        },
+        {
+          "block_medians": {
+            "active_total": {
+              "I0": 14,
+              "I1": 14,
+              "I2": 14,
+              "I3": 14
+            },
+            "enable_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "log_cycles": {
+              "I0": 14,
+              "I1": 14,
+              "I2": 14,
+              "I3": 14
+            },
+            "svadu_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "total_cycles": {
+              "I0": 14,
+              "I1": 14,
+              "I2": 14,
+              "I3": 14
+            }
+          },
+          "experiment_id": "phase3-20260909-architecture-fixed",
+          "hart_count": 2,
+          "mode": "architecture",
+          "simulation_seed": 2,
+          "workload": "same-pte"
+        },
+        {
+          "block_medians": {
+            "active_total": {
+              "I0": 824,
+              "I1": 824,
+              "I2": 824,
+              "I3": 824
+            },
+            "enable_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "log_cycles": {
+              "I0": 665,
+              "I1": 665,
+              "I2": 665,
+              "I3": 665
+            },
+            "svadu_cycles": {
+              "I0": 159,
+              "I1": 159,
+              "I2": 159,
+              "I3": 159
+            },
+            "total_cycles": {
+              "I0": 824,
+              "I1": 824,
+              "I2": 824,
+              "I3": 824
+            }
+          },
+          "experiment_id": "phase3-20260909-architecture-fixed",
+          "hart_count": 4,
+          "mode": "architecture",
+          "simulation_seed": 2,
+          "workload": "private-strong"
+        },
+        {
+          "block_medians": {
+            "active_total": {
+              "I0": 760,
+              "I1": 760,
+              "I2": 760,
+              "I3": 760
+            },
+            "enable_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "log_cycles": {
+              "I0": 747,
+              "I1": 747,
+              "I2": 747,
+              "I3": 747
+            },
+            "svadu_cycles": {
+              "I0": -13,
+              "I1": -13,
+              "I2": -13,
+              "I3": -13
+            },
+            "total_cycles": {
+              "I0": 760,
+              "I1": 760,
+              "I2": 760,
+              "I3": 760
+            }
+          },
+          "experiment_id": "phase3-20260909-architecture-fixed",
+          "hart_count": 4,
+          "mode": "architecture",
+          "simulation_seed": 2,
+          "workload": "private-weak"
+        },
+        {
+          "block_medians": {
+            "active_total": {
+              "I0": 10,
+              "I1": 10,
+              "I2": 10,
+              "I3": 10
+            },
+            "enable_cycles": {
+              "I0": 0,
+              "I1": 0,
+              "I2": 0,
+              "I3": 0
+            },
+            "log_cycles": {
+              "I0": 19,
+              "I1": 19,
+              "I2": 19,
+              "I3": 19
+            },
+            "svadu_cycles": {
+              "I0": -7,
+              "I1": -7,
+              "I2": -7,
+              "I3": -7
+            },
+            "total_cycles": {
+              "I0": 10,
+              "I1": 10,
+              "I2": 10,
+              "I3": 10
+            }
+          },
+          "experiment_id": "phase3-20260909-architecture-fixed",
+          "hart_count": 4,
+          "mode": "architecture",
+          "simulation_seed": 2,
+          "workload": "same-pte"
+        }
+      ],
+      "same_pte_b3_physical_distribution": [
+        {
+          "committed_total": 20,
+          "hart_count": 2,
+          "measured_samples": 20,
+          "physical_attempt_distribution": [
+            {
+              "count": 20,
+              "value": 1
+            }
+          ],
+          "physical_attempts_total": 20,
+          "superseded_distribution": [
+            {
+              "count": 20,
+              "value": 0
+            }
+          ],
+          "superseded_total": 0
+        },
+        {
+          "committed_total": 20,
+          "hart_count": 4,
+          "measured_samples": 20,
+          "physical_attempt_distribution": [
+            {
+              "count": 12,
+              "value": 1
+            },
+            {
+              "count": 8,
+              "value": 2
+            }
+          ],
+          "physical_attempts_total": 28,
+          "superseded_distribution": [
+            {
+              "count": 12,
+              "value": 0
+            },
+            {
+              "count": 8,
+              "value": 1
+            }
+          ],
+          "superseded_total": 8
+        }
+      ],
+      "statistics": [
+        {
+          "baselines": {
+            "B0": {
+              "aggregate_ops_per_cycle": {
+                "mad": 1.9157589598663843e-05,
+                "max": 0.015873015873015872,
+                "median": 0.015668992532745746,
+                "min": 0.015399422521655439
+              },
+              "completion_cycles": {
+                "mad": 10,
+                "max": 8312,
+                "median": 8169,
+                "min": 8064
+              },
+              "dirty_page_throughput": {
+                "mad": 1.9157589598663843e-05,
+                "max": 0.015873015873015872,
+                "median": 0.015668992532745746,
+                "min": 0.015399422521655439
+              }
+            },
+            "B1": {
+              "aggregate_ops_per_cycle": {
+                "mad": 1.9157589598663843e-05,
+                "max": 0.015873015873015872,
+                "median": 0.015668992532745746,
+                "min": 0.015399422521655439
+              },
+              "completion_cycles": {
+                "mad": 10,
+                "max": 8312,
+                "median": 8169,
+                "min": 8064
+              },
+              "dirty_page_throughput": {
+                "mad": 1.9157589598663843e-05,
+                "max": 0.015873015873015872,
+                "median": 0.015668992532745746,
+                "min": 0.015399422521655439
+              }
+            },
+            "B2": {
+              "aggregate_ops_per_cycle": {
+                "mad": 4.126530295866897e-05,
+                "max": 0.015221786181472232,
+                "median": 0.015133601324190116,
+                "min": 0.015073009891662742
+              },
+              "completion_cycles": {
+                "mad": 23,
+                "max": 8492,
+                "median": 8458,
+                "min": 8409
+              },
+              "dirty_page_throughput": {
+                "mad": 4.126530295866897e-05,
+                "max": 0.015221786181472232,
+                "median": 0.015133601324190116,
+                "min": 0.015073009891662742
+              }
+            },
+            "B3": {
+              "aggregate_ops_per_cycle": {
+                "mad": 8.685907930986239e-05,
+                "max": 0.01389642818369341,
+                "median": 0.013683985460765448,
+                "min": 0.013540674918015444
+              },
+              "completion_cycles": {
+                "mad": 59,
+                "max": 9453,
+                "median": 9354,
+                "min": 9211
+              },
+              "dirty_page_throughput": {
+                "mad": 8.685907930986239e-05,
+                "max": 0.01389642818369341,
+                "median": 0.013683985460765448,
+                "min": 0.013540674918015444
+              }
+            }
+          },
+          "deltas": {
+            "active_total": {
+              "mad": 38,
+              "max": 1274,
+              "median": 1147,
+              "min": 1042
+            },
+            "enable_cycles": {
+              "mad": 0,
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "log_cycles": {
+              "mad": 70,
+              "max": 1044,
+              "median": 896,
+              "min": 719
+            },
+            "svadu_cycles": {
+              "mad": 59,
+              "max": 428,
+              "median": 289,
+              "min": 123
+            },
+            "total_cycles": {
+              "mad": 38,
+              "max": 1274,
+              "median": 1147,
+              "min": 1042
+            }
+          },
+          "hart_count": 2,
+          "isolation_blocks": [
+            "I0",
+            "I1",
+            "I2",
+            "I3"
+          ],
+          "scaling": {
+            "B0": {
+              "efficiency": {
+                "mad": 0.002505287634064879,
+                "max": 0.7940228174603174,
+                "median": 0.780813526096545,
+                "min": 0.7649181905678537
+              },
+              "speedup": {
+                "mad": 0.005010575268129758,
+                "max": 1.5880456349206349,
+                "median": 1.56162705219309,
+                "min": 1.5298363811357074
+              }
+            },
+            "B1": {
+              "efficiency": {
+                "mad": 0.002505287634064879,
+                "max": 0.7940228174603174,
+                "median": 0.780813526096545,
+                "min": 0.7649181905678537
+              },
+              "speedup": {
+                "mad": 0.005010575268129758,
+                "max": 1.5880456349206349,
+                "median": 1.56162705219309,
+                "min": 1.5298363811357074
+              }
+            },
+            "B2": {
+              "efficiency": {
+                "mad": 0.0013513444366411997,
+                "max": 0.8147223213223926,
+                "median": 0.8067593028732926,
+                "min": 0.8046819579096713
+              },
+              "speedup": {
+                "mad": 0.0027026888732823995,
+                "max": 1.6294446426447853,
+                "median": 1.6135186057465851,
+                "min": 1.6093639158193427
+              }
+            },
+            "B3": {
+              "efficiency": {
+                "mad": 0.003175767055769718,
+                "max": 0.810335468461622,
+                "median": 0.7931366260423348,
+                "min": 0.7899608589865651
+              },
+              "speedup": {
+                "mad": 0.006351534111539436,
+                "max": 1.620670936923244,
+                "median": 1.5862732520846696,
+                "min": 1.5799217179731302
+              }
+            }
+          },
+          "statistics_identical_across_blocks": true,
+          "workload": "private-strong"
+        },
+        {
+          "baselines": {
+            "B0": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0001838291614326415,
+                "max": 0.01577520335223071,
+                "median": 0.01556420233463035,
+                "min": 0.015083667216592034
+              },
+              "completion_cycles": {
+                "mad": 48,
+                "max": 4243,
+                "median": 4112,
+                "min": 4057
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0001838291614326415,
+                "max": 0.01577520335223071,
+                "median": 0.01556420233463035,
+                "min": 0.015083667216592034
+              }
+            },
+            "B1": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0001838291614326415,
+                "max": 0.01577520335223071,
+                "median": 0.01556420233463035,
+                "min": 0.015083667216592034
+              },
+              "completion_cycles": {
+                "mad": 48,
+                "max": 4243,
+                "median": 4112,
+                "min": 4057
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0001838291614326415,
+                "max": 0.01577520335223071,
+                "median": 0.01556420233463035,
+                "min": 0.015083667216592034
+              }
+            },
+            "B2": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.00011618976781851455,
+                "max": 0.015281757402101241,
+                "median": 0.015069460795855898,
+                "min": 0.014588557100524277
+              },
+              "completion_cycles": {
+                "mad": 33,
+                "max": 4387,
+                "median": 4247,
+                "min": 4188
+              },
+              "dirty_page_throughput": {
+                "mad": 0.00011618976781851455,
+                "max": 0.015281757402101241,
+                "median": 0.015069460795855898,
+                "min": 0.014588557100524277
+              }
+            },
+            "B3": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0001474437145360316,
+                "max": 0.013692768506632435,
+                "median": 0.013544973544973546,
+                "min": 0.013278008298755186
+              },
+              "completion_cycles": {
+                "mad": 51,
+                "max": 4820,
+                "median": 4725,
+                "min": 4674
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0001474437145360316,
+                "max": 0.013692768506632435,
+                "median": 0.013544973544973546,
+                "min": 0.013278008298755186
+              }
+            }
+          },
+          "deltas": {
+            "active_total": {
+              "mad": 110,
+              "max": 756,
+              "median": 610,
+              "min": 482
+            },
+            "enable_cycles": {
+              "mad": 0,
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "log_cycles": {
+              "mad": 44,
+              "max": 584,
+              "median": 486,
+              "min": 335
+            },
+            "svadu_cycles": {
+              "mad": 103,
+              "max": 275,
+              "median": 172,
+              "min": 37
+            },
+            "total_cycles": {
+              "mad": 110,
+              "max": 756,
+              "median": 610,
+              "min": 482
+            }
+          },
+          "hart_count": 2,
+          "isolation_blocks": [
+            "I0",
+            "I1",
+            "I2",
+            "I3"
+          ],
+          "scaling": {
+            "B0": {
+              "efficiency": {
+                "mad": 0.004612963019700378,
+                "max": 0.39585900912003946,
+                "median": 0.39056420233463035,
+                "min": 0.37850577421635634
+              },
+              "speedup": {
+                "mad": 0.009225926039400756,
+                "max": 0.7917180182400789,
+                "median": 0.7811284046692607,
+                "min": 0.7570115484327127
+              }
+            },
+            "B1": {
+              "efficiency": {
+                "mad": 0.004612963019700378,
+                "max": 0.39585900912003946,
+                "median": 0.39056420233463035,
+                "min": 0.37850577421635634
+              },
+              "speedup": {
+                "mad": 0.009225926039400756,
+                "max": 0.7917180182400789,
+                "median": 0.7811284046692607,
+                "min": 0.7570115484327127
+              }
+            },
+            "B2": {
+              "efficiency": {
+                "mad": 0.0031189690798782976,
+                "max": 0.41201050620821394,
+                "median": 0.4045208382387568,
+                "min": 0.39161157966719856
+              },
+              "speedup": {
+                "mad": 0.006237938159756595,
+                "max": 0.8240210124164279,
+                "median": 0.8090416764775136,
+                "min": 0.7832231593343971
+              }
+            },
+            "B3": {
+              "efficiency": {
+                "mad": 0.004644900823221387,
+                "max": 0.40917843388960207,
+                "median": 0.403430749682338,
+                "min": 0.39522821576763484
+              },
+              "speedup": {
+                "mad": 0.009289801646442775,
+                "max": 0.8183568677792041,
+                "median": 0.806861499364676,
+                "min": 0.7904564315352697
+              }
+            }
+          },
+          "statistics_identical_across_blocks": true,
+          "workload": "private-weak"
+        },
+        {
+          "baselines": {
+            "B0": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.000261258613369909,
+                "max": 0.011560693641618497,
+                "median": 0.011299435028248588,
+                "min": 0.010869565217391304
+              },
+              "completion_cycles": {
+                "mad": 4,
+                "max": 184,
+                "median": 177,
+                "min": 173
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0001306293066849545,
+                "max": 0.005780346820809248,
+                "median": 0.005649717514124294,
+                "min": 0.005434782608695652
+              }
+            },
+            "B1": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.000261258613369909,
+                "max": 0.011560693641618497,
+                "median": 0.011299435028248588,
+                "min": 0.010869565217391304
+              },
+              "completion_cycles": {
+                "mad": 4,
+                "max": 184,
+                "median": 177,
+                "min": 173
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0001306293066849545,
+                "max": 0.005780346820809248,
+                "median": 0.005649717514124294,
+                "min": 0.005434782608695652
+              }
+            },
+            "B2": {
+              "aggregate_ops_per_cycle": {
+                "mad": 6.644076805527831e-05,
+                "max": 0.011627906976744186,
+                "median": 0.011494252873563218,
+                "min": 0.0106951871657754
+              },
+              "completion_cycles": {
+                "mad": 1,
+                "max": 187,
+                "median": 174,
+                "min": 172
+              },
+              "dirty_page_throughput": {
+                "mad": 3.3220384027639153e-05,
+                "max": 0.005813953488372093,
+                "median": 0.005747126436781609,
+                "min": 0.0053475935828877
+              }
+            },
+            "B3": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.00027852049910873436,
+                "max": 0.01098901098901099,
+                "median": 0.010416666666666666,
+                "min": 0.009950248756218905
+              },
+              "completion_cycles": {
+                "mad": 5,
+                "max": 201,
+                "median": 192,
+                "min": 182
+              },
+              "dirty_page_throughput": {
+                "mad": 0.00013926024955436718,
+                "max": 0.005494505494505495,
+                "median": 0.005208333333333333,
+                "min": 0.004975124378109453
+              }
+            }
+          },
+          "deltas": {
+            "active_total": {
+              "mad": 6,
+              "max": 24,
+              "median": 14,
+              "min": 5
+            },
+            "enable_cycles": {
+              "mad": 0,
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "log_cycles": {
+              "mad": 9,
+              "max": 26,
+              "median": 14,
+              "min": 5
+            },
+            "svadu_cycles": {
+              "mad": 3,
+              "max": 3,
+              "median": 0,
+              "min": -8
+            },
+            "total_cycles": {
+              "mad": 6,
+              "max": 24,
+              "median": 14,
+              "min": 5
+            }
+          },
+          "hart_count": 2,
+          "isolation_blocks": [
+            "I0",
+            "I1",
+            "I2",
+            "I3"
+          ],
+          "physical_logger": {
+            "B0": {
+              "append_amplification": null,
+              "committed": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": null
+            },
+            "B1": {
+              "append_amplification": null,
+              "committed": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": null
+            },
+            "B2": {
+              "append_amplification": null,
+              "committed": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": null
+            },
+            "B3": {
+              "append_amplification": {
+                "mad": 0,
+                "max": 1.0,
+                "median": 1,
+                "min": 1.0
+              },
+              "committed": {
+                "mad": 0,
+                "max": 1,
+                "median": 1,
+                "min": 1
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 1,
+                "median": 1,
+                "min": 1
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": {
+                "mad": 0,
+                "max": 0.0,
+                "median": 0,
+                "min": 0.0
+              }
+            }
+          },
+          "statistics_identical_across_blocks": true,
+          "workload": "same-pte"
+        },
+        {
+          "baselines": {
+            "B0": {
+              "aggregate_ops_per_cycle": {
+                "mad": 5.448506927226843e-05,
+                "max": 0.02520677432059866,
+                "median": 0.02515228925132639,
+                "min": 0.024917266887288302
+              },
+              "completion_cycles": {
+                "mad": 11,
+                "max": 5137,
+                "median": 5089,
+                "min": 5078
+              },
+              "dirty_page_throughput": {
+                "mad": 5.448506927226843e-05,
+                "max": 0.02520677432059866,
+                "median": 0.02515228925132639,
+                "min": 0.024917266887288302
+              }
+            },
+            "B1": {
+              "aggregate_ops_per_cycle": {
+                "mad": 5.448506927226843e-05,
+                "max": 0.02520677432059866,
+                "median": 0.02515228925132639,
+                "min": 0.024917266887288302
+              },
+              "completion_cycles": {
+                "mad": 11,
+                "max": 5137,
+                "median": 5089,
+                "min": 5078
+              },
+              "dirty_page_throughput": {
+                "mad": 5.448506927226843e-05,
+                "max": 0.02520677432059866,
+                "median": 0.02515228925132639,
+                "min": 0.024917266887288302
+              }
+            },
+            "B2": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0001661712302210086,
+                "max": 0.024648565376468323,
+                "median": 0.024390243902439025,
+                "min": 0.02381838481577968
+              },
+              "completion_cycles": {
+                "mad": 36,
+                "max": 5374,
+                "median": 5248,
+                "min": 5193
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0001661712302210086,
+                "max": 0.024648565376468323,
+                "median": 0.024390243902439025,
+                "min": 0.02381838481577968
+              }
+            },
+            "B3": {
+              "aggregate_ops_per_cycle": {
+                "mad": 3.6547725804910586e-05,
+                "max": 0.021914055812360896,
+                "median": 0.021647217994249957,
+                "min": 0.021322671997334668
+              },
+              "completion_cycles": {
+                "mad": 10,
+                "max": 6003,
+                "median": 5913,
+                "min": 5841
+              },
+              "dirty_page_throughput": {
+                "mad": 3.6547725804910586e-05,
+                "max": 0.021914055812360896,
+                "median": 0.021647217994249957,
+                "min": 0.021322671997334668
+              }
+            }
+          },
+          "deltas": {
+            "active_total": {
+              "mad": 19,
+              "max": 866,
+              "median": 824,
+              "min": 763
+            },
+            "enable_cycles": {
+              "mad": 0,
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "log_cycles": {
+              "mad": 108,
+              "max": 810,
+              "median": 665,
+              "min": 532
+            },
+            "svadu_cycles": {
+              "mad": 47,
+              "max": 273,
+              "median": 159,
+              "min": 56
+            },
+            "total_cycles": {
+              "mad": 19,
+              "max": 866,
+              "median": 824,
+              "min": 763
+            }
+          },
+          "hart_count": 4,
+          "isolation_blocks": [
+            "I0",
+            "I1",
+            "I2",
+            "I3"
+          ],
+          "scaling": {
+            "B0": {
+              "efficiency": {
+                "mad": 0.0014675841189346617,
+                "max": 0.6292256289308176,
+                "median": 0.6261544507761839,
+                "min": 0.6188436830835118
+              },
+              "speedup": {
+                "mad": 0.005870336475738647,
+                "max": 2.5169025157232703,
+                "median": 2.5046178031047357,
+                "min": 2.475374732334047
+              }
+            },
+            "B1": {
+              "efficiency": {
+                "mad": 0.0014675841189346617,
+                "max": 0.6292256289308176,
+                "median": 0.6261544507761839,
+                "min": 0.6188436830835118
+              },
+              "speedup": {
+                "mad": 0.005870336475738647,
+                "max": 2.5169025157232703,
+                "median": 2.5046178031047357,
+                "min": 2.475374732334047
+              }
+            },
+            "B2": {
+              "efficiency": {
+                "mad": 0.00543860270979224,
+                "max": 0.6553052185634508,
+                "median": 0.6498666158536586,
+                "min": 0.6374209155191664
+              },
+              "speedup": {
+                "mad": 0.02175441083916896,
+                "max": 2.6212208742538032,
+                "median": 2.5994664634146343,
+                "min": 2.5496836620766654
+              }
+            },
+            "B3": {
+              "efficiency": {
+                "mad": 0.002109966777047778,
+                "max": 0.6350796096558808,
+                "median": 0.6300861050143508,
+                "min": 0.6179410294852574
+              },
+              "speedup": {
+                "mad": 0.008439867108191113,
+                "max": 2.5403184386235234,
+                "median": 2.5203444200574032,
+                "min": 2.4717641179410297
+              }
+            }
+          },
+          "statistics_identical_across_blocks": true,
+          "workload": "private-strong"
+        },
+        {
+          "baselines": {
+            "B0": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0003628915287735568,
+                "max": 0.025437201907790145,
+                "median": 0.02506854680767724,
+                "min": 0.024596464258262875
+              },
+              "completion_cycles": {
+                "mad": 74,
+                "max": 5204,
+                "median": 5106,
+                "min": 5032
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0003628915287735568,
+                "max": 0.025437201907790145,
+                "median": 0.02506854680767724,
+                "min": 0.024596464258262875
+              }
+            },
+            "B1": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0003628915287735568,
+                "max": 0.025437201907790145,
+                "median": 0.02506854680767724,
+                "min": 0.024596464258262875
+              },
+              "completion_cycles": {
+                "mad": 74,
+                "max": 5204,
+                "median": 5106,
+                "min": 5032
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0003628915287735568,
+                "max": 0.025437201907790145,
+                "median": 0.02506854680767724,
+                "min": 0.024596464258262875
+              }
+            },
+            "B2": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.00015401742765852947,
+                "max": 0.025132534851757315,
+                "median": 0.024897879789924138,
+                "min": 0.02438095238095238
+              },
+              "completion_cycles": {
+                "mad": 32,
+                "max": 5250,
+                "median": 5141,
+                "min": 5093
+              },
+              "dirty_page_throughput": {
+                "mad": 0.00015401742765852947,
+                "max": 0.025132534851757315,
+                "median": 0.024897879789924138,
+                "min": 0.02438095238095238
+              }
+            },
+            "B3": {
+              "aggregate_ops_per_cycle": {
+                "mad": 1.8476228484432672e-05,
+                "max": 0.021820661438799863,
+                "median": 0.021739130434782608,
+                "min": 0.02162527453961818
+              },
+              "completion_cycles": {
+                "mad": 5,
+                "max": 5919,
+                "median": 5888,
+                "min": 5866
+              },
+              "dirty_page_throughput": {
+                "mad": 1.8476228484432672e-05,
+                "max": 0.021820661438799863,
+                "median": 0.021739130434782608,
+                "min": 0.02162527453961818
+              }
+            }
+          },
+          "deltas": {
+            "active_total": {
+              "mad": 70,
+              "max": 861,
+              "median": 760,
+              "min": 679
+            },
+            "enable_cycles": {
+              "mad": 0,
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "log_cycles": {
+              "mad": 26,
+              "max": 773,
+              "median": 747,
+              "min": 669
+            },
+            "svadu_cycles": {
+              "mad": 81,
+              "max": 161,
+              "median": -13,
+              "min": -94
+            },
+            "total_cycles": {
+              "mad": 70,
+              "max": 861,
+              "median": 760,
+              "min": 679
+            }
+          },
+          "hart_count": 4,
+          "isolation_blocks": [
+            "I0",
+            "I1",
+            "I2",
+            "I3"
+          ],
+          "scaling": {
+            "B0": {
+              "efficiency": {
+                "mad": 0.0017873817432843275,
+                "max": 0.15957869634340222,
+                "median": 0.1577913146001179,
+                "min": 0.154304381245196
+              },
+              "speedup": {
+                "mad": 0.00714952697313731,
+                "max": 0.6383147853736089,
+                "median": 0.6311652584004716,
+                "min": 0.617217524980784
+              }
+            },
+            "B1": {
+              "efficiency": {
+                "mad": 0.0017873817432843275,
+                "max": 0.15957869634340222,
+                "median": 0.1577913146001179,
+                "min": 0.154304381245196
+              },
+              "speedup": {
+                "mad": 0.00714952697313731,
+                "max": 0.6383147853736089,
+                "median": 0.6311652584004716,
+                "min": 0.617217524980784
+              }
+            },
+            "B2": {
+              "efficiency": {
+                "mad": 0.0010336013309271697,
+                "max": 0.16939917533870016,
+                "median": 0.16708811515269403,
+                "min": 0.1636190476190476
+              },
+              "speedup": {
+                "mad": 0.004134405323708679,
+                "max": 0.6775967013548007,
+                "median": 0.6683524606107761,
+                "min": 0.6544761904761904
+              }
+            },
+            "B3": {
+              "efficiency": {
+                "mad": 0.0002646335302938785,
+                "max": 0.16301568360040913,
+                "median": 0.16189707880434784,
+                "min": 0.1609224531170806
+              },
+              "speedup": {
+                "mad": 0.001058534121175514,
+                "max": 0.6520627344016365,
+                "median": 0.6475883152173914,
+                "min": 0.6436898124683224
+              }
+            }
+          },
+          "statistics_identical_across_blocks": true,
+          "workload": "private-weak"
+        },
+        {
+          "baselines": {
+            "B0": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.00027871974729409485,
+                "max": 0.020100502512562814,
+                "median": 0.019417475728155338,
+                "min": 0.01834862385321101
+              },
+              "completion_cycles": {
+                "mad": 3,
+                "max": 218,
+                "median": 206,
+                "min": 199
+              },
+              "dirty_page_throughput": {
+                "mad": 6.967993682352371e-05,
+                "max": 0.005025125628140704,
+                "median": 0.0048543689320388345,
+                "min": 0.0045871559633027525
+              }
+            },
+            "B1": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.00027871974729409485,
+                "max": 0.020100502512562814,
+                "median": 0.019417475728155338,
+                "min": 0.01834862385321101
+              },
+              "completion_cycles": {
+                "mad": 3,
+                "max": 218,
+                "median": 206,
+                "min": 199
+              },
+              "dirty_page_throughput": {
+                "mad": 6.967993682352371e-05,
+                "max": 0.005025125628140704,
+                "median": 0.0048543689320388345,
+                "min": 0.0045871559633027525
+              }
+            },
+            "B2": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0012834616795012847,
+                "max": 0.0213903743315508,
+                "median": 0.019801980198019802,
+                "min": 0.018433179723502304
+              },
+              "completion_cycles": {
+                "mad": 14,
+                "max": 217,
+                "median": 202,
+                "min": 187
+              },
+              "dirty_page_throughput": {
+                "mad": 0.0003208654198753212,
+                "max": 0.0053475935828877,
+                "median": 0.0049504950495049506,
+                "min": 0.004608294930875576
+              }
+            },
+            "B3": {
+              "aggregate_ops_per_cycle": {
+                "mad": 0.0011526355455069373,
+                "max": 0.019417475728155338,
+                "median": 0.0182648401826484,
+                "min": 0.012698412698412698
+              },
+              "completion_cycles": {
+                "mad": 13,
+                "max": 315,
+                "median": 219,
+                "min": 206
+              },
+              "dirty_page_throughput": {
+                "mad": 0.00028815888637673433,
+                "max": 0.0048543689320388345,
+                "median": 0.0045662100456621,
+                "min": 0.0031746031746031746
+              }
+            }
+          },
+          "deltas": {
+            "active_total": {
+              "mad": 22,
+              "max": 109,
+              "median": 10,
+              "min": -12
+            },
+            "enable_cycles": {
+              "mad": 0,
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "log_cycles": {
+              "mad": 24,
+              "max": 118,
+              "median": 19,
+              "min": -5
+            },
+            "svadu_cycles": {
+              "mad": 19,
+              "max": 17,
+              "median": -7,
+              "min": -31
+            },
+            "total_cycles": {
+              "mad": 22,
+              "max": 109,
+              "median": 10,
+              "min": -12
+            }
+          },
+          "hart_count": 4,
+          "isolation_blocks": [
+            "I0",
+            "I1",
+            "I2",
+            "I3"
+          ],
+          "physical_logger": {
+            "B0": {
+              "append_amplification": null,
+              "committed": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": null
+            },
+            "B1": {
+              "append_amplification": null,
+              "committed": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": null
+            },
+            "B2": {
+              "append_amplification": null,
+              "committed": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 0,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": null
+            },
+            "B3": {
+              "append_amplification": {
+                "mad": 0,
+                "max": 2.0,
+                "median": 1,
+                "min": 1.0
+              },
+              "committed": {
+                "mad": 0,
+                "max": 1,
+                "median": 1,
+                "min": 1
+              },
+              "physical_attempts": {
+                "mad": 0,
+                "max": 2,
+                "median": 1,
+                "min": 1
+              },
+              "superseded": {
+                "mad": 0,
+                "max": 1,
+                "median": 0,
+                "min": 0
+              },
+              "superseded_ratio": {
+                "mad": 0,
+                "max": 0.5,
+                "median": 0,
+                "min": 0.0
+              }
+            }
+          },
+          "statistics_identical_across_blocks": true,
+          "workload": "same-pte"
+        }
+      ]
+    },
+    "sample_counts": {
+      "bad_status_samples": 0,
+      "files": 108,
+      "measured_samples": 540,
+      "raw_samples": 648,
+      "warmup_samples": 108
+    },
+    "selection_count": 108,
+    "status": "PASS"
+  },
+  "boundaries": {
+    "all_harts_cas_not_required": true,
+    "architecture_verdict_excludes_performance_sign": true,
+    "cas_attempt_count_is_diagnostic_only": true,
+    "not_run": [
+      "buffer-full",
+      "Linux/KVM",
+      "FPGA",
+      "other ISA extensions"
+    ],
+    "prefilled_is_not_forced_cas": true
+  },
+  "forced_cas_required": false,
+  "protected_assets": {
+    "frozen_manifest_entries": 43,
+    "mismatches": [],
+    "protected_file_count": 61,
+    "protected_files_match": true,
+    "top_level_gitlinks": "160000 commit b801c3ee0c2ef32f982a95fc7f7a063f47689971\text/NaxSoftware\n160000 commit 6bd1623d89e1859e32b6547cca4d94045e3a64bc\text/riscv-isa-sim\n160000 commit bcff90eb7877df4ba5f5be5e2fbc00ce7018de4e\text/rvls\n",
+    "top_level_gitlinks_match": true
+  },
+  "recorded_at": "2026-09-10T02:39:55.839199+00:00",
+  "regressions": {
+    "rvls_pte_cas_minimum": {
+      "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/rvls-pte-cas-minimal.log",
+      "sha256": "99a1547308806d72cb1e3c6c708610ab2bf9cb69e1c330dc37bcc61c6f65f07f",
+      "status": "PASS"
+    },
+    "spike_default_path": {
+      "passed": 12,
+      "results": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/spike-minimals/results.json",
+        "sha256": "f9312fc9c716eb0debc11133d6cd4a93d8c7e297add71aaa2175a2f00869344d"
+      },
+      "spike_sha256": "fdbf7d4cec1de1b7a3b2cc11ad4d566badf76259f559eec71072bdac119fbd27",
+      "status": "PASS",
+      "total": 12
+    },
+    "unit_tests": {
+      "passed": 222,
+      "status": "PASS",
+      "suites": {
+        "ctc": {
+          "passed": 7,
+          "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-ctc.log",
+          "sha256": "21c7e48d0b1ec908feef784bbce1fa55f2c9a7acf76382fa7578754a78bd1ed8",
+          "status": "PASS",
+          "total": 7
+        },
+        "dirtygen": {
+          "passed": 171,
+          "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-dirtygen.log",
+          "sha256": "9101724797a62d94b1458a33b12cd0db6f8b64e90ae122726a93c1acb4308732",
+          "status": "PASS",
+          "total": 171
+        },
+        "race": {
+          "passed": 12,
+          "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-race.log",
+          "sha256": "ddbc5bf15c26bf2c15a86c04aa1c4eb9dbb31a4d245c800b95a5282be426a476",
+          "status": "PASS",
+          "total": 12
+        },
+        "rtl": {
+          "passed": 32,
+          "path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase3-final/unit-rtl.log",
+          "sha256": "5db358d6fad6c2406ed557e9bdaa89f7fa4e5163e5410923faa9837b27058517",
+          "status": "PASS",
+          "total": 32
+        }
+      },
+      "total": 222
+    }
+  },
+  "rvls_gate": {
+    "forced_cas_required": false,
+    "pair_count": 12,
+    "pairs": [
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/000-rvls-gate-i0-h2-private-weak-b3-architecture",
+        "baseline": "B3",
+        "block": "I0",
+        "elf_sha256": "0426c77463c283929b5055356e97db8bc97323d31195bd04f59ce1af200cc15f",
+        "hart_count": 2,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/001-rvls-gate-i0-h2-private-weak-b3-rvls",
+        "status": "PASS",
+        "workload": "private-weak"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/002-rvls-gate-i0-h2-private-weak-b2-architecture",
+        "baseline": "B2",
+        "block": "I0",
+        "elf_sha256": "3261ccb9e4e90f25cbfe2eb2f3b418be9d619339385af07f8d722b1b7c414ef8",
+        "hart_count": 2,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/003-rvls-gate-i0-h2-private-weak-b2-rvls",
+        "status": "PASS",
+        "workload": "private-weak"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/004-rvls-gate-i0-h2-same-pte-b3-architecture",
+        "baseline": "B3",
+        "block": "I0",
+        "elf_sha256": "653a3ae80b8359d19e1a6b4694978a962d9c8139b5294657d98b958b488fdf06",
+        "hart_count": 2,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/005-rvls-gate-i0-h2-same-pte-b3-rvls",
+        "status": "PASS",
+        "workload": "same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/006-rvls-gate-i0-h2-same-pte-b2-architecture",
+        "baseline": "B2",
+        "block": "I0",
+        "elf_sha256": "3c91acb4126840ef97bc996e05ca087393aa3823d36d5d2d29fbcdadbd3c0295",
+        "hart_count": 2,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/007-rvls-gate-i0-h2-same-pte-b2-rvls",
+        "status": "PASS",
+        "workload": "same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/008-rvls-gate-i0-h2-prefilled-same-pte-b3-architecture",
+        "baseline": "B3",
+        "block": "I0",
+        "elf_sha256": "87435255caeb8d071c0cdacf3706f65adb2fc53c9080db8785b2ec9f9776eff9",
+        "hart_count": 2,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/009-rvls-gate-i0-h2-prefilled-same-pte-b3-rvls",
+        "status": "PASS",
+        "workload": "prefilled-same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/010-rvls-gate-i0-h2-prefilled-same-pte-b2-architecture",
+        "baseline": "B2",
+        "block": "I0",
+        "elf_sha256": "0e0250ccf71160e6cf8508c7dd2beab4593edbc19b9a9ece4ef5b5125b7f2706",
+        "hart_count": 2,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/011-rvls-gate-i0-h2-prefilled-same-pte-b2-rvls",
+        "status": "PASS",
+        "workload": "prefilled-same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/012-rvls-gate-i0-h4-private-weak-b3-architecture",
+        "baseline": "B3",
+        "block": "I0",
+        "elf_sha256": "47ee64aa0f180df3f9809cbb4929c4d99b4d917edd7de76024e1880859a713d0",
+        "hart_count": 4,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/013-rvls-gate-i0-h4-private-weak-b3-rvls",
+        "status": "PASS",
+        "workload": "private-weak"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/014-rvls-gate-i0-h4-private-weak-b2-architecture",
+        "baseline": "B2",
+        "block": "I0",
+        "elf_sha256": "8fc49390ef1190a40c206981a13da6a8331f6e7e657578eb50606b589d37e62a",
+        "hart_count": 4,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/015-rvls-gate-i0-h4-private-weak-b2-rvls",
+        "status": "PASS",
+        "workload": "private-weak"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/016-rvls-gate-i0-h4-same-pte-b3-architecture",
+        "baseline": "B3",
+        "block": "I0",
+        "elf_sha256": "145e406e95f3a2b4a254dd718b8ec3f499aff99b964cd54eab8bcc5ba2efa7bf",
+        "hart_count": 4,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/017-rvls-gate-i0-h4-same-pte-b3-rvls",
+        "status": "PASS",
+        "workload": "same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/018-rvls-gate-i0-h4-same-pte-b2-architecture",
+        "baseline": "B2",
+        "block": "I0",
+        "elf_sha256": "25a9740828b6e80376fec42236d13efa55eab2e19188d79f2da030fb6625be72",
+        "hart_count": 4,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/019-rvls-gate-i0-h4-same-pte-b2-rvls",
+        "status": "PASS",
+        "workload": "same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/020-rvls-gate-i0-h4-prefilled-same-pte-b3-architecture",
+        "baseline": "B3",
+        "block": "I0",
+        "elf_sha256": "6abf4a654ae0c382d24ff20e97e9cf8bfaf98dbebd4cfc4c0ebc9dc98d4551ec",
+        "hart_count": 4,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/021-rvls-gate-i0-h4-prefilled-same-pte-b3-rvls",
+        "status": "PASS",
+        "workload": "prefilled-same-pte"
+      },
+      {
+        "architecture": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/022-rvls-gate-i0-h4-prefilled-same-pte-b2-architecture",
+        "baseline": "B2",
+        "block": "I0",
+        "elf_sha256": "4d7793a9af4aed7b9c6cb4042cd12aac902c4d9eb48fd9559f2a8694ada228ac",
+        "hart_count": 4,
+        "raw_samples": 6,
+        "rvls": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf-mc-phase3/phase3-20260909-rvls-gate-fixed/runs/023-rvls-gate-i0-h4-prefilled-same-pte-b2-rvls",
+        "status": "PASS",
+        "workload": "prefilled-same-pte"
+      }
+    ],
+    "process_count": 24,
+    "raw_sample_count": 144,
+    "sample_counts": {
+      "bad_status_samples": 0,
+      "files": 24,
+      "measured_samples": 120,
+      "raw_samples": 144,
+      "warmup_samples": 24
+    },
+    "status": "PASS"
+  },
+  "schema": "shdlt-dirtygen-perf-mc-phase3-results-v1",
+  "single_hart_compatibility": {
+    "legacy_input": {
+      "audit": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_validation_inputs.json",
+        "sha256": "79d7d497c00ca61d524c60152926e9a38a199191781570606ec8f1237b05e35f"
+      },
+      "elf": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/perf-full-s0/dirtygen_perf.elf",
+        "sha256": "e7e1d1a3a8efcf33a7575cd4e075f815e4fb5ea0fd09cd90b9a13ead304892a2"
+      },
+      "metadata": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf/phase5-clean-full-architecture-s0-seed2/metadata.json",
+        "sha256": "5af473c2038cc558126e18faf4142d2a2c166347e4f0c9cc9374339a1d7276eb"
+      },
+      "samples": {
+        "path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-perf/phase5-clean-full-architecture-s0-seed2/report/samples.json",
+        "sha256": "c27d8a5ff0982903a08c6a3a6253649546457535f275a37db3ab648c072286bf"
+      },
+      "workload_code_sha256": "671bf608f26614b1a67cdbe3c0a8968e0437d4dbbc7f43a8502d05bb1a39cda2",
+      "workload_symbol_range": {
+        "end_address": "0x00000000800002f8",
+        "end_symbol": "dirtygen_perf_trap_handler",
+        "section": ".text.init",
+        "size": 120,
+        "start_address": "0x0000000080000280",
+        "start_symbol": "dirtygen_perf_guest_entry"
+      }
+    },
+    "mc_timed_window_bytes": 48,
+    "mc_timed_window_sha256": "43350c303f71381027e8f379d5197cf6cce61c2a7ace927f493c980348e75761",
+    "numeric_threshold_applied": false,
+    "schema": "shdlt-dirtygen-perf-mc-h1-compatibility-v1",
+    "status": "PASS",
+    "workloads": [
+      {
+        "legacy_deltas": {
+          "B1-B0": {
+            "median": 43,
+            "values": [
+              0,
+              43,
+              43,
+              43,
+              1
+            ]
+          },
+          "B2-B0": {
+            "median": 925,
+            "values": [
+              925,
+              939,
+              939,
+              910,
+              896
+            ]
+          },
+          "B3-B2": {
+            "median": 1197,
+            "values": [
+              1197,
+              1183,
+              1183,
+              1212,
+              1226
+            ]
+          }
+        },
+        "legacy_instret": 644,
+        "legacy_workload": "UNIQUE/128",
+        "mc_deltas": {
+          "B1-B0": {
+            "median": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "B2-B0": {
+            "median": 896,
+            "values": [
+              896,
+              896,
+              896,
+              896,
+              896
+            ]
+          },
+          "B3-B2": {
+            "median": 1226,
+            "values": [
+              1233,
+              1226,
+              1226,
+              1226,
+              1226
+            ]
+          }
+        },
+        "mc_instret": 645,
+        "numeric_verdict": "REPORT_ONLY_ORDER_SENSITIVE",
+        "operations": 128,
+        "status": "PASS",
+        "workload": "private-strong"
+      },
+      {
+        "legacy_deltas": {
+          "B1-B0": {
+            "median": 0,
+            "values": [
+              0,
+              0,
+              29,
+              0,
+              0
+            ]
+          },
+          "B2-B0": {
+            "median": 224,
+            "values": [
+              224,
+              238,
+              238,
+              224,
+              224
+            ]
+          },
+          "B3-B2": {
+            "median": 374,
+            "values": [
+              374,
+              360,
+              360,
+              374,
+              374
+            ]
+          }
+        },
+        "legacy_instret": 164,
+        "legacy_workload": "UNIQUE/32",
+        "mc_deltas": {
+          "B1-B0": {
+            "median": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "B2-B0": {
+            "median": 224,
+            "values": [
+              224,
+              224,
+              224,
+              224,
+              224
+            ]
+          },
+          "B3-B2": {
+            "median": 374,
+            "values": [
+              374,
+              374,
+              374,
+              377,
+              374
+            ]
+          }
+        },
+        "mc_instret": 165,
+        "numeric_verdict": "DESCRIPTIVE_CURRENT_PAIR",
+        "operations": 32,
+        "status": "PASS",
+        "workload": "private-weak"
+      },
+      {
+        "legacy_deltas": {
+          "B1-B0": {
+            "median": 0,
+            "values": [
+              0,
+              0,
+              0,
+              3,
+              14
+            ]
+          },
+          "B2-B0": {
+            "median": 7,
+            "values": [
+              7,
+              7,
+              7,
+              7,
+              21
+            ]
+          },
+          "B3-B2": {
+            "median": 22,
+            "values": [
+              22,
+              25,
+              22,
+              22,
+              8
+            ]
+          }
+        },
+        "legacy_instret": 9,
+        "legacy_workload": "UNIQUE/1",
+        "mc_deltas": {
+          "B1-B0": {
+            "median": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "B2-B0": {
+            "median": 7,
+            "values": [
+              7,
+              7,
+              4,
+              4,
+              7
+            ]
+          },
+          "B3-B2": {
+            "median": 22,
+            "values": [
+              22,
+              22,
+              22,
+              24,
+              22
+            ]
+          }
+        },
+        "mc_instret": 10,
+        "numeric_verdict": "DESCRIPTIVE_CURRENT_PAIR",
+        "operations": 1,
+        "status": "PASS",
+        "workload": "same-pte"
+      }
+    ]
+  },
+  "source_fingerprint_sha256": "ef041f2ea52129c0e3755ccfd756491b16ab64fa5211fbdd37914f99699ab813",
+  "status": "PASS"
+}
