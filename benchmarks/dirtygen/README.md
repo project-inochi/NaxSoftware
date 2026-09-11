@@ -367,6 +367,60 @@ firmware sample documents and executable/configuration fingerprints must
 match. Outputs are created atomically and an existing output directory is
 never overwritten. Cycle values and their signs remain descriptive only.
 
+### Phase-3 RVLS gate and architecture campaign
+
+The phase-3 driver runs independent TestBench groups with bounded `--jobs`
+parallelism, fails on the first invalid result, and never overwrites a prior
+attempt. Architecture/RVLS pairs stay serial within a group, as do the declared
+baseline order and all selections sharing one ELF build. Each concurrent group
+uses an independent `SPINALSIM_WORKSPACE`, a copy-on-write clone of the already
+built Mill output, and a unique per-selection TestBench `--name`. The clone is
+accepted only after its completion marker is published. No concurrent group
+shares a firmware build directory. Isolation blocks are
+barriers, so all I0 smoke runs must pass before I1 starts. Its manifest fingerprints
+the complete repository HEADs plus all dirty sources in the MC, tracer, Spike,
+and RVLS scopes. `--resume` is accepted only when that fingerprint and the
+entire schedule still match:
+
+```bash
+python3 tools/run_dirtygen_perf_mc_phase3.py \
+  --phase rvls-gate --experiment-id phase3-20260908 --jobs 3
+
+python3 tools/run_dirtygen_perf_mc_phase3.py \
+  --phase architecture --experiment-id phase3-20260908-architecture --jobs 6
+```
+
+`--adopt-orchestrator-upgrade` is a one-time resume option for a campaign made
+by the earlier serial driver. It accepts only changes to this driver, its unit
+test, and this README, and records both source digests plus the exact changed
+paths in `source_fingerprint_history`. It never accepts firmware, RTL, Spike,
+RVLS, reporter, or checker changes.
+
+The gate contains 24 fresh processes and 144 raw samples. For each 2/4-hart
+PRIVATE_WEAK, SAME_PTE, and PREFILLED_SAME_PTE selection it runs B3 then B2,
+with the architecture and RVLS modes adjacent for each baseline. A pair passes
+only when its ELF/config/seed, complete firmware samples, DUT cycles, and raw
+physical lifecycle reports are identical. Any RVLS mismatch or final-drain
+residue stops the campaign.
+
+The architecture schedule contains 12 H1/I0 reference processes followed by
+the H2/H4 I0--I3 matrix. The latter is 96 fresh processes and 576 raw samples.
+All selections retain one warmup and five measured samples, seed 2, the
+2-billion-cycle simulator limit, and the 1800-second host timeout. Timeouts are
+reported as incomplete verification, never as an architectural failure.
+
+The RVLS callback minimum is independent of RTL simulation:
+
+```bash
+python3 tools/run_rvls_pte_cas_minimal.py
+```
+
+It covers a full-width mismatch retry, observer refresh, software-epoch state
+invalidation, success/error consumption, old-A/new-D preservation, duplicate
+identities, missing outcomes, and final-drain rejection. CAS participation,
+winner identity, retry counts, and superseded counts remain implementation
+diagnostics. In particular, PREFILLED_SAME_PTE increases contention opportunity
+but never imposes a FORCED_CAS requirement.
 
 ## Frozen validation audit
 
