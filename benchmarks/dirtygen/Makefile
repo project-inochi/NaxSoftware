@@ -254,6 +254,10 @@ test-perf-mc-campaign:
 test-perf-mc-compare:
 	python3 -m unittest -v tests/test_dirtygen_perf_mc_compare.py
 
+.PHONY: test-isa-consistency
+test-isa-consistency:
+	python3 -m unittest discover -s tests -p 'test_shdlt_isa.py'
+	python3 -m unittest discover -s tests -p 'test_dirtygen_perf_mc*.py'
 
 test-perf: test-perf-report test-perf-campaign test-perf-compare \
 	           test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare

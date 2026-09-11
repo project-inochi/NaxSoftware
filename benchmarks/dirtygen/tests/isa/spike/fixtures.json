@@ -1,0 +1,74 @@
+[
+  {
+    "name": "remote-fence-before-access",
+    "isa": "rv64ia_zicsr_svadu",
+    "harts": 2,
+    "provenance": "instruction-encoded recovery from prior ELF; original assembly unavailable",
+    "historical_elf_sha256": "ba17dc6b893e19baaaafd577dac81599785c22078b2305aed722641c11046393",
+    "loadable_section_sha256": {
+      ".text": "f0c87a0241b13db829d421b93a18be2bfe4c4059a5ed6b7af1a877f14a31f455",
+      ".tohost": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+      ".data": "18619b678a5c207a971a0aa931604f48162e307c57ecdec450d5f095fe9f32c7"
+    }
+  },
+  {
+    "name": "hardware-d-shared-a0",
+    "isa": "rv64ia_zicsr_svadu",
+    "harts": 2,
+    "provenance": "instruction-encoded recovery from prior ELF; original assembly unavailable",
+    "historical_elf_sha256": "0ab8d0009a5d8b93ba624cf2985e67f055ebde02e5ef8d3c590bf3e3bc04c6bd",
+    "loadable_section_sha256": {
+      ".text": "08840f7dcb5d8b1c48c210758656f67a3aeead2c414391ee263981ffe573a692",
+      ".tohost": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+      ".data": "18619b678a5c207a971a0aa931604f48162e307c57ecdec450d5f095fe9f32c7"
+    }
+  },
+  {
+    "name": "hardware-d-shared-a1",
+    "isa": "rv64ia_zicsr_svadu",
+    "harts": 2,
+    "provenance": "instruction-encoded recovery from prior ELF; original assembly unavailable",
+    "historical_elf_sha256": "fcafdc519e43c86808ebfa6a95f04f21eb0284b85e014ea9742a78d985e60f2d",
+    "loadable_section_sha256": {
+      ".text": "df7dadc46876c0df62fafb2ce64b828941f0565baa53b54eac4c0b23f0ef09eb",
+      ".tohost": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+      ".data": "18619b678a5c207a971a0aa931604f48162e307c57ecdec450d5f095fe9f32c7"
+    }
+  },
+  {
+    "name": "store-then-load-fault0",
+    "isa": "rv64ia_zicsr_svadu",
+    "harts": 2,
+    "provenance": "instruction-encoded recovery from prior ELF; original assembly unavailable",
+    "historical_elf_sha256": "932a5ba5516c26e0dce52120bbc550561c54c5e85ae14e9caf79824311b3e64c",
+    "loadable_section_sha256": {
+      ".text": "f5593a7d77b3c545bc60bb9161cd0ff832d0329cd9f7017f4bd1a651d6edd7ce",
+      ".tohost": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+      ".data": "18619b678a5c207a971a0aa931604f48162e307c57ecdec450d5f095fe9f32c7"
+    }
+  },
+  {
+    "name": "store-then-load-fault1",
+    "isa": "rv64ia_zicsr_svadu",
+    "harts": 2,
+    "provenance": "instruction-encoded recovery from prior ELF; original assembly unavailable",
+    "historical_elf_sha256": "5adf45a57267f781ad09f1b70139e0ad6e62c0b522f0f0898e3bc683ff05559a",
+    "loadable_section_sha256": {
+      ".text": "a000f8aaa3970602526f807909762895948c063bf81a31010a2068d659896b3c",
+      ".tohost": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+      ".data": "18619b678a5c207a971a0aa931604f48162e307c57ecdec450d5f095fe9f32c7"
+    }
+  },
+  {
+    "name": "predirty-a0-load",
+    "isa": "rv64i_zicsr_svadu",
+    "harts": 1,
+    "provenance": "instruction-encoded recovery from prior ELF; original assembly unavailable",
+    "historical_elf_sha256": "70f441db8ccecba0147d19819240e9f2b26551bfd6cd4e86bb35a428030135e3",
+    "loadable_section_sha256": {
+      ".text": "2db2d6ae0d9f2af61fb0958dbfd9ff855f79c7e8b3ba68f05a894f17f910f0ea",
+      ".tohost": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      ".data": "18619b678a5c207a971a0aa931604f48162e307c57ecdec450d5f095fe9f32c7"
+    }
+  }
+]

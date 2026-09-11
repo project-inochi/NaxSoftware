@@ -429,3 +429,32 @@ NaxSoftware Sv39x4 hypervisor tests.  This package freezes the required pieces
 behind a standalone audit boundary and removes all build-time dependency on
 that runtime.  The implementation remains covered by the repository MIT
 license; see `LICENSE`.
+# Phase-2 ISA consistency profile
+
+The corrected smoke/race/CTC suites require `PROFILE=isa`; their default remains
+legacy. See [SHDLT_ISA_CONSISTENCY_AUDIT.md](SHDLT_ISA_CONSISTENCY_AUDIT.md).
+Do not refresh the old binary manifest or overwrite its ELF files.
+
+From the VexiiRiscv root (run the simulator commands sequentially):
+
+```sh
+python3 ext/NaxSoftware/benchmarks/dirtygen/tools/run_shdlt_isa.py \
+  --verify-legacy --stress \
+  --output-root ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/families-new
+python3 ext/NaxSoftware/benchmarks/dirtygen/tools/run_shdlt_isa_mc.py \
+  --output-root ext/NaxSoftware/benchmarks/dirtygen/build/isa-consistency/mc-new
+python3 -m unittest discover -s ext/NaxSoftware/benchmarks/dirtygen/tests
+```
+
+The first command covers 42 basic choices and 8 delayed producer/consumer
+choices. The second builds all 40 legal MC combinations and runs the 18 Phase-2
+validation choices, with a 1800-second host timeout and the existing simulation
+limit. MC ABI v2 uses `build/perf-mc-v2-*`, CSR I-class fences and `5*N+5` instret;
+ordinary/prefilled timed instruction windows are identical. HS sample epochs
+own physical lifecycles; the narrower timed window is only a timing diagnostic.
+The v2 comparison tooling rejects v1 input and incompatible timing contracts.
+These runs are correctness validation, not a complete performance recollection.
+
+See [the Spike minimal regressions](tests/isa/spike/README.md) for the independent
+12-case existing-Spike check. Current RVLS source integration remains unverified;
+all Phase-2 RTL validation uses `--no-rvls-check`, including runs retaining trace.
