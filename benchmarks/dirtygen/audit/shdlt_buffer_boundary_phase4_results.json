@@ -1,0 +1,239 @@
+{
+  "schema": "shdlt-buffer-boundary-phase4-results-v2",
+  "recorded_at": "2026-09-10T20:26:55+08:00",
+  "status": "PASS",
+  "architecture_status": "PASS",
+  "rvls_status": "PASS",
+  "history": {
+    "first_attempt": {
+      "status": "STOPPED_PRE_EXECUTION",
+      "classification": "RUNNER_SECTION_PADDING_ASSUMPTION",
+      "dut_launched": false,
+      "resolution": "Accept and separately hash a symbol-delimited payload inside a padded section no larger than one page.",
+      "preserved_as_failure": true
+    },
+    "original_h1_architecture": {
+      "status": "FAIL",
+      "classification": "RTL_CAPACITY_SHIFT_AMOUNT_WIDTH_OVERFLOW",
+      "passed_selections": 63,
+      "failed_selections": 3,
+      "failed_sizes": [7, 8, 9],
+      "evidence_root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-correctness-20260910-h1-arch-h1-architecture-seed2",
+      "preserved_as_failure": true
+    },
+    "original_h1_rvls_after_rtl_repair": {
+      "status": "ERROR",
+      "classification": "RVLS_PRE_CAS_NO_OUTCOME_PROBE_GAP",
+      "completed_selections": 1,
+      "failing_selection": 1,
+      "failing_case": "EXACT_FULL_FAULT",
+      "size": 0,
+      "index": 512,
+      "capacity": 512,
+      "guest_pc": "0x108",
+      "message": "missing local or remote PTE CAS outcome",
+      "rtl_expected_to_issue_cas": false,
+      "partial_trace": {
+        "status": "PASS",
+        "physical_attempts": 1,
+        "committed": 1,
+        "superseded": 0,
+        "errors": 0,
+        "architectural_stores": 2
+      },
+      "evidence_root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-rtlfix-20260910-h1-rvls-h1-rvls-seed2",
+      "preserved_as_failure": true
+    },
+    "invalid_protected_phase1_invocation": {
+      "status": "INVALID_TEST_CONFIGURATION",
+      "classification": "MISSING_PMP_SIZE_2",
+      "dut_result_used": false,
+      "evidence_root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/protected-phase1-architecture",
+      "replacement_runs": [
+        "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/protected-phase1-architecture-pmp2",
+        "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/protected-phase1-rvls-pmp2"
+      ]
+    }
+  },
+  "rtl_repair": {
+    "classification": "CAPACITY_BASE_THEN_DYNAMIC_SIZE_SHIFT",
+    "source": "src/main/scala/vexiiriscv/memory/PteUpdatePlugin.scala",
+    "source_sha256": "c4a4f92c73ce7c8d8d4f1fce605b7f1d14b3f9f1f5093ce85fc355815409b700",
+    "test": "src/test/scala/vexiiriscv/memory/DirtyLogCapacityTester.scala",
+    "test_sha256": "61f86d89cfe362155c1bd730f0efe076db8f7ad101dee6722e66fb003da5deda",
+    "scala_test_status": "PASS",
+    "rv32_size_0_to_9": "PASS",
+    "rv64_size_0_to_9": "PASS",
+    "capacity_minus_one_exact_and_max_index": "PASS",
+    "generated_model": "20'h00200 <<< SIZE",
+    "generated_verilog_sha256": "d613de364be1e56819236d9d705f21cc4cc2b902e84be1ea473747734005ce36"
+  },
+  "rvls_repair": {
+    "classification": "PRE_CAS_NO_EVENT_PROBE_PASSTHROUGH",
+    "source": "ext/rvls/src/hart.cpp",
+    "source_sha256": "9f1ffc88f5e3c78af3eecc6e7e49b488f1b7633f85ba8044862e731ad875a997",
+    "behavior": "After local event and trace-derived remote state checks, return false without modifying observed, reserving CAS, consuming mmuStoreQueue, or synthesizing state.",
+    "missing_reservation_compare_exchange_remains_fatal": true,
+    "software_epoch_clear_unchanged": true,
+    "remote_winner_state_unchanged": true,
+    "final_drain_unchanged": true,
+    "superseded_proposal": "true + expected",
+    "implemented_contract": "return false"
+  },
+  "regressions": {
+    "rvls_pte_cas_minimal": {
+      "status": "PASS",
+      "source_sha256": "b98723c094440547859fa4896e4cd65efa7fae57dabe17c185c5c88fd9fedd21",
+      "binary_sha256": "c79740d64153b95e6c242fc3914023f9babc417d730f0d4183ed1da25e828915",
+      "no_event_probe_returns_false": true,
+      "observed_sentinel_unchanged": true,
+      "direct_final_drain_passes": true,
+      "compare_after_passthrough_fails": true,
+      "logger_store_error_consumed_once_without_cas": true,
+      "existing_positive_and_negative_cases_retained": true
+    },
+    "naxsoftware_python_before_stress_extension": {
+      "status": "PASS",
+      "passed": 235,
+      "total": 235,
+      "breakdown": {"dirtygen": 184, "ctc": 7, "race": 12, "rtl_directed": 32}
+    },
+    "dirtygen_python_final": {
+      "status": "PASS",
+      "passed": 188,
+      "total": 188,
+      "includes_phase4_reporter_and_campaign_tests": true
+    },
+    "phase4_reporter_and_runner_focused": {
+      "status": "PASS",
+      "passed": 11,
+      "total": 11
+    },
+    "spike_default_path": {
+      "status": "PASS",
+      "passed": 12,
+      "total": 12,
+      "spike_sha256": "fdbf7d4cec1de1b7a3b2cc11ad4d566badf76259f559eec71072bdac119fbd27",
+      "results_sha256": "4d3aac49d2ecfe200ea55d48d2ff7852476329a2810482a2379751e6c1fd9390"
+    }
+  },
+  "correctness": {
+    "h1": {
+      "architecture": {"status": "PASS", "passed": 66, "total": 66},
+      "rvls": {"status": "PASS", "passed": 66, "total": 66},
+      "pair": {
+        "samples_identical": true,
+        "raw_trace_identical": true,
+        "trace_report_identical": true,
+        "samples_sha256": "2bdec74148e852a4a8c811fbd26e250d81b7cb00faaae9ccddde0be67d3c2e38",
+        "raw_trace_sha256": "b75d51c7b0bebad9c14b33e05b3029606f1de7d9c94cb55f1b1d18436b454032",
+        "trace_report_sha256": "1503960a33fff4e7f6acaedff7e677226d0413610e89dd082a100573e891960c"
+      },
+      "trace_totals": {"physical_attempts": 20, "committed": 20, "superseded": 0, "errors": 0, "architectural_stores": 50},
+      "exact_full_and_overfull_scause": 24,
+      "exact_full_and_overfull_cas_attempts": 0,
+      "size_7_8_9_last_slot_index_after": [65536, 131072, 262144],
+      "architecture_root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-rtlfix-20260910-h1-arch-h1-architecture-seed2",
+      "rvls_root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-rvlsprobefix-20260910-h1-rvls-h1-rvls-seed2"
+    },
+    "h2": {
+      "sizes": [0, 9],
+      "architecture": {"status": "PASS", "passed": 8, "total": 8},
+      "rvls": {"status": "PASS", "passed": 8, "total": 8},
+      "samples_identical": true,
+      "raw_trace_identical": true,
+      "trace_report_identical": true,
+      "samples_sha256": "0d3893a107696e6dd0c25e4bce6ee246a270eb9de6d0cf51dff3a0e255e8ef0d",
+      "raw_trace_sha256": "22dd6a9d475015c676ac79763745fce65edfc98241754f7327be09901ad0011d",
+      "trace_report_sha256": "8298a2485dbdb7073e08d4984a40a67f5b6076c467650f5c84a90f5183df202c",
+      "trace_totals": {"physical_attempts": 8, "committed": 8, "superseded": 0, "errors": 0, "architectural_stores": 16}
+    },
+    "h4": {
+      "sizes": [0, 9],
+      "architecture": {"status": "PASS", "passed": 8, "total": 8},
+      "rvls": {"status": "PASS", "passed": 8, "total": 8},
+      "samples_identical": true,
+      "raw_trace_identical": true,
+      "trace_report_identical": true,
+      "samples_sha256": "c94da77f36ec381e7c90e27c304ad1a5001dda70a24522cf538884a5ae66ca98",
+      "raw_trace_sha256": "9efd3804c979b2771a1f3b8fce7305af253eba8abf553ac300a5de341a218bc0",
+      "trace_report_sha256": "9bc60164ec5f94ca9611df9b8283dadca017b824eaaac82b6ad18b8119f07f64",
+      "trace_totals": {"physical_attempts": 12, "committed": 12, "superseded": 0, "errors": 0, "architectural_stores": 24}
+    },
+    "minimal_stale_d_gates": {
+      "status": "PASS",
+      "processes": 4,
+      "h2_architecture_rvls_pair_identical": true,
+      "h4_architecture_rvls_pair_identical": true
+    },
+    "global_failures": 0,
+    "rvls_mismatches": 0,
+    "unclosed_lifecycles": 0,
+    "drain_residuals": 0,
+    "timeouts": 0
+  },
+  "protected_regressions": {
+    "status": "PASS",
+    "phase1": {
+      "architecture": {"passed": 4, "total": 4, "console_sha256": "dc65f9fb5112fac2adf09906ad665a73f143cb0f973a01326fd1611496a362a3"},
+      "rvls": {"passed": 4, "total": 4, "console_sha256": "cf59e2d52a9f7ecbf232644dfc6e9932e5f324a3c43994b9c3f2eb14e6678240"},
+      "raw_trace_identical": true,
+      "raw_trace_sha256": "89dbf8a41f8792f3629e90461ad189579701a91ae532bd104ec901af02ab3369"
+    },
+    "dirtygen_abi_v5": {
+      "architecture": {"passed_selections": 32, "measured_samples": 160, "console_sha256": "ae5256474aec77d1791f638de001d743e98dbd2b2c081462b049900497e511de"},
+      "rvls": {"passed_selections": 32, "measured_samples": 160, "console_sha256": "5af0c76c97ead369fb7addfc09800f2904ee72e5eb1fb7df4983b7a359925a02"},
+      "raw_trace_identical": true,
+      "raw_trace_sha256": "b2ebf8625238ccf14f8ce8459fc2a34ec0397403331baf3e5c4ada8e953789bd",
+      "generated_rtl_identical": true,
+      "generated_rtl_sha256": "c350d7bca5647b0c9fc3077ae16bf5fc843c50d967cd3d795626c7193b14854f"
+    },
+    "phase1_to_phase3_hashes_match": true,
+    "frozen_dirtygen_elf_sha256": "147b58638dac62826170c1187faff16246adcdaabc31794f920c37fbbed526bc",
+    "frozen_phase1_elf_sha256": "4eafa4eac4abcb4adc1b8416d62395435ae5f92bb6e63d9537d399a1c9705189",
+    "top_level_gitlinks_updated": false
+  },
+  "stress_campaign": {
+    "status": "PASS",
+    "process_count": 18,
+    "passed_processes": 18,
+    "pair_count": 9,
+    "passed_pairs": 9,
+    "raw_sample_count": 396,
+    "rvls_mismatches": 0,
+    "unclosed_lifecycles": 0,
+    "drain_residuals": 0,
+    "timeouts": 0,
+    "absolute_cycle_threshold_applied": false,
+    "pair_identical": ["firmware samples", "physical lifecycle report", "performance summary", "raw physical trace", "generated RTL"],
+    "architecture_medians": [
+      {"harts": 1, "profile": "P0", "last_slot": 144, "exact_full_completion": 1024, "replace_retry_completion": 1219},
+      {"harts": 1, "profile": "P1", "last_slot": 250, "exact_full_completion": 1388, "replace_retry_completion": 1688},
+      {"harts": 1, "profile": "P2", "last_slot": 463, "exact_full_completion": 2280, "replace_retry_completion": 2715},
+      {"harts": 2, "profile": "P0", "last_slot": 158, "exact_full_completion": 1164, "replace_retry_completion": 1384, "stale_d_completion": 692, "stale_d_stores_per_1000_cycles": 2.8901734104046244},
+      {"harts": 2, "profile": "P1", "last_slot": 271, "exact_full_completion": 1655, "replace_retry_completion": 1973, "stale_d_completion": 1188, "stale_d_stores_per_1000_cycles": 1.6835016835016836},
+      {"harts": 2, "profile": "P2", "last_slot": 480, "exact_full_completion": 2635, "replace_retry_completion": 3147, "stale_d_completion": 2057, "stale_d_stores_per_1000_cycles": 0.9722897423432183},
+      {"harts": 4, "profile": "P0", "last_slot": 168, "exact_full_completion": 1210, "replace_retry_completion": 1425, "stale_d_completion": 849, "stale_d_stores_per_1000_cycles": 4.7114252061248525},
+      {"harts": 4, "profile": "P1", "last_slot": 305, "exact_full_completion": 1695, "replace_retry_completion": 2055, "stale_d_completion": 1355, "stale_d_stores_per_1000_cycles": 2.952029520295203},
+      {"harts": 4, "profile": "P2", "last_slot": 528, "exact_full_completion": 2781, "replace_retry_completion": 3263, "stale_d_completion": 2381, "stale_d_stores_per_1000_cycles": 1.6799664006719865}
+    ],
+    "hpm_observation": {
+      "exact_full_cas_attempts_each_measured_set": [0, 0, 0, 0, 0],
+      "exact_full_faults_each_measured_set": [1, 1, 1, 1, 1],
+      "last_slot_cas_attempts_each_measured_set": [1, 1, 1, 1, 1],
+      "replace_retry_cas_attempts_each_measured_set": [1, 1, 1, 1, 1],
+      "stale_d_global_cas_attempts_each_measured_set": [1, 1, 1, 1, 1],
+      "architectural_requirement": false
+    },
+    "root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-stress-20260910",
+    "manifest_sha256": "a433ff68eff355ec4880f9af1e2d1878158c0c0a1ba4fa81fd1ffd9b09238edb",
+    "results_sha256": "58573a04174bc4cc9384b6995f4f7e3ecf28cf3e78002d1774ab30476808f910"
+  },
+  "out_of_scope_not_run": [
+    "FORCED_CAS",
+    "Linux/KVM",
+    "FPGA",
+    "shared logger buffer",
+    "other ISA extension experiments"
+  ]
+}

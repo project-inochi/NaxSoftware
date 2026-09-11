@@ -1,0 +1,167 @@
+{
+  "schema": "shdlt-buffer-boundary-phase4-inputs-v2",
+  "scope": "phase4-buffer-boundary-correctness-rvls-and-pressure",
+  "recorded_at": "2026-09-10T20:26:55+08:00",
+  "status": "PASS",
+  "repositories": {
+    "VexiiRiscv": {
+      "head": "139c15eec129a194d7c080e7369ed51de7740f59",
+      "top_level_gitlink_changed": false
+    },
+    "NaxSoftware": {
+      "head": "f915bb0532513361455c17228c2267411c66a7e1",
+      "gitlink": "b801c3ee0c2ef32f982a95fc7f7a063f47689971"
+    },
+    "Spike": {
+      "head": "75246fed826e4b64ada3a484bfecdf37510925bb",
+      "gitlink": "6bd1623d89e1859e32b6547cca4d94045e3a64bc"
+    },
+    "RVLS": {
+      "head": "f70cc0152fabde0829d3c267e1cd9915a4b9acd2",
+      "gitlink": "bcff90eb7877df4ba5f5be5e2fbc00ce7018de4e"
+    }
+  },
+  "normative": {
+    "isa_head": "e5c0c60fa1fbfcc1d343e314299d15693485f678",
+    "sbi_head": "8a545effe9b50484ff897d9815d7d9015cdef203",
+    "shdlt_version": "RFC v6",
+    "files": [
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/supervisor.adoc",
+        "sha256": "1e396de2eed8a0db9950ef0441aa3e77f21072584f72d32ef34e39804341cf41"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/hypervisor.adoc",
+        "sha256": "884928aebc45d13682a44e3298b297d1f484ca7185d454d8bfea362c3d4d729e"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/machine.adoc",
+        "sha256": "143a10da1ea3c8f197db44ced646742d3c19ff26fdd4c9ba45a2f84fc3875783"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/priv/svadu.adoc",
+        "sha256": "02fcc825667913878596249c2ac996da767635714b27b6cf3d8e2156c2d48dbe"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/unpriv/rvwmo.adoc",
+        "sha256": "edcaa272870a145a8b20f0b599434cc7a42101fa91176cf1d94a1d0a60f80643"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-isa-manual/src/unpriv/zifencei.adoc",
+        "sha256": "9a57a3cfb90cff32c39a3c53df8e1c0d079f99993a41fa5bed35e707cd34e2f7"
+      },
+      {
+        "path": "/mnt/files/inochi/cache/docs/riscv-sbi-doc/src/ext-rfence.adoc",
+        "sha256": "c06b81b5218f2795a5e62d7282231be72c1ff8dcb5e2389f8f5e8e18eaecba76"
+      },
+      {
+        "path": "/home/inochi/code/spec/presentation/riscv/shpgat/mail/shdlt.adoc",
+        "sha256": "28d3961d752f97338959641407462db0b16d8bc9cc1f4e0d4a7afc961b10bf3f"
+      }
+    ]
+  },
+  "configuration": {
+    "isa": "h,m,a,c,svadu,shdlt,zicntr",
+    "xlen": 64,
+    "physical_width": 32,
+    "fetch_l1": true,
+    "lsu_l1": true,
+    "lsu_l1_coherency_for_multihart": true,
+    "performance_counters": 4,
+    "correctness": {
+      "seed": 2,
+      "dbus_ready_factor": "1.01",
+      "memory_latency": 0,
+      "h1_profile": 1,
+      "h2_h4_profile": 2,
+      "sizes": [0, 9]
+    },
+    "stress": {
+      "abi": 2,
+      "profile": 3,
+      "size": 0,
+      "warmup_per_case": 1,
+      "measured_per_case": 5,
+      "profiles": [
+        {"id": "P0", "dbus_ready_factor": "1.01", "memory_latency": 0, "seed": 2},
+        {"id": "P1", "dbus_ready_factor": "0.70", "memory_latency": 17, "seed": 3},
+        {"id": "P2", "dbus_ready_factor": "0.35", "memory_latency": 53, "seed": 7}
+      ]
+    },
+    "host_timeout_seconds": 1800,
+    "cycle_limit": 2000000000,
+    "raw_physical_trace": true,
+    "fresh_process": true,
+    "pair_order": ["architecture", "rvls"],
+    "fail_fast": true
+  },
+  "commands": {
+    "rvls_build": ["make", "-C", "ext/rvls", "-j2"],
+    "rvls_pte_cas_minimal": ["python3", "ext/NaxSoftware/benchmarks/dirtygen/tools/run_rvls_pte_cas_minimal.py"],
+    "naxsoftware_python_dirtygen": ["python3", "-m", "unittest", "discover", "-s", "ext/NaxSoftware/benchmarks/dirtygen/tests", "-p", "test_*.py"],
+    "naxsoftware_python_ctc": ["python3", "-m", "unittest", "discover", "-s", "ext/NaxSoftware/benchmarks/cache_tlb_shdlt/tests", "-p", "test_*.py"],
+    "naxsoftware_python_race": ["python3", "-m", "unittest", "discover", "-s", "ext/NaxSoftware/baremetal/multicore_race_shdlt/tests", "-p", "test_*.py"],
+    "naxsoftware_python_rtl": ["python3", "-m", "unittest", "discover", "-s", "ext/NaxSoftware/baremetal/rtl_directed_shdlt/tests", "-p", "test_*.py"],
+    "spike_default_minima": ["python3", "ext/NaxSoftware/benchmarks/dirtygen/tools/run_spike_isa_minimals.py", "--spike", "ext/riscv-isa-sim/build/spike", "--output-root", "ext/NaxSoftware/benchmarks/dirtygen/build/audit/phase4-rvls-probe-fix/spike-minimals"],
+    "capacity_unit_test": ["/bin/sh", "/usr/bin/mill", "--no-server", "Test[2.13.12].testOnly", "vexiiriscv.memory.DirtyLogCapacityTester"],
+    "correctness": ["python3", "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_buffer_boundary_phase4.py", "--experiment-id", "EXPERIMENT", "--hart-count", "1|2|4", "--mode", "architecture|rvls"],
+    "minimal_stale_d_gate": ["python3", "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_buffer_mc_phase4.py", "--experiment-id", "EXPERIMENT", "--hart-count", "2|4", "--mode", "architecture|rvls"],
+    "stress_campaign": ["python3", "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_buffer_stress_phase4.py", "--experiment-id", "phase4-stress-20260910"]
+  },
+  "toolchain": {
+    "riscv_gcc": "riscv64-elf-gcc 15.2.0",
+    "spike_fixture_compiler": "riscv64-linux-gnu-gcc 16.2.1 20260810",
+    "python": "3.14.7",
+    "mill_path": "/usr/bin/mill",
+    "mill_sha256": "5f117ed78d8ab848717e9f2f476aa4d1aef888691d9ddae762602b74200686a4",
+    "verilator": "5.052"
+  },
+  "source_files": [
+    {"path": "src/main/scala/vexiiriscv/memory/PteUpdatePlugin.scala", "sha256": "c4a4f92c73ce7c8d8d4f1fce605b7f1d14b3f9f1f5093ce85fc355815409b700"},
+    {"path": "src/test/scala/vexiiriscv/memory/DirtyLogCapacityTester.scala", "sha256": "61f86d89cfe362155c1bd730f0efe076db8f7ad101dee6722e66fb003da5deda"},
+    {"path": "ext/riscv-isa-sim/riscv/mmu.cc", "sha256": "5c8e45c6c7c6c6708a45f935e8134c00a3c8be07fffa930b65258c0fbf70be88"},
+    {"path": "ext/riscv-isa-sim/riscv/mmu.h", "sha256": "7ebf5a4efe5454e814cf0dac6b5eeea4509c58df678b35d3d787145db18c380b"},
+    {"path": "ext/riscv-isa-sim/riscv/simif.h", "sha256": "d8e3ddcd874a93657887ac6869b4a8317a07ced57872267a2317b1ec7b6f27cd"},
+    {"path": "ext/rvls/src/hart.cpp", "sha256": "9f1ffc88f5e3c78af3eecc6e7e49b488f1b7633f85ba8044862e731ad875a997"},
+    {"path": "ext/rvls/src/hart.hpp", "sha256": "cd7e8be75f5cda81817fb19ad70c8ed252750e18236bb7f63b3202e0bd255318"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/Makefile", "sha256": "bcdc626e4fe4cc119756b744e86dc1a28f0afb11a8c3b8ed107e7d807f5b73a5"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/linker_buffer_boundary_mc.ld", "sha256": "cadf2c9e8c9dcda08cc255dec974b84d8a554d35e7e2bb1384e81d85bf40275d"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/include/dirtygen_buffer_boundary_mc.h", "sha256": "89c293d400046d7eb14a0e28f1d34400781bb8e1fcce5dfb34ac1b097b634e16"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/src/dirtygen_buffer_boundary_mc.c", "sha256": "d116a7f234861faade1ebd466b99ee945a080500f4a57f7767591e6bc770534f"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/src/dirtygen_buffer_boundary_mc_page_table.c", "sha256": "9f0e557293abbfa9487ebb0cbb3cbc0b4a2ebfdbff096ad7ef083f40ef0c6d52"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/src/dirtygen_buffer_boundary_mc_startup.S", "sha256": "f21ae937cb3a8e987eceefb91ae3e692f0c72f448dd99da787be344a48522e9d"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/src/dirtygen_buffer_boundary_mc_guest.S", "sha256": "c97989061679a900cb24dad0cac00ebfa42e1e99cd262d6e58f4f51a4818dff6"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/tools/dirtygen_buffer_boundary_report.py", "sha256": "2d55ba23f2d3c6614ba3231f9fbfe495fd05ce74d25557b5b06b32cb246e37b5"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_buffer_boundary_phase4.py", "sha256": "fa4f1762cb3295ed6b17b3f4cf4372fb1e770e8f3b4c4b9551df5257abda9ead"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_buffer_stress_phase4.py", "sha256": "f63a45ac0f83e127785782a19e5b309e874621698c70933f8a42e8f4e22a480f"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/tests/rvls/pte_cas_callbacks.cpp", "sha256": "b98723c094440547859fa4896e4cd65efa7fae57dabe17c185c5c88fd9fedd21"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/tests/test_dirtygen_buffer_boundary_report.py", "sha256": "00db366845068a7e885b5f042f0e58cd5ca96c639bc36e88de1d7c2b4b2a4d5f"},
+    {"path": "ext/NaxSoftware/benchmarks/dirtygen/tests/test_dirtygen_buffer_stress_phase4.py", "sha256": "30441a9730bb04080ddcf0219cb6b66205bf3de815bfd5d951e4bebe88f50a57"}
+  ],
+  "artifacts": {
+    "spike": {"path": "ext/riscv-isa-sim/build/spike", "sha256": "fdbf7d4cec1de1b7a3b2cc11ad4d566badf76259f559eec71072bdac119fbd27"},
+    "rvls": {"path": "ext/rvls/build/apps/rvls.so", "sha256": "7bd71708085292688668a73f9fc8149c9f426c5a4f284d0ac83ebad5c7a84db3"},
+    "rvls_pte_cas_minimal": {"path": "ext/NaxSoftware/benchmarks/dirtygen/build/audit/rvls-pte-cas-minimal/pte_cas_callbacks", "sha256": "c79740d64153b95e6c242fc3914023f9babc417d730f0d4183ed1da25e828915"},
+    "correctness_h1": {"elf_sha256": "fad8d5bd0c63862f83e2e99084f0f96396ad7560ab42370f573d8bba8f1566d7", "guest_payload_sha256": "1805b29cd382302f31e9c9594fdfd6407d55bb138112c805666adcca5088f701", "store_pc": "0x108"},
+    "correctness_h2": {"elf_sha256": "2a4d049f31ff0f74f00f3312da5acc503422178a31eec471e07a2252b43193f4", "guest_payload_sha256": "cd0e2bf9143ca571686ad6dc4ae3729c70950389df2d9142afc719de30aa4462", "store_pc": "0x108"},
+    "correctness_h4": {"elf_sha256": "4f4865cf4b39fa70422a99ef49a65e29c37d6be718a288da1d2fd2f8232379d3", "guest_payload_sha256": "941adc168a103b1ae9dd41daa5fddbd691043708d1baac2a0e507f37b3d94ec3", "store_pc": "0x108"},
+    "stress_h1": {"elf_sha256": "022b95ffdbc1ea71f5ec96b3a758bd8f90d1b064902c57e0647326b48ee54c05", "guest_payload_sha256": "1805b29cd382302f31e9c9594fdfd6407d55bb138112c805666adcca5088f701", "store_pc": "0x108"},
+    "stress_h2": {"elf_sha256": "13615a7def49949f90ff961dea33229c233c260c63858b2cf9cdc088055bfe35", "guest_payload_sha256": "ecec51404cd60a88b1045d0b1e19669c83705734f5a035ea36d597ac13092a6c", "store_pc": "0x10c"},
+    "stress_h4": {"elf_sha256": "39bb5ac8a6e816b2194d85eec1765ea557b5d494b0e9f01afe608bc4bb462630", "guest_payload_sha256": "93eb161c8a146cf5dfdccfefade0c69efb78dd675be930eda3f13a6b9bae1888", "store_pc": "0x10c"}
+  },
+  "protected": {
+    "phase1_to_phase3_hashes_checked": true,
+    "dirtygen_elf_sha256": "147b58638dac62826170c1187faff16246adcdaabc31794f920c37fbbed526bc",
+    "phase1_elf_sha256": "4eafa4eac4abcb4adc1b8416d62395435ae5f92bb6e63d9537d399a1c9705189",
+    "top_level_gitlinks_updated": false
+  },
+  "outputs": {
+    "report": "ext/NaxSoftware/benchmarks/dirtygen/SHDLT_BUFFER_BOUNDARY_PHASE4_REPORT.md",
+    "inputs": "ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_buffer_boundary_phase4_inputs.json",
+    "results": "ext/NaxSoftware/benchmarks/dirtygen/audit/shdlt_buffer_boundary_phase4_results.json",
+    "campaign_root": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4",
+    "stress_manifest": {"path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-stress-20260910/manifest.json", "sha256": "a433ff68eff355ec4880f9af1e2d1878158c0c0a1ba4fa81fd1ffd9b09238edb"},
+    "stress_results": {"path": "ext/NaxSoftware/benchmarks/dirtygen/build/campaign/dirtygen-buffer-boundary-phase4/phase4-stress-20260910/results.json", "sha256": "58573a04174bc4cc9384b6995f4f7e3ecf28cf3e78002d1774ab30476808f910"}
+  },
+  "large_artifacts_ignored": true
+}
