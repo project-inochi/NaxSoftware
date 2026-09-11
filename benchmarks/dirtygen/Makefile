@@ -41,6 +41,35 @@ C_SOURCES := \
 ifneq ($(strip $(PERF_ISOLATED_CONFIG)),)
 C_SOURCES += src/dirtygen_perf_selection.c
 endif
+else ifeq ($(SUITE),perf-mc)
+BUILD_DIR ?= build/perf-mc-v2-h1-private-strong-b0
+IMAGE_NAME := dirtygen_perf_mc
+ARCH_FLAGS := -march=rv64ia_zicsr -mabi=lp64 -mcmodel=medany
+SUITE_COMMON_FLAGS := -mno-relax -fno-stack-protector
+SUITE_LDFLAGS := -Wl,--build-id=none
+LINKER_SCRIPT := linker_perf_mc.ld
+C_SOURCES := \
+  src/dirtygen_perf_mc.c \
+  src/dirtygen_perf_mc_page_table.c \
+  src/dirtygen_perf_mc_selection.c
+ASM_SOURCES := \
+  src/dirtygen_perf_mc_startup.S \
+  src/dirtygen_perf_mc_guest.S
+else ifeq ($(SUITE),perf-mc-prefilled)
+BUILD_DIR ?= build/perf-mc-v2-prefilled-h2-b2
+IMAGE_NAME := dirtygen_perf_mc_prefilled
+ARCH_FLAGS := -march=rv64ia_zicsr -mabi=lp64 -mcmodel=medany
+SUITE_COMMON_FLAGS := -mno-relax -fno-stack-protector
+SUITE_LDFLAGS := -Wl,--build-id=none
+SUITE_CPPFLAGS := -DDIRTYGEN_PERF_MC_PREFILLED
+LINKER_SCRIPT := linker_perf_mc.ld
+C_SOURCES := \
+  src/dirtygen_perf_mc.c \
+  src/dirtygen_perf_mc_page_table.c \
+  src/dirtygen_perf_mc_prefilled_selection.c
+ASM_SOURCES := \
+  src/dirtygen_perf_mc_startup.S \
+  src/dirtygen_perf_mc_prefilled_guest.S
 else ifeq ($(SUITE),dirtygen)
 BUILD_DIR ?= build
 IMAGE_NAME := dirtygen
@@ -50,34 +79,36 @@ C_SOURCES := \
   src/dirty_log_random.c \
   src/page_table.c
 else
-$(error SUITE must be dirtygen, phase1, phase6, or perf)
+$(error SUITE must be dirtygen, phase1, phase6, perf, perf-mc, perf-mc-prefilled)
 endif
 
 CASE_FIRST ?= 0
 CASE_LIMIT ?= 32
 
-ARCH_FLAGS := -march=rv64i_zicsr -mabi=lp64 -mcmodel=medany
+ARCH_FLAGS ?= -march=rv64i_zicsr -mabi=lp64 -mcmodel=medany
 CPPFLAGS := -Iinclude -Isrc \
             -DDIRTYGEN_CASE_FIRST=$(CASE_FIRST) \
             -DDIRTYGEN_CASE_LIMIT=$(CASE_LIMIT) \
             $(SUITE_CPPFLAGS)
 COMMON_FLAGS := $(ARCH_FLAGS) -Os -ffreestanding -fno-builtin \
-                -ffunction-sections -fdata-sections
+                -ffunction-sections -fdata-sections $(SUITE_COMMON_FLAGS)
 CFLAGS := $(COMMON_FLAGS) -std=c11 -Wall -Wextra -Werror \
           -Wno-missing-field-initializers
 ASFLAGS := $(COMMON_FLAGS)
 LDFLAGS := $(ARCH_FLAGS) -nostdlib -nostartfiles -static \
-           -Wl,-T,linker.ld,-Map,$(BUILD_DIR)/dirtygen.map,--gc-sections
+           -Wl,-T,$(or $(LINKER_SCRIPT),linker.ld),-Map,$(BUILD_DIR)/dirtygen.map,--gc-sections \
+           $(SUITE_LDFLAGS)
 
-ASM_SOURCES := src/startup.S
+ASM_SOURCES ?= src/startup.S
 OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst src/%.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
 DEPS := $(OBJECTS:.o=.d)
 
-.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated clean report \
-        perf-report \
+.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated perf-mc perf-mc-prefilled clean report \
+        perf-report perf-mc-report \
         test-report test-phase1-report test-phase6-report \
-        test-perf-report test-perf-campaign test-perf-compare test-perf
+        test-perf-report test-perf-campaign test-perf-compare \
+        test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare test-perf
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
@@ -103,7 +134,39 @@ perf-isolated:
 		BUILD_DIR=build/perf-isolated-c$(PERF_ISOLATED_CONFIG) \
 		PERF_ISOLATED_CONFIG=$(PERF_ISOLATED_CONFIG) all
 
-$(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) linker.ld | $(BUILD_DIR)
+PERF_MC_HARTS ?= 1
+PERF_MC_WORKLOAD ?= private-strong
+PERF_MC_BASELINE ?= 0
+PERF_MC_WORKLOAD_ID_private-strong := 0
+PERF_MC_WORKLOAD_ID_private-weak := 1
+PERF_MC_WORKLOAD_ID_same-pte := 2
+PERF_MC_WORKLOAD_ID := $(PERF_MC_WORKLOAD_ID_$(PERF_MC_WORKLOAD))
+
+perf-mc:
+	@case "$(PERF_MC_HARTS)" in 1|2|4) ;; *) \
+		echo "PERF_MC_HARTS must be 1, 2, or 4"; exit 2;; esac
+	@test -n "$(PERF_MC_WORKLOAD_ID)" || { \
+		echo "PERF_MC_WORKLOAD must be private-strong, private-weak, or same-pte"; exit 2; }
+	@case "$(PERF_MC_BASELINE)" in 0|1|2|3) ;; *) \
+		echo "PERF_MC_BASELINE must be 0, 1, 2, or 3"; exit 2;; esac
+	$(MAKE) SUITE=perf-mc \
+		BUILD_DIR=build/perf-mc-v2-h$(PERF_MC_HARTS)-$(PERF_MC_WORKLOAD)-b$(PERF_MC_BASELINE) \
+		PERF_MC_HARTS=$(PERF_MC_HARTS) \
+		PERF_MC_WORKLOAD_ID=$(PERF_MC_WORKLOAD_ID) \
+		PERF_MC_BASELINE=$(PERF_MC_BASELINE) all
+
+perf-mc-prefilled:
+	@case "$(PERF_MC_HARTS)" in 2|4) ;; *) \
+		echo "PERF_MC_HARTS must be 2 or 4 for prefilled SAME_PTE"; exit 2;; esac
+	@case "$(PERF_MC_BASELINE)" in 2|3) ;; *) \
+		echo "PERF_MC_BASELINE must be 2 or 3 for prefilled SAME_PTE"; exit 2;; esac
+	$(MAKE) SUITE=perf-mc-prefilled \
+		BUILD_DIR=build/perf-mc-v2-prefilled-h$(PERF_MC_HARTS)-b$(PERF_MC_BASELINE) \
+		PERF_MC_HARTS=$(PERF_MC_HARTS) \
+		PERF_MC_BASELINE=$(PERF_MC_BASELINE) all
+
+
+$(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) $(or $(LINKER_SCRIPT),linker.ld) | $(BUILD_DIR)
 	$(CC) $(OBJECTS) $(LDFLAGS) -lgcc -o $@
 
 $(BUILD_DIR)/$(IMAGE_NAME).bin: $(BUILD_DIR)/$(IMAGE_NAME).elf
@@ -119,6 +182,23 @@ ifneq ($(strip $(PERF_ISOLATED_CONFIG)),)
 $(BUILD_DIR)/dirtygen_perf_selection.o: src/dirtygen_perf_selection.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) \
 		-DDIRTYGEN_PERF_ISOLATED_CONFIG=$(PERF_ISOLATED_CONFIG) \
+		-MMD -MP -c $< -o $@
+endif
+
+ifeq ($(SUITE),perf-mc)
+$(BUILD_DIR)/dirtygen_perf_mc_selection.o: src/dirtygen_perf_mc_selection.c | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) \
+		-DDIRTYGEN_PERF_MC_HARTS=$(PERF_MC_HARTS) \
+		-DDIRTYGEN_PERF_MC_WORKLOAD=$(PERF_MC_WORKLOAD_ID) \
+		-DDIRTYGEN_PERF_MC_BASELINE=$(PERF_MC_BASELINE) \
+		-MMD -MP -c $< -o $@
+endif
+
+ifeq ($(SUITE),perf-mc-prefilled)
+$(BUILD_DIR)/dirtygen_perf_mc_prefilled_selection.o: src/dirtygen_perf_mc_prefilled_selection.c | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) \
+		-DDIRTYGEN_PERF_MC_HARTS=$(PERF_MC_HARTS) \
+		-DDIRTYGEN_PERF_MC_BASELINE=$(PERF_MC_BASELINE) \
 		-MMD -MP -c $< -o $@
 endif
 
@@ -139,6 +219,14 @@ perf-report:
 		--suite "$(PERF_SUITE)" \
 		--schedule-id "$(or $(PERF_SCHEDULE),legacy)" --format table
 
+perf-mc-report:
+	@test -n "$(LOG)" || { echo "usage: make perf-mc-report LOG=/path/to/console TRACE=/path/to/tracer ELF=/path/to/elf PERF_MC_HARTS=1|2|4 PERF_MC_WORKLOAD=private-strong|private-weak|same-pte|prefilled-same-pte PERF_MC_BASELINE=B0|B1|B2|B3"; exit 2; }
+	@test -n "$(TRACE)" || { echo "TRACE is required"; exit 2; }
+	@test -n "$(ELF)" || { echo "ELF is required"; exit 2; }
+	python3 tools/dirtygen_perf_mc_report.py "$(LOG)" \
+		--hart-count "$(PERF_MC_HARTS)" --workload "$(PERF_MC_WORKLOAD)" \
+		--baseline "$(PERF_MC_BASELINE)" --tracer "$(TRACE)" --elf "$(ELF)"
+
 test-report:
 	python3 -m unittest -v tests/test_dirtygen_report.py
 
@@ -157,7 +245,18 @@ test-perf-campaign:
 test-perf-compare:
 	python3 -m unittest -v tests/test_dirtygen_perf_compare.py
 
-test-perf: test-perf-report test-perf-campaign test-perf-compare
+test-perf-mc-report:
+	python3 -m unittest -v tests/test_dirtygen_perf_mc_report.py
+
+test-perf-mc-campaign:
+	python3 -m unittest -v tests/test_dirtygen_perf_mc_campaign.py
+
+test-perf-mc-compare:
+	python3 -m unittest -v tests/test_dirtygen_perf_mc_compare.py
+
+
+test-perf: test-perf-report test-perf-campaign test-perf-compare \
+	           test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare
 
 clean:
 	rm -rf $(BUILD_DIR)

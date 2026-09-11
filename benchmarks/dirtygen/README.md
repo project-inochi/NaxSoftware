@@ -285,6 +285,89 @@ repetitions across processes, verifies equal `workload_instret`, emits one CSV
 row per block/workload, and reports distributions across isolation blocks.
 Scheduled and isolated campaign inputs cannot be mixed.
 
+## Multi-hart performance harness
+
+The independent `dirtygen_perf_mc.elf` harness builds one fresh-process
+selection at a time for 1, 2, or 4 harts:
+
+```bash
+make perf-mc PERF_MC_HARTS=2 \
+  PERF_MC_WORKLOAD=private-weak PERF_MC_BASELINE=3
+
+python3 tools/run_dirtygen_perf_mc.py \
+  --hart-count 2 --workload private-weak --baseline B3 \
+  --isolation-block-id I0 --experiment-id example \
+  --mode architecture --seed 2 --dry-run
+```
+
+The three workloads are `private-strong`, `private-weak`, and `same-pte`.
+Each ELF contains one fixed selection and emits one warmup plus five measured
+samples. Every participating hart has a private stack, result page, logger
+buffer, and cache-line-sized command slot. Hart 0 owns page-table preparation,
+post-run validation, and UART output; barriers and local `HFENCE.GVMA`s remain
+outside the guest counter window.
+
+`dirtygen_perf_mc_report.py` validates the firmware oracle and uses ABI-v2 HS
+sample-epoch symbols to attribute raw physical logger lifecycles to a hart and
+sample. A known hart/source/attempt identity owns its terminal event, even if
+that event is outside the narrower retired timing window. It never assigns an epoch from `INDEX` or a logger-address
+guess. Architectural log entries are only `[0, INDEX)`; for SAME_PTE/B3, a
+changed invalid tail slot is accepted only when an exact same-hart/sample
+`pending -> superseded` physical event explains its slot, address, and data.
+The runner requests a raw tracer in both modes, records ELF/code hashes,
+selection bytes, repository/gitlink provenance, exact commands and CPU
+configuration, and launches exactly one fresh TestBench process.
+PREFILLED_SAME_PTE uses a separate image and only accepts 2/4 harts with
+B2/B3:
+
+```bash
+make perf-mc-prefilled PERF_MC_HARTS=4 PERF_MC_BASELINE=3
+
+python3 tools/run_dirtygen_perf_mc.py \
+  --hart-count 4 --workload prefilled-same-pte --baseline B3 \
+  --isolation-block-id I0 --experiment-id prefilled-example \
+  --mode rvls --seed 2 --dry-run
+```
+
+Before the measured single-store window, every guest hart loads the shared
+page and meets at a guest barrier. This increases the opportunity for multiple
+harts to retain a local D=0 translation, but does not guarantee that every hart
+will issue a PTE CAS. The timed-window bytes remain identical to the ordinary
+`same-pte` single-store window. Physical append attempts and superseded writes
+are accepted only from the raw tracer; the firmware reports architectural
+PTE, INDEX, valid-log and per-hart HPM results. The report classifies each hart
+as winner, loser or observer from the measured counters and lifecycle. Metadata
+records a separate SHA256 for the exact timed-window bytes.
+
+Fresh-process MC campaigns are compared with the dedicated tool:
+
+```bash
+python3 tools/dirtygen_perf_mc_compare.py \
+  --input RUN/report/samples.json RUN/metadata.json \
+  --input OTHER/report/samples.json OTHER/metadata.json \
+  --output-dir build/campaign/mc-comparison
+```
+
+For ordinary workloads, every block must contain four non-overlapping fresh
+processes in the declared B0--B3 launch order. The tool checks CPU and seed,
+repository HEADs, code and per-selection ELF hashes, functional results,
+per-hart instruction counts, and the raw-trace report before pairing equal
+measured repetitions. It reports paired `B1-B0`, `B2-B0`, `B3-B2`, `B3-B0`,
+and `B3-B1` completion-cycle deltas, aggregate and dirty-page throughput,
+PRIVATE scaling, and descriptive SAME_PTE physical-append statistics. H1/I0
+campaigns supply the reference for 2/4-hart scaling.
+
+PREFILLED_SAME_PTE inputs use a separate output schema. Each sample records
+the observed CAS participants, winner, losers, observers, amplification and
+superseded ratio. A B3-B2 delta is emitted only when both baselines have the
+same `(attempt count, attempting harts, winner)` signature; a signature
+difference is descriptive and does not turn a functionally correct run into a
+failure. When architecture and RVLS inputs are supplied together, their full
+firmware sample documents and executable/configuration fingerprints must
+match. Outputs are created atomically and an existing output directory is
+never overwritten. Cycle values and their signs remain descriptive only.
+
+
 ## Frozen validation audit
 
 The versioned audit manifest freezes the completed correctness and performance
