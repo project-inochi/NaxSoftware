@@ -70,6 +70,35 @@ C_SOURCES := \
 ASM_SOURCES := \
   src/dirtygen_perf_mc_startup.S \
   src/dirtygen_perf_mc_prefilled_guest.S
+else ifeq ($(SUITE),buffer-mc)
+BUILD_DIR ?= build/buffer-mc-v1-h2-stale-d-full
+IMAGE_NAME := dirtygen_buffer_mc
+ARCH_FLAGS := -march=rv64ia_zicsr -mabi=lp64 -mcmodel=medany
+SUITE_COMMON_FLAGS := -mno-relax -fno-stack-protector
+SUITE_LDFLAGS := -Wl,--build-id=none
+SUITE_CPPFLAGS := -DDIRTYGEN_BUFFER_MC_HARTS=$(BUFFER_MC_HARTS)
+LINKER_SCRIPT := linker_buffer_mc.ld
+C_SOURCES := \
+  src/dirtygen_buffer_mc.c \
+  src/dirtygen_buffer_mc_page_table.c
+ASM_SOURCES := \
+  src/dirtygen_buffer_mc_startup.S \
+  src/dirtygen_buffer_mc_guest.S
+else ifeq ($(SUITE),buffer-boundary)
+BUILD_DIR ?= build/buffer-boundary-v1-h1
+IMAGE_NAME := dirtygen_buffer_boundary_mc
+ARCH_FLAGS := -march=rv64ia_zicsr -mabi=lp64 -mcmodel=medany
+SUITE_COMMON_FLAGS := -mno-relax -fno-stack-protector
+SUITE_LDFLAGS := -Wl,--build-id=none
+SUITE_CPPFLAGS := -DBOUNDARY_MC_HARTS=$(BOUNDARY_MC_HARTS) \
+                  -DBOUNDARY_MC_PROFILE=$(BOUNDARY_MC_PROFILE)
+LINKER_SCRIPT := linker_buffer_boundary_mc.ld
+C_SOURCES := \
+  src/dirtygen_buffer_boundary_mc.c \
+  src/dirtygen_buffer_boundary_mc_page_table.c
+ASM_SOURCES := \
+  src/dirtygen_buffer_boundary_mc_startup.S \
+  src/dirtygen_buffer_boundary_mc_guest.S
 else ifeq ($(SUITE),dirtygen)
 BUILD_DIR ?= build
 IMAGE_NAME := dirtygen
@@ -79,7 +108,7 @@ C_SOURCES := \
   src/dirty_log_random.c \
   src/page_table.c
 else
-$(error SUITE must be dirtygen, phase1, phase6, perf, perf-mc, perf-mc-prefilled)
+$(error SUITE must be dirtygen, phase1, phase6, perf, perf-mc, perf-mc-prefilled, buffer-mc, or buffer-boundary)
 endif
 
 CASE_FIRST ?= 0
@@ -104,11 +133,13 @@ OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst src/%.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
 DEPS := $(OBJECTS:.o=.d)
 
-.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated perf-mc perf-mc-prefilled clean report \
+.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated perf-mc perf-mc-prefilled buffer-mc \
+        buffer-boundary-h1 buffer-boundary-mc buffer-boundary-stress clean report \
         perf-report perf-mc-report \
         test-report test-phase1-report test-phase6-report \
         test-perf-report test-perf-campaign test-perf-compare \
-        test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare test-perf
+        test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare \
+        test-buffer-mc-report test-buffer-boundary-report test-perf
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
@@ -165,6 +196,42 @@ perf-mc-prefilled:
 		PERF_MC_HARTS=$(PERF_MC_HARTS) \
 		PERF_MC_BASELINE=$(PERF_MC_BASELINE) all
 
+BUFFER_MC_HARTS ?= 2
+
+buffer-mc:
+	@case "$(BUFFER_MC_HARTS)" in 2|4) ;; *) \
+		echo "the Phase-4 minimal gate requires BUFFER_MC_HARTS=2 or 4"; exit 2;; esac
+	$(MAKE) SUITE=buffer-mc \
+		BUILD_DIR=build/buffer-mc-v1-h$(BUFFER_MC_HARTS)-stale-d-full \
+		BUFFER_MC_HARTS=$(BUFFER_MC_HARTS) all
+
+buffer-boundary-h1:
+	$(MAKE) SUITE=buffer-boundary \
+		BUILD_DIR=build/buffer-boundary-v1-h1 \
+		BOUNDARY_MC_HARTS=1 BOUNDARY_MC_PROFILE=1 all
+
+BOUNDARY_MC_HARTS ?= 2
+
+buffer-boundary-mc:
+	@case "$(BOUNDARY_MC_HARTS)" in 2|4) ;; *) \
+		echo "BOUNDARY_MC_HARTS must be 2 or 4"; exit 2;; esac
+	$(MAKE) SUITE=buffer-boundary \
+		BUILD_DIR=build/buffer-boundary-v1-h$(BOUNDARY_MC_HARTS) \
+		BOUNDARY_MC_HARTS=$(BOUNDARY_MC_HARTS) BOUNDARY_MC_PROFILE=2 all
+
+buffer-boundary-stress:
+	@case "$(BOUNDARY_MC_HARTS)" in 1|2|4) ;; *) \
+		echo "BOUNDARY_MC_HARTS must be 1, 2, or 4"; exit 2;; esac
+	$(MAKE) SUITE=buffer-boundary \
+		BUILD_DIR=build/buffer-boundary-stress-v2-h$(BOUNDARY_MC_HARTS) \
+		BOUNDARY_MC_HARTS=$(BOUNDARY_MC_HARTS) BOUNDARY_MC_PROFILE=3 all
+
+test-buffer-mc-report:
+	python3 -m unittest -v tests.test_dirtygen_buffer_mc_report
+
+test-buffer-boundary-report:
+	python3 -m unittest -v tests.test_dirtygen_buffer_boundary_report \
+		tests.test_dirtygen_buffer_stress_phase4
 
 $(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) $(or $(LINKER_SCRIPT),linker.ld) | $(BUILD_DIR)
 	$(CC) $(OBJECTS) $(LDFLAGS) -lgcc -o $@
