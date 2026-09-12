@@ -171,7 +171,8 @@ DEPS := $(OBJECTS:.o=.d)
         test-report test-phase1-report test-phase6-report \
         test-perf-report test-perf-campaign test-perf-compare \
         test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare \
-        test-buffer-mc-report test-buffer-boundary-report test-epoch-common test-perf
+        test-buffer-mc-report test-buffer-boundary-report test-epoch-common \
+        test-epoch-tools test-perf
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
@@ -307,6 +308,10 @@ HOST_CC ?= cc
 
 test-epoch-common: build/epoch-host-test/dirtygen_epoch_common_test
 	$<
+
+test-epoch-tools:
+	python3 -m unittest -v tests.test_dirtygen_epoch_report \
+		tests.test_dirtygen_epoch_compare tests.test_dirtygen_epoch_campaign
 
 build/epoch-host-test/dirtygen_epoch_common_test: \
 		src/dirtygen_epoch.c tests/dirtygen_epoch_common_test.c \

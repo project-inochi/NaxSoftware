@@ -411,9 +411,37 @@ PTE/data/log oracles. Oracle work and complete post-rearm checks are outside
 the epoch interval. The common host-side data-plane test is available as
 `make test-epoch-common`.
 
-These firmware targets deliberately have no parser, campaign runner, paired
-comparison, or RTL/RVLS result in this stage. Existing `perf`, `perf-mc`, and
-`perf-mc-prefilled` ABIs and output paths remain unchanged.
+`dirtygen_epoch_report.py` strictly validates either epoch UART namespace and
+correlates each PTE CAS and physical logger attempt with per-hart sample and
+timed-window markers. Scan runs reject every logger attempt; log runs require
+committed entries to be inside INDEX and permit only trace-proven superseded
+attempts outside the architectural stream. `run_dirtygen_epoch.py` builds and
+runs one fresh backend selection, archives a raw trace in architecture and
+RVLS modes, and records source, command, CPU, ELF, selection and code-window
+fingerprints.
+
+Run and compare one E0 pair with:
+
+```bash
+python3 tools/run_dirtygen_epoch.py --profile single --workload unique \
+  --value 128 --hart-count 1 --backend pte-scan-serial \
+  --epoch-block-id E0 --experiment-id example --mode architecture
+python3 tools/run_dirtygen_epoch.py --profile single --workload unique \
+  --value 128 --hart-count 1 --backend shdlt-log \
+  --epoch-block-id E0 --experiment-id example --mode architecture
+python3 tools/dirtygen_epoch_compare.py --input RUN_SCAN --input RUN_LOG \
+  --output-dir build/campaign/epoch-comparison
+```
+
+E0 orders scan then log and E1 reverses that order. The comparison pairs equal
+measured repetitions before calculating runtime overhead, harvest/pause
+savings and net epoch gain. It reports median, range, MAD and inclusive IQR;
+cycle magnitudes and signs are descriptive, never correctness thresholds.
+`run_dirtygen_epoch_phase3.py --phase stage3` schedules the six-process
+architecture smoke followed by the twelve-process RVLS smoke with fail-fast
+barriers and fingerprint-checked resume. Its separate `full-architecture`
+schedule contains the deferred 68 E0/E1 processes. Existing `perf`, `perf-mc`,
+and `perf-mc-prefilled` ABIs and output paths remain unchanged.
 
 ### Phase-3 RVLS gate and architecture campaign
 

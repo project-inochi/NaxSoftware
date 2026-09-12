@@ -8,6 +8,11 @@ dirtygen_perf_hs_start:
   li s1, 0                         /* run 0 warmup; runs 1..5 measured */
 
 dirtygen_perf_run_loop:
+#ifdef DIRTYGEN_PERF_EPOCH
+  .globl dirtygen_perf_epoch_trace_start
+dirtygen_perf_epoch_trace_start:
+  nop
+#endif
   li a0, 0
   seqz a1, s1
   beqz s1, 1f
@@ -95,6 +100,10 @@ dirtygen_perf_guest_entry:
   /* UNIQUE: one 64-bit store to each of a1 consecutive pages. */
   li t0, 0
   li t1, RISCV_PGSIZE
+#ifdef DIRTYGEN_PERF_EPOCH
+  .globl dirtygen_perf_unique_timed_start
+dirtygen_perf_unique_timed_start:
+#endif
   csrr s4, cycle
   csrr s5, instret
 dirtygen_perf_guest_unique_loop:
@@ -109,6 +118,10 @@ dirtygen_perf_guest_unique_loop:
 dirtygen_perf_guest_repeat:
   /* REPEAT: a4 stores to the first page with a changing value. */
   li t0, 0
+#ifdef DIRTYGEN_PERF_EPOCH
+  .globl dirtygen_perf_repeat_timed_start
+dirtygen_perf_repeat_timed_start:
+#endif
   csrr s4, cycle
   csrr s5, instret
 dirtygen_perf_guest_repeat_loop:
@@ -121,6 +134,10 @@ dirtygen_perf_guest_complete:
   fence rw, rw
   csrr t3, cycle
   csrr t4, instret
+#ifdef DIRTYGEN_PERF_EPOCH
+  .globl dirtygen_perf_timed_end
+dirtygen_perf_timed_end:
+#endif
   sub a0, t3, s4
   sub a1, t4, s5
 #ifdef DIRTYGEN_PERF_EPOCH
@@ -148,6 +165,11 @@ dirtygen_perf_trap_handler:
   sd a3, 0(t0)
 #endif
   call dirtygen_perf_collect
+#ifdef DIRTYGEN_PERF_EPOCH
+  .globl dirtygen_perf_epoch_trace_end
+dirtygen_perf_epoch_trace_end:
+  nop
+#endif
   addi s1, s1, 1
 #ifdef DIRTYGEN_PERF_EPOCH
   li t0, DIRTYGEN_EPOCH_RUNS
