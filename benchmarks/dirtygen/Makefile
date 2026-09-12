@@ -41,6 +41,19 @@ C_SOURCES := \
 ifneq ($(strip $(PERF_ISOLATED_CONFIG)),)
 C_SOURCES += src/dirtygen_perf_selection.c
 endif
+else ifeq ($(SUITE),perf-epoch)
+BUILD_DIR ?= build/perf-epoch-v1-unique-p1-pte-scan-serial
+IMAGE_NAME := dirtygen_perf_epoch
+SUITE_CPPFLAGS := -DDIRTYGEN_PERF -DDIRTYGEN_PERF_EPOCH \
+                  -DDIRTYGEN_PERF_EPOCH_PATTERN=$(PERF_EPOCH_PATTERN_ID) \
+                  -DDIRTYGEN_PERF_EPOCH_PAGES=$(PERF_EPOCH_PAGES) \
+                  -DDIRTYGEN_PERF_EPOCH_OPERATIONS=$(PERF_EPOCH_OPERATIONS) \
+                  -DDIRTYGEN_PERF_EPOCH_BACKEND=$(PERF_EPOCH_BACKEND_ID)
+C_SOURCES := \
+  src/dirtygen_perf_epoch.c \
+  src/dirtygen_perf_epoch_selection.c \
+  src/dirtygen_epoch.c \
+  src/page_table.c
 else ifeq ($(SUITE),perf-mc)
 BUILD_DIR ?= build/perf-mc-v2-h1-private-strong-b0
 IMAGE_NAME := dirtygen_perf_mc
@@ -52,6 +65,25 @@ C_SOURCES := \
   src/dirtygen_perf_mc.c \
   src/dirtygen_perf_mc_page_table.c \
   src/dirtygen_perf_mc_selection.c
+ASM_SOURCES := \
+  src/dirtygen_perf_mc_startup.S \
+  src/dirtygen_perf_mc_guest.S
+else ifeq ($(SUITE),perf-mc-epoch)
+BUILD_DIR ?= build/perf-mc-epoch-v1-h1-private-strong-pte-scan-serial
+IMAGE_NAME := dirtygen_perf_mc_epoch
+ARCH_FLAGS := -march=rv64ia_zicsr -mabi=lp64 -mcmodel=medany
+SUITE_COMMON_FLAGS := -mno-relax -fno-stack-protector
+SUITE_LDFLAGS := -Wl,--build-id=none
+SUITE_CPPFLAGS := -DDIRTYGEN_PERF_MC_EPOCH \
+                  -DDIRTYGEN_PERF_MC_HARTS=$(PERF_MC_HARTS) \
+                  -DDIRTYGEN_PERF_MC_WORKLOAD=$(PERF_MC_WORKLOAD_ID) \
+                  -DDIRTYGEN_PERF_EPOCH_BACKEND=$(PERF_EPOCH_BACKEND_ID)
+LINKER_SCRIPT := linker_perf_mc.ld
+C_SOURCES := \
+  src/dirtygen_perf_mc_epoch.c \
+  src/dirtygen_perf_mc_page_table.c \
+  src/dirtygen_perf_mc_epoch_selection.c \
+  src/dirtygen_epoch.c
 ASM_SOURCES := \
   src/dirtygen_perf_mc_startup.S \
   src/dirtygen_perf_mc_guest.S
@@ -108,7 +140,7 @@ C_SOURCES := \
   src/dirty_log_random.c \
   src/page_table.c
 else
-$(error SUITE must be dirtygen, phase1, phase6, perf, perf-mc, perf-mc-prefilled, buffer-mc, or buffer-boundary)
+$(error SUITE must be dirtygen, phase1, phase6, perf, perf-epoch, perf-mc, perf-mc-epoch, perf-mc-prefilled, buffer-mc, or buffer-boundary)
 endif
 
 CASE_FIRST ?= 0
@@ -133,13 +165,13 @@ OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES)) \
            $(patsubst src/%.S,$(BUILD_DIR)/%.o,$(ASM_SOURCES))
 DEPS := $(OBJECTS:.o=.d)
 
-.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated perf-mc perf-mc-prefilled buffer-mc \
+.PHONY: all phase1 phase6 perf perf-rvls-smoke perf-isolated perf-epoch perf-mc perf-mc-epoch perf-mc-prefilled buffer-mc \
         buffer-boundary-h1 buffer-boundary-mc buffer-boundary-stress clean report \
         perf-report perf-mc-report \
         test-report test-phase1-report test-phase6-report \
         test-perf-report test-perf-campaign test-perf-compare \
         test-perf-mc-report test-perf-mc-campaign test-perf-mc-compare \
-        test-buffer-mc-report test-buffer-boundary-report test-perf
+        test-buffer-mc-report test-buffer-boundary-report test-epoch-common test-perf
 
 all: $(BUILD_DIR)/$(IMAGE_NAME).elf $(BUILD_DIR)/$(IMAGE_NAME).bin \
      $(BUILD_DIR)/$(IMAGE_NAME).asm
@@ -165,6 +197,31 @@ perf-isolated:
 		BUILD_DIR=build/perf-isolated-c$(PERF_ISOLATED_CONFIG) \
 		PERF_ISOLATED_CONFIG=$(PERF_ISOLATED_CONFIG) all
 
+PERF_EPOCH_PATTERN ?= unique
+PERF_EPOCH_VALUE ?= 1
+PERF_EPOCH_BACKEND ?= pte-scan-serial
+PERF_EPOCH_PATTERN_ID_unique := 0
+PERF_EPOCH_PATTERN_ID_repeat := 1
+PERF_EPOCH_PATTERN_ID := $(PERF_EPOCH_PATTERN_ID_$(PERF_EPOCH_PATTERN))
+PERF_EPOCH_BACKEND_ID_pte-scan-serial := 0
+PERF_EPOCH_BACKEND_ID_shdlt-log := 1
+PERF_EPOCH_BACKEND_ID := $(PERF_EPOCH_BACKEND_ID_$(PERF_EPOCH_BACKEND))
+
+perf-epoch:
+	@test -n "$(PERF_EPOCH_PATTERN_ID)" || { \
+		echo "PERF_EPOCH_PATTERN must be unique or repeat"; exit 2; }
+	@test -n "$(PERF_EPOCH_BACKEND_ID)" || { \
+		echo "PERF_EPOCH_BACKEND must be pte-scan-serial or shdlt-log"; exit 2; }
+	@case "$(PERF_EPOCH_PATTERN):$(PERF_EPOCH_VALUE)" in \
+		unique:1|unique:8|unique:32|unique:128|repeat:1|repeat:8|repeat:128|repeat:4096) ;; \
+		*) echo "invalid PERF_EPOCH_PATTERN/PERF_EPOCH_VALUE combination"; exit 2;; esac
+	$(MAKE) SUITE=perf-epoch \
+		BUILD_DIR=build/perf-epoch-v1-$(PERF_EPOCH_PATTERN)-$(if $(filter unique,$(PERF_EPOCH_PATTERN)),p,o)$(PERF_EPOCH_VALUE)-$(PERF_EPOCH_BACKEND) \
+		PERF_EPOCH_PATTERN_ID=$(PERF_EPOCH_PATTERN_ID) \
+		PERF_EPOCH_PAGES=$(if $(filter unique,$(PERF_EPOCH_PATTERN)),$(PERF_EPOCH_VALUE),1) \
+		PERF_EPOCH_OPERATIONS=$(PERF_EPOCH_VALUE) \
+		PERF_EPOCH_BACKEND_ID=$(PERF_EPOCH_BACKEND_ID) all
+
 PERF_MC_HARTS ?= 1
 PERF_MC_WORKLOAD ?= private-strong
 PERF_MC_BASELINE ?= 0
@@ -185,6 +242,19 @@ perf-mc:
 		PERF_MC_HARTS=$(PERF_MC_HARTS) \
 		PERF_MC_WORKLOAD_ID=$(PERF_MC_WORKLOAD_ID) \
 		PERF_MC_BASELINE=$(PERF_MC_BASELINE) all
+
+perf-mc-epoch:
+	@case "$(PERF_MC_HARTS)" in 1|2|4) ;; *) \
+		echo "PERF_MC_HARTS must be 1, 2, or 4"; exit 2;; esac
+	@test -n "$(PERF_MC_WORKLOAD_ID)" || { \
+		echo "PERF_MC_WORKLOAD must be private-strong, private-weak, or same-pte"; exit 2; }
+	@test -n "$(PERF_EPOCH_BACKEND_ID)" || { \
+		echo "PERF_EPOCH_BACKEND must be pte-scan-serial or shdlt-log"; exit 2; }
+	$(MAKE) SUITE=perf-mc-epoch \
+		BUILD_DIR=build/perf-mc-epoch-v1-h$(PERF_MC_HARTS)-$(PERF_MC_WORKLOAD)-$(PERF_EPOCH_BACKEND) \
+		PERF_MC_HARTS=$(PERF_MC_HARTS) \
+		PERF_MC_WORKLOAD_ID=$(PERF_MC_WORKLOAD_ID) \
+		PERF_EPOCH_BACKEND_ID=$(PERF_EPOCH_BACKEND_ID) all
 
 perf-mc-prefilled:
 	@case "$(PERF_MC_HARTS)" in 2|4) ;; *) \
@@ -232,6 +302,18 @@ test-buffer-mc-report:
 test-buffer-boundary-report:
 	python3 -m unittest -v tests.test_dirtygen_buffer_boundary_report \
 		tests.test_dirtygen_buffer_stress_phase4
+
+HOST_CC ?= cc
+
+test-epoch-common: build/epoch-host-test/dirtygen_epoch_common_test
+	$<
+
+build/epoch-host-test/dirtygen_epoch_common_test: \
+		src/dirtygen_epoch.c tests/dirtygen_epoch_common_test.c \
+		include/dirtygen_epoch.h
+	mkdir -p $(@D)
+	$(HOST_CC) -std=c11 -Wall -Wextra -Werror -Iinclude \
+		src/dirtygen_epoch.c tests/dirtygen_epoch_common_test.c -o $@
 
 $(BUILD_DIR)/$(IMAGE_NAME).elf: $(OBJECTS) $(or $(LINKER_SCRIPT),linker.ld) | $(BUILD_DIR)
 	$(CC) $(OBJECTS) $(LDFLAGS) -lgcc -o $@

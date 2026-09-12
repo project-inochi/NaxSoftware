@@ -1,5 +1,40 @@
 /* Independent dirtygen performance coordinator and shared VS workloads. */
 
+#ifdef DIRTYGEN_PERF_EPOCH
+#include "dirtygen_epoch.h"
+
+dirtygen_perf_hs_start:
+  call dirtygen_perf_init
+  li s1, 0                         /* run 0 warmup; runs 1..5 measured */
+
+dirtygen_perf_run_loop:
+  li a0, 0
+  seqz a1, s1
+  beqz s1, 1f
+  addi a2, s1, -1
+  j 2f
+1:
+  li a2, 0
+2:
+  call dirtygen_perf_fixture
+  fence rw, rw
+  call dirtygen_perf_prepare_ptes
+  call dirtygen_perf_activate
+
+  /* The guest arguments and workload are shared with the legacy image. */
+  li a0, TRACKED_GPA_BASE
+  la t0, dirtygen_perf_current_pages
+  ld a1, 0(t0)
+  la t0, dirtygen_perf_current_value_prefix
+  ld a2, 0(t0)
+  la t0, dirtygen_perf_current_pattern
+  ld a3, 0(t0)
+  la t0, dirtygen_perf_current_operations
+  ld a4, 0(t0)
+  la a5, dirtygen_perf_guest_entry
+  SPA2GPA_VCODE(a5)
+  RVTEST_SRET_VS(a5)
+#else
 dirtygen_perf_hs_start:
   call dirtygen_perf_init
   li s0, 0                         /* first configuration to consider */
@@ -50,6 +85,7 @@ dirtygen_perf_run_loop:
   la a5, dirtygen_perf_guest_entry
   SPA2GPA_VCODE(a5)
   RVTEST_SRET_VS(a5)
+#endif
 
 .align 6
 dirtygen_perf_guest_entry:
@@ -87,6 +123,11 @@ dirtygen_perf_guest_complete:
   csrr t4, instret
   sub a0, t3, s4
   sub a1, t4, s5
+#ifdef DIRTYGEN_PERF_EPOCH
+  /* Absolute boundaries are outside the unchanged counter interval. */
+  mv a2, s4
+  mv a3, t3
+#endif
   ecall
   unimp
 
@@ -100,12 +141,24 @@ dirtygen_perf_trap_handler:
   sd a0, 0(t0)
   la t0, dirtygen_perf_workload_instret
   sd a1, 0(t0)
+#ifdef DIRTYGEN_PERF_EPOCH
+  la t0, dirtygen_perf_epoch_workload_start
+  sd a2, 0(t0)
+  la t0, dirtygen_perf_epoch_workload_end
+  sd a3, 0(t0)
+#endif
   call dirtygen_perf_collect
   addi s1, s1, 1
+#ifdef DIRTYGEN_PERF_EPOCH
+  li t0, DIRTYGEN_EPOCH_RUNS
+  bltu s1, t0, dirtygen_perf_run_loop
+  j dirtygen_perf_done
+#else
   li t0, DIRTYGEN_PERF_RUNS_PER_CONFIG
   bltu s1, t0, dirtygen_perf_run_loop
   addi s0, s0, 1
   j dirtygen_perf_config_loop
+#endif
 
 dirtygen_perf_unexpected_trap:
   call dirtygen_perf_unexpected

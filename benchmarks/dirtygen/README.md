@@ -34,6 +34,9 @@ include/dirtygen.h       ABI v5 structures and assembly offsets
 include/phase1.h         failure-atomicity directed-test definitions
 include/phase6.h         implicit guest-store directed-test definitions
 include/dirtygen_perf.h  performance configuration and result ABI
+include/dirtygen_epoch.h shared dirty-epoch discovery/rearm data plane
+include/dirtygen_perf_epoch.h      single-hart epoch ABI v1
+include/dirtygen_perf_mc_epoch.h   multi-hart epoch ABI v1
 include/dirty_log_check.h
 src/startup.S            reset, M/HS/VS, traps, storage, pass/fail
 src/page_table.c         private Sv39x4 construction
@@ -45,6 +48,9 @@ src/dirtygen.c           descriptors, validation, records, summaries
 src/phase1.c             Phase-1 state validation and report
 src/phase6.c             Phase-6 page tables, validation, and report
 src/dirtygen_perf.c      performance fixture, oracle, and buffered output
+src/dirtygen_perf_epoch.c     single-hart dirty-epoch coordinator
+src/dirtygen_perf_mc_epoch.c  multi-hart dirty-epoch coordinator
+src/dirtygen_epoch.c          shared scan/log normalization and D-bit rearm
 src/dirty_log_check.c    exact GPA-set checking
 src/dirty_log_random.c   deterministic reference pattern
 tools/dirtygen_report.py ABI v4/v5 parser and validator
@@ -366,6 +372,48 @@ failure. When architecture and RVLS inputs are supplied together, their full
 firmware sample documents and executable/configuration fingerprints must
 match. Outputs are created atomically and an existing output directory is
 never overwritten. Cycle values and their signs remain descriptive only.
+
+## Dirty-epoch firmware profiles
+
+The independent epoch ABI v1 images compare serial PTE scanning with SHDLT
+log harvesting while preserving the existing guest payloads and counter
+windows:
+
+```bash
+make perf-epoch PERF_EPOCH_PATTERN=unique PERF_EPOCH_VALUE=128 \
+  PERF_EPOCH_BACKEND=pte-scan-serial
+make perf-epoch PERF_EPOCH_PATTERN=repeat PERF_EPOCH_VALUE=4096 \
+  PERF_EPOCH_BACKEND=shdlt-log
+make perf-mc-epoch PERF_MC_HARTS=4 PERF_MC_WORKLOAD=private-weak \
+  PERF_EPOCH_BACKEND=shdlt-log
+```
+
+Single-hart output is stored under `build/perf-epoch-v1-*` as
+`dirtygen_perf_epoch.elf`; multi-hart output is stored under
+`build/perf-mc-epoch-v1-*` as `dirtygen_perf_mc_epoch.elf`. The UART records
+use the distinct `SHDLT_DIRTYGEN_PERF_EPOCH_*` and
+`SHDLT_DIRTYGEN_PERF_MC_EPOCH_*` prefixes. Backend values are
+`PTE_SCAN_SERIAL=0` and `SHDLT_LOG=1`; their derived runtime modes are B2 and
+B3, respectively, rather than a new baseline number.
+
+Both profiles construct 128 tracked D=0 leaves once, execute one warmup and
+five measured workloads, normalize the discovered dirty pages, and call the
+same `dirtygen_epoch_rearm_from_bitmap()` implementation. Hart 0 is the sole
+software PTE writer while all participating harts are quiescent. It release
+publishes the PTE changes, every hart acquire-observes the publication and
+executes a local `HFENCE.GVMA`, and all logger resets complete before resume.
+PTE scan always snapshots all 128 entries. SHDLT discovery copies only
+`[0, INDEX)` and validates reserved bits before deriving a GPA.
+
+The epoch records include workload and phase cycles, canonical and expected
+bitmaps, all three INDEX observations, HFENCE/reset acknowledgements, and
+PTE/data/log oracles. Oracle work and complete post-rearm checks are outside
+the epoch interval. The common host-side data-plane test is available as
+`make test-epoch-common`.
+
+These firmware targets deliberately have no parser, campaign runner, paired
+comparison, or RTL/RVLS result in this stage. Existing `perf`, `perf-mc`, and
+`perf-mc-prefilled` ABIs and output paths remain unchanged.
 
 ### Phase-3 RVLS gate and architecture campaign
 

@@ -76,11 +76,15 @@ void dirtygen_perf_mc_build_tables(const uint8_t *guest,
            PERF_MC_PTE_V | PERF_MC_PTE_R | PERF_MC_PTE_W |
                PERF_MC_PTE_A | PERF_MC_PTE_D);
 
+  uint64_t tracked_flags = PERF_MC_PTE_V | PERF_MC_PTE_R | PERF_MC_PTE_W |
+                           PERF_MC_PTE_U | PERF_MC_PTE_A;
+#ifndef DIRTYGEN_PERF_MC_EPOCH
+  tracked_flags |= PERF_MC_PTE_D;
+#endif
   for (uint64_t page = 0; page < DIRTYGEN_PERF_MC_TRACKED_PAGES; ++page)
     map_leaf(PERF_MC_TRACKED_GPA + page * 4096,
              PERF_MC_TRACKED_DATA + page * 4096,
-             PERF_MC_PTE_V | PERF_MC_PTE_R | PERF_MC_PTE_W |
-                 PERF_MC_PTE_U | PERF_MC_PTE_A | PERF_MC_PTE_D);
+             tracked_flags);
 
   for (uint64_t index = 0; index < guest_bytes; ++index)
     image[index] = guest[index];

@@ -60,7 +60,11 @@ pmp_probe_done:
   li a1, TRACKED_GPA_BASE
   la a2, tracked_data
   li a3, DIRTYGEN_TRACKED_PAGES
+#ifdef DIRTYGEN_PERF_EPOCH
+  li a4, (PTE_V | PTE_R | PTE_W | PTE_U | PTE_A)
+#else
   li a4, (PTE_V | PTE_R | PTE_W | PTE_U | PTE_A | PTE_D)
+#endif
   call setup_gpt_page_range
 
   /* Svadu is required at both privilege-control layers. */
