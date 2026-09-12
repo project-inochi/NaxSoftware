@@ -96,12 +96,13 @@ def selected_schedule(phase: str) -> list[Selection]:
 
 
 def command_for(repo: Path, selection: Selection, experiment: str, seed: int,
-                output: Path) -> list[str]:
+                output: Path, host_timeout_seconds: int) -> list[str]:
     command = [sys.executable, str(repo / "ext/NaxSoftware/benchmarks/dirtygen/tools/run_dirtygen_epoch.py"),
                "--profile", selection.profile, "--workload", selection.workload,
                "--hart-count", str(selection.harts), "--backend", selection.backend,
                "--epoch-block-id", selection.block, "--experiment-id", experiment,
                "--mode", selection.mode, "--seed", str(seed),
+               "--host-timeout-seconds", str(host_timeout_seconds),
                "--output-root", str(output)]
     if selection.value is not None:
         command += ["--value", str(selection.value)]
@@ -138,6 +139,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         "stage3", "full-architecture"), default="stage3")
     parser.add_argument("--experiment-id", default="epoch-phase3-20260912")
     parser.add_argument("--seed", type=int, default=2)
+    parser.add_argument("--host-timeout-seconds", type=int, default=1800)
+    parser.add_argument("--start-index", type=int, default=0)
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--limit", type=int)
@@ -149,17 +152,26 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("--limit must be positive")
     if args.limit is not None and args.limit % 2:
         parser.error("--limit must preserve complete backend pairs")
+    if args.host_timeout_seconds < 1:
+        parser.error("--host-timeout-seconds must be positive")
+    if args.start_index < 0 or args.start_index % 2:
+        parser.error("--start-index must be a non-negative backend-pair boundary")
     return args
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     repo = find_repo_root(Path(__file__))
-    schedule = selected_schedule(args.phase)
+    full_schedule = selected_schedule(args.phase)
+    if args.start_index >= len(full_schedule):
+        raise RuntimeError("--start-index is outside the selected schedule")
+    schedule = full_schedule[args.start_index:]
     if args.limit is not None:
         schedule = schedule[:args.limit]
     if args.dry_run:
         print(json.dumps({"schema": SCHEMA, "phase": args.phase,
+            "start_index": args.start_index,
+            "host_timeout_seconds": args.host_timeout_seconds,
             "selection_count": len(schedule), "raw_sample_count": len(schedule) * 6,
             "measured_sample_count": len(schedule) * 5,
             "selections": [item.record() for item in schedule]}, indent=2, sort_keys=True))
@@ -172,14 +184,18 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError(f"campaign already exists: {root}")
         manifest = json.loads(manifest_path.read_text())
         if manifest.get("schema") != SCHEMA or manifest.get("phase") != args.phase or \
-                manifest.get("seed") != args.seed or manifest.get("source_fingerprint") != source:
-            raise RuntimeError("resume rejected: schema, phase, seed, or source fingerprint changed")
+                manifest.get("seed") != args.seed or manifest.get("source_fingerprint") != source or \
+                manifest.get("start_index") != args.start_index or \
+                manifest.get("host_timeout_seconds") != args.host_timeout_seconds:
+            raise RuntimeError("resume rejected: schema, phase, seed, schedule window, timeout, or source fingerprint changed")
     else:
         if root.exists():
             raise RuntimeError(f"output root exists without manifest: {root}")
         root.mkdir(parents=True)
         manifest = {"schema": SCHEMA, "status": "initialized", "phase": args.phase,
                     "experiment_id": args.experiment_id, "seed": args.seed,
+                    "start_index": args.start_index,
+                    "host_timeout_seconds": args.host_timeout_seconds,
                     "start_time": now(), "end_time": None,
                     "source_fingerprint": source,
                     "planned_selection_count": len(schedule),
@@ -212,7 +228,8 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             attempt = len(row["attempts"]) + 1
             run_root = root / "runs" / f"{index:03d}-{selection.slug}" / f"attempt-{attempt}"
-            command = command_for(repo, selection, args.experiment_id, args.seed, run_root)
+            command = command_for(repo, selection, args.experiment_id, args.seed,
+                                  run_root, args.host_timeout_seconds)
             record = {"attempt": attempt, "start_time": now(), "end_time": None,
                       "output": str(run_root), "command": command,
                       "command_fingerprint": command_fingerprint(command, source),

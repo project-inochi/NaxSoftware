@@ -59,6 +59,21 @@ class EpochCampaignTest(unittest.TestCase):
         for arguments in bad:
             with self.assertRaises(SystemExit):
                 runner.parse_args(arguments + common)
+        with self.assertRaises(SystemExit):
+            runner.parse_args(["--profile", "single", "--workload", "unique",
+                "--value", "1", "--hart-count", "1",
+                "--host-timeout-seconds", "0"] + common)
+
+    def test_extended_timeout_is_explicit_and_fingerprinted(self):
+        selection = phase3.rvls_smoke_schedule()[6]
+        command = phase3.command_for(Path("/repo"), selection, "unit", 2,
+                                     Path("/out"), 5400)
+        self.assertEqual(command[command.index("--host-timeout-seconds") + 1],
+                         "5400")
+        first = phase3.command_fingerprint(command, {"digest": "fixed"})
+        command[command.index("--host-timeout-seconds") + 1] = "1800"
+        self.assertNotEqual(first, phase3.command_fingerprint(
+            command, {"digest": "fixed"}))
 
     def test_fingerprint_binds_command_and_source(self):
         source = {"digest": "one"}
@@ -104,6 +119,20 @@ class EpochCampaignTest(unittest.TestCase):
         self.assertEqual(document["selection_count"], 18)
         self.assertEqual(document["raw_sample_count"], 108)
         self.assertEqual(document["measured_sample_count"], 90)
+
+    def test_dry_run_can_start_at_backend_pair_boundary(self):
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            self.assertEqual(phase3.main(["--phase", "rvls-smoke", "--dry-run",
+                "--start-index", "6", "--host-timeout-seconds", "5400"]), 0)
+        document = json.loads(stream.getvalue())
+        self.assertEqual(document["selection_count"], 6)
+        self.assertEqual(document["raw_sample_count"], 36)
+        self.assertEqual(document["measured_sample_count"], 30)
+        self.assertEqual(document["start_index"], 6)
+        self.assertEqual(document["host_timeout_seconds"], 5400)
+        self.assertEqual(document["selections"][0]["harts"], 4)
+        self.assertEqual(document["selections"][0]["workload"], "private-weak")
 
 
 if __name__ == "__main__":

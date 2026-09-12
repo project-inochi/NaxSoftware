@@ -72,17 +72,18 @@ def scoped_files(repository: Path, relative: str) -> list[Path]:
     return result
 
 
-def run_logged(command: list[str], cwd: Path, log: Path) -> int:
+def run_logged(command: list[str], cwd: Path, log: Path,
+               timeout_seconds: int = 1800) -> int:
     with log.open("w", encoding="utf-8") as stream:
         process = subprocess.Popen(command, cwd=cwd, stdout=stream,
                                    stderr=subprocess.STDOUT,
                                    start_new_session=True)
         try:
-            return process.wait(timeout=1800)
+            return process.wait(timeout=timeout_seconds)
         except subprocess.TimeoutExpired:
             os.killpg(process.pid, signal.SIGKILL)
             process.wait()
-            stream.write("\nHOST_TIMEOUT 1800s: verification incomplete\n")
+            stream.write(f"\nHOST_TIMEOUT {timeout_seconds}s: verification incomplete\n")
             return 124
         except BaseException:
             os.killpg(process.pid, signal.SIGKILL)
@@ -333,6 +334,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--experiment-id", required=True)
     parser.add_argument("--mode", choices=("architecture", "rvls"), required=True)
     parser.add_argument("--seed", type=int, default=2)
+    parser.add_argument("--host-timeout-seconds", type=int, default=1800)
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
@@ -343,6 +345,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             parser.error("invalid single profile workload/value/hart-count")
     elif args.workload not in MC_WORKLOADS or args.value is not None:
         parser.error("MC profile requires an MC workload and no --value")
+    if args.host_timeout_seconds < 1:
+        parser.error("--host-timeout-seconds must be positive")
     return args
 
 
@@ -375,7 +379,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.dry_run:
         print(json.dumps({"schema": SCHEMA, "output_root": str(output),
                           "build": build, "simulation": mill, "report": report,
-                          "cpu_config": cpu_config(args.hart_count, args.seed)},
+                          "cpu_config": cpu_config(args.hart_count, args.seed),
+                          "host_timeout_seconds": args.host_timeout_seconds},
                          indent=2, sort_keys=True))
         return 0
     if output.exists():
@@ -401,7 +406,8 @@ def main(argv: list[str] | None = None) -> int:
             "fresh_reset": True, "profile": args.profile,
             "hart_count": args.hart_count, "workload": args.workload,
             "value": args.value, "backend": args.backend, "mode": args.mode,
-            "simulation_seed": args.seed, "host_timeout_seconds": 1800,
+            "simulation_seed": args.seed,
+            "host_timeout_seconds": args.host_timeout_seconds,
             "trace_required": True, "trace_requested": True,
             "trace_generated": False, "trace_path": None,
             "repositories": repositories,
@@ -438,7 +444,7 @@ def main(argv: list[str] | None = None) -> int:
         metadata["artifact"].update(artifact); write_metadata(metadata_path, metadata)
         raw = trace_path(root, name)
         before = trace_signature(raw)
-        code = run_logged(mill, root, console)
+        code = run_logged(mill, root, console, args.host_timeout_seconds)
         metadata["simulation_exit_code"] = code
         after = trace_signature(raw)
         if after is not None and after != before:
