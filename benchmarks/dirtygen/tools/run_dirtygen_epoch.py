@@ -140,7 +140,8 @@ def simulation_name(profile: str, workload: str, value: int | None, harts: int,
 
 def mill_command(root: Path, profile: str, workload: str, value: int | None,
                  harts: int, backend: str, block: str, experiment: str,
-                 mode: str, seed: int, run_id: str) -> list[str]:
+                 mode: str, seed: int, run_id: str,
+                 trace_mode: str = "required") -> list[str]:
     mill = shutil.which("mill")
     if mill is None:
         raise RuntimeError("mill was not found in PATH")
@@ -160,8 +161,9 @@ def mill_command(root: Path, profile: str, workload: str, value: int | None,
                 "--dbus-ready-factor", config["dbus_ready_factor"],
                 "--memory-latency", "0", "--seed", str(seed), "--name",
                 simulation_name(profile, workload, value, harts, backend,
-                                block, experiment, mode, seed, run_id),
-                "--with-rvls-log"]
+                                block, experiment, mode, seed, run_id)]
+    if trace_mode == "required":
+        command.append("--with-rvls-log")
     if mode == "architecture":
         command.append("--no-rvls-check")
     command.append("--no-stdin")
@@ -170,13 +172,17 @@ def mill_command(root: Path, profile: str, workload: str, value: int | None,
 
 def report_command(root: Path, console: Path, tracer: Path, output: Path,
                    elf: Path, profile: str, workload: str, value: int | None,
-                   harts: int, backend: str) -> list[str]:
+                   harts: int, backend: str,
+                   trace_mode: str = "required") -> list[str]:
     command = [sys.executable, str(dirtygen_dir(root) / "tools" /
                                    "dirtygen_epoch_report.py"), str(console),
                "--profile", profile, "--workload", workload,
                "--hart-count", str(harts), "--backend", backend,
-               "--tracer", str(tracer), "--elf", str(elf),
-               "--output-dir", str(output)]
+               "--elf", str(elf), "--output-dir", str(output)]
+    if trace_mode == "required":
+        command += ["--tracer", str(tracer)]
+    else:
+        command.append("--without-trace")
     if value is not None:
         command += ["--value", str(value)]
     return command
@@ -333,6 +339,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--epoch-block-id", choices=tuple(BLOCKS), required=True)
     parser.add_argument("--experiment-id", required=True)
     parser.add_argument("--mode", choices=("architecture", "rvls"), required=True)
+    parser.add_argument("--trace-mode", choices=("required", "disabled"),
+                        default="required")
+    parser.add_argument("--prebuilt-elf-sha256")
+    parser.add_argument("--expected-source-fingerprint")
     parser.add_argument("--seed", type=int, default=2)
     parser.add_argument("--host-timeout-seconds", type=int, default=1800)
     parser.add_argument("--output-root", type=Path)
@@ -347,6 +357,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("MC profile requires an MC workload and no --value")
     if args.host_timeout_seconds < 1:
         parser.error("--host-timeout-seconds must be positive")
+    if args.mode != "architecture" and args.trace_mode == "disabled":
+        parser.error("trace may be disabled only in architecture mode")
+    for name in ("prebuilt_elf_sha256", "expected_source_fingerprint"):
+        value = getattr(args, name)
+        if value is not None and not re.fullmatch(r"[0-9a-f]{64}", value):
+            parser.error(f"--{name.replace('_', '-')} must be a lowercase SHA-256")
     return args
 
 
@@ -369,18 +385,24 @@ def main(argv: list[str] | None = None) -> int:
                           args.hart_count, args.backend)
     mill = mill_command(root, args.profile, args.workload, args.value,
                         args.hart_count, args.backend, args.epoch_block_id,
-                        args.experiment_id, args.mode, args.seed, run_id)
+                        args.experiment_id, args.mode, args.seed, run_id,
+                        args.trace_mode)
     name = simulation_name(args.profile, args.workload, args.value,
                            args.hart_count, args.backend, args.epoch_block_id,
                            args.experiment_id, args.mode, args.seed, run_id)
     console, tracer, report_dir = output / "console.log", output / "tracer.log", output / "report"
     report = report_command(root, console, tracer, report_dir, elf, args.profile,
-                            args.workload, args.value, args.hart_count, args.backend)
+                            args.workload, args.value, args.hart_count, args.backend,
+                            args.trace_mode)
     if args.dry_run:
         print(json.dumps({"schema": SCHEMA, "output_root": str(output),
                           "build": build, "simulation": mill, "report": report,
                           "cpu_config": cpu_config(args.hart_count, args.seed),
-                          "host_timeout_seconds": args.host_timeout_seconds},
+                          "host_timeout_seconds": args.host_timeout_seconds,
+                          "trace_mode": args.trace_mode,
+                          "prebuilt_elf_sha256": args.prebuilt_elf_sha256,
+                          "expected_source_fingerprint":
+                              args.expected_source_fingerprint},
                          indent=2, sort_keys=True))
         return 0
     if output.exists():
@@ -396,6 +418,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         repositories = repository_states(root)
+        source = source_fingerprint(root)
         metadata = {"schema": SCHEMA, "status": "initialized", "exit_code": None,
             "failure_stage": None, "failure_message": None, "start_time": now(),
             "end_time": None, "run_id": run_id, "process_run_id": run_id,
@@ -408,11 +431,15 @@ def main(argv: list[str] | None = None) -> int:
             "value": args.value, "backend": args.backend, "mode": args.mode,
             "simulation_seed": args.seed,
             "host_timeout_seconds": args.host_timeout_seconds,
-            "trace_required": True, "trace_requested": True,
+            "trace_mode": args.trace_mode,
+            "trace_required": args.trace_mode == "required",
+            "trace_requested": args.trace_mode == "required",
             "trace_generated": False, "trace_path": None,
+            "build_mode": ("prebuilt" if args.prebuilt_elf_sha256 is not None
+                           else "local"),
             "repositories": repositories,
             "top_level_gitlinks": top_level_gitlinks(root, repositories),
-            "source_fingerprint": source_fingerprint(root),
+            "source_fingerprint": source,
             "toolchain": toolchain_information(mill),
             "cpu_config": cpu_config(args.hart_count, args.seed),
             "execution_environment": {"MILL_OUTPUT_DIR": os.environ.get("MILL_OUTPUT_DIR"),
@@ -432,12 +459,19 @@ def main(argv: list[str] | None = None) -> int:
         for signum in (signal.SIGINT, signal.SIGTERM):
             handlers[signum] = signal.signal(signum, interrupt)
         metadata["status"] = "running"; write_metadata(metadata_path, metadata)
-        code = run_logged(build, root, output / "build.log")
-        metadata["build_exit_code"] = code; write_metadata(metadata_path, metadata)
-        if code:
-            raise RunFailure("build", f"build exited {code}", code)
+        if args.expected_source_fingerprint is not None and \
+                source["digest"] != args.expected_source_fingerprint:
+            raise RunFailure("fingerprint", "source fingerprint differs from prebuild")
+        if args.prebuilt_elf_sha256 is None:
+            code = run_logged(build, root, output / "build.log")
+            metadata["build_exit_code"] = code; write_metadata(metadata_path, metadata)
+            if code:
+                raise RunFailure("build", f"build exited {code}", code)
         if not elf.is_file():
             raise RunFailure("artifact", f"missing ELF {elf}")
+        if args.prebuilt_elf_sha256 is not None and \
+                sha256_file(elf) != args.prebuilt_elf_sha256:
+            raise RunFailure("fingerprint", "prebuilt ELF hash differs")
         artifact = fingerprints(elf, args.profile, args.workload)
         validate_selection(artifact, args.profile, args.workload, args.value,
                            args.hart_count, args.backend)
@@ -447,18 +481,24 @@ def main(argv: list[str] | None = None) -> int:
         code = run_logged(mill, root, console, args.host_timeout_seconds)
         metadata["simulation_exit_code"] = code
         after = trace_signature(raw)
-        if after is not None and after != before:
+        generated = after is not None and after != before
+        if generated:
             shutil.copy2(raw, tracer)
             metadata["trace_generated"] = True; metadata["trace_path"] = "tracer.log"
         write_metadata(metadata_path, metadata)
         if code:
             raise RunFailure("simulation", f"simulation exited {code}; verification incomplete", code)
-        if after is None or after == before:
+        if args.trace_mode == "required" and not generated:
             raise RunFailure("trace", "fresh tracer was not generated")
+        if args.trace_mode == "disabled" and generated:
+            raise RunFailure("trace", "trace was generated while disabled")
         code = run_logged(report, root, output / "report.log")
         metadata["report_exit_code"] = code; write_metadata(metadata_path, metadata)
         if code:
             raise RunFailure("report", f"report exited {code}", code)
+        if args.prebuilt_elf_sha256 is not None and \
+                sha256_file(elf) != args.prebuilt_elf_sha256:
+            raise RunFailure("fingerprint", "prebuilt ELF changed during run")
         finish_metadata(metadata, "passed", 0); write_metadata(metadata_path, metadata)
         return 0
     except RunInterrupted as error:

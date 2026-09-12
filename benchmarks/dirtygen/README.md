@@ -411,14 +411,16 @@ PTE/data/log oracles. Oracle work and complete post-rearm checks are outside
 the epoch interval. The common host-side data-plane test is available as
 `make test-epoch-common`.
 
-`dirtygen_epoch_report.py` strictly validates either epoch UART namespace and
-correlates each PTE CAS and physical logger attempt with per-hart sample and
-timed-window markers. Scan runs reject every logger attempt; log runs require
-committed entries to be inside INDEX and permit only trace-proven superseded
-attempts outside the architectural stream. `run_dirtygen_epoch.py` builds and
-runs one fresh backend selection, archives a raw trace in architecture and
-RVLS modes, and records source, command, CPU, ELF, selection and code-window
-fingerprints.
+`dirtygen_epoch_report.py` strictly validates either epoch UART namespace.
+With trace evidence it also correlates each PTE CAS and physical logger attempt
+with per-hart sample and timed-window markers. Scan runs reject every logger
+attempt; log runs require committed entries to be inside INDEX and permit only
+trace-proven superseded attempts outside the architectural stream.
+`run_dirtygen_epoch.py` builds and runs one fresh backend selection and records
+source, command, CPU, ELF, selection and code-window fingerprints. Its default
+`--trace-mode required` preserves the RVLS/phase-3 behavior. The explicit
+architecture-only `--trace-mode disabled` omits trace collection and labels the
+result `NOT_COLLECTED`; it is not a lifecycle PASS.
 
 Run and compare one E0 pair with:
 
@@ -442,6 +444,19 @@ architecture smoke followed by the twelve-process RVLS smoke with fail-fast
 barriers and fingerprint-checked resume. Its separate `full-architecture`
 schedule contains the deferred 68 E0/E1 processes. Existing `perf`, `perf-mc`,
 and `perf-mc-prefilled` ABIs and output paths remain unchanged.
+
+`run_dirtygen_epoch_phase4.py` executes that complete architecture matrix with
+four pair workers by default. It prebuilds and freezes all 34 ELFs, runs the two
+backends serially within each pair, completes E0 before E1, and does not collect
+trace on passing primary runs. Concurrent configurations use private
+`SPINALSIM_WORKSPACE` directories and reflinked private Mill output trees; a
+unique `--name` alone is not treated as sufficient compile isolation. On the
+first failure it stops launching work,
+waits for already active processes, performs exactly one trace-enabled replay
+of the first failing selection, and leaves the campaign failed. The final
+comparison contains 68 sources, 34 groups and 170 measured pairings;
+`collect_dirtygen_epoch_phase4.py` combines the five E0 and five E1 pairings for
+each of the 17 workload selections.
 
 ### Phase-3 RVLS gate and architecture campaign
 

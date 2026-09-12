@@ -141,6 +141,55 @@ class EpochCompareTest(unittest.TestCase):
                 "2026-01-01T00:02:00+00:00", "2026-01-01T00:03:00+00:00", block="E1"))
             self.assertEqual(compare.comparison_document([log, scan])["status"], "PASS")
 
+    def test_no_trace_is_accepted_only_for_explicit_architecture_pairs(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            paths = [write_run(root / backend, backend,
+                f"2026-01-01T00:0{index * 2}:00+00:00",
+                f"2026-01-01T00:0{index * 2 + 1}:00+00:00")
+                for index, backend in enumerate(("pte-scan-serial", "shdlt-log"))]
+            for path in paths:
+                metadata = json.loads((path / "metadata.json").read_text())
+                metadata.update(trace_mode="disabled", trace_required=False,
+                                trace_requested=False, trace_generated=False,
+                                trace_path=None)
+                (path / "metadata.json").write_text(json.dumps(metadata))
+                trace = json.loads((path / "report/trace-report.json").read_text())
+                trace.update(status="NOT_COLLECTED", reason="trace-disabled",
+                             samples=[], lifecycles=[], totals=None,
+                             sample_segmentation=None)
+                (path / "report/trace-report.json").write_text(json.dumps(trace))
+            campaigns = [compare.load_campaign(path) for path in paths]
+            document = compare.comparison_document(campaigns)
+            self.assertEqual({row["trace_status"] for row in document["sources"]},
+                             {"NOT_COLLECTED"})
+            metadata = json.loads((paths[0] / "metadata.json").read_text())
+            metadata["mode"] = "rvls"
+            (paths[0] / "metadata.json").write_text(json.dumps(metadata))
+            with self.assertRaises(compare.ComparisonError):
+                compare.load_campaign(paths[0])
+
+    def test_rejects_mixed_trace_policy(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            scan_path = write_run(root / "scan", "pte-scan-serial",
+                "2026-01-01T00:00:00+00:00", "2026-01-01T00:01:00+00:00")
+            log_path = write_run(root / "log", "shdlt-log",
+                "2026-01-01T00:02:00+00:00", "2026-01-01T00:03:00+00:00")
+            metadata = json.loads((scan_path / "metadata.json").read_text())
+            metadata.update(trace_mode="disabled", trace_required=False,
+                            trace_requested=False, trace_generated=False,
+                            trace_path=None)
+            (scan_path / "metadata.json").write_text(json.dumps(metadata))
+            trace = json.loads((scan_path / "report/trace-report.json").read_text())
+            trace.update(status="NOT_COLLECTED", reason="trace-disabled",
+                         samples=[], lifecycles=[], totals=None,
+                         sample_segmentation=None)
+            (scan_path / "report/trace-report.json").write_text(json.dumps(trace))
+            with self.assertRaises(compare.ComparisonError):
+                compare.comparison_document([compare.load_campaign(scan_path),
+                                              compare.load_campaign(log_path)])
+
 
 if __name__ == "__main__":
     unittest.main()

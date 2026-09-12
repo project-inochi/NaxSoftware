@@ -70,7 +70,8 @@ def load_campaign(root: Path) -> Campaign:
         raise ComparisonError(f"{root} campaign metadata is not a passing epoch run")
     if samples.get("schema") != SAMPLES_SCHEMA:
         raise ComparisonError(f"{root} has an unsupported samples schema")
-    if trace.get("schema") != TRACE_SCHEMA or trace.get("status") != "PASS":
+    if trace.get("schema") != TRACE_SCHEMA or trace.get("status") not in \
+            ("PASS", "NOT_COLLECTED"):
         raise ComparisonError(f"{root} has an invalid trace report")
     if samples.get("profile") != metadata.get("profile") or \
             trace.get("profile") != metadata.get("profile") or \
@@ -80,10 +81,24 @@ def load_campaign(root: Path) -> Campaign:
         raise ComparisonError(f"{root} has an invalid backend")
     if metadata.get("epoch_block_id") not in BLOCKS:
         raise ComparisonError(f"{root} has an invalid epoch block")
-    if (len(samples.get("samples", [])) != 6 or
-            samples.get("end", {}).get("status") != 0 or
-            len(trace.get("samples", [])) != 6):
+    if len(samples.get("samples", [])) != 6 or \
+            samples.get("end", {}).get("status") != 0:
         raise ComparisonError(f"{root} has incomplete firmware or trace samples")
+    if trace["status"] == "PASS":
+        if len(trace.get("samples", [])) != 6 or \
+                metadata.get("trace_requested") is False or \
+                metadata.get("trace_generated") is False:
+            raise ComparisonError(f"{root} has inconsistent collected trace metadata")
+    elif metadata.get("mode") != "architecture" or \
+            metadata.get("trace_mode") != "disabled" or \
+            metadata.get("trace_required") is not False or \
+            metadata.get("trace_requested") is not False or \
+            metadata.get("trace_generated") is not False or \
+            metadata.get("trace_path") is not None or \
+            trace.get("reason") != "trace-disabled" or \
+            trace.get("samples") != [] or trace.get("lifecycles") != [] or \
+            trace.get("totals") is not None:
+        raise ComparisonError(f"{root} may omit trace only for an explicit architecture run")
     return Campaign(root, metadata, samples, trace)
 
 
@@ -114,7 +129,8 @@ def compatibility(campaign: Campaign) -> tuple[Any, ...]:
             artifact.get("workload_code_sha256"),
             artifact.get("timed_window_sha256"),
             metadata.get("source_fingerprint", {}).get("digest"),
-            json.dumps(metadata.get("top_level_gitlinks"), sort_keys=True))
+            json.dumps(metadata.get("top_level_gitlinks"), sort_keys=True),
+            metadata.get("trace_mode", "required"), campaign.trace.get("status"))
 
 
 def measured(campaign: Campaign) -> dict[int, dict[str, Any]]:
@@ -229,6 +245,7 @@ def comparison_document(campaigns: list[Campaign]) -> dict[str, Any]:
             "sources": [{"root": str(item.root),
                          "run_id": item.metadata["process_run_id"],
                          "backend": item.backend,
+                         "trace_status": item.trace["status"],
                          "elf_sha256": item.metadata["artifact"]["elf_sha256"]}
                         for item in campaigns],
             "pairings": pairings, "summaries": summaries}

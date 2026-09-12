@@ -38,10 +38,15 @@ class EpochCampaignTest(unittest.TestCase):
                 "pte-scan-serial", "E0", "unit", "architecture", 2, "a")
             rvls = runner.mill_command(root, "mc", "same-pte", None, 4,
                 "shdlt-log", "E0", "unit", "rvls", 2, "b")
+            no_trace = runner.mill_command(root, "single", "unique", 1, 1,
+                "pte-scan-serial", "E0", "unit", "architecture", 2, "c",
+                "disabled")
         self.assertIn("--with-rvls-log", architecture)
         self.assertIn("--no-rvls-check", architecture)
         self.assertIn("--with-rvls-log", rvls)
         self.assertNotIn("--no-rvls-check", rvls)
+        self.assertNotIn("--with-rvls-log", no_trace)
+        self.assertIn("--no-rvls-check", no_trace)
         self.assertNotEqual(architecture[architecture.index("--name") + 1],
                             rvls[rvls.index("--name") + 1])
 
@@ -63,6 +68,15 @@ class EpochCampaignTest(unittest.TestCase):
             runner.parse_args(["--profile", "single", "--workload", "unique",
                 "--value", "1", "--hart-count", "1",
                 "--host-timeout-seconds", "0"] + common)
+        with self.assertRaises(SystemExit):
+            runner.parse_args(["--profile", "single", "--workload", "unique",
+                "--value", "1", "--hart-count", "1", "--trace-mode", "disabled",
+                "--backend", "pte-scan-serial", "--epoch-block-id", "E0",
+                "--experiment-id", "unit", "--mode", "rvls"])
+        with self.assertRaises(SystemExit):
+            runner.parse_args(["--profile", "single", "--workload", "unique",
+                "--value", "1", "--hart-count", "1",
+                "--prebuilt-elf-sha256", "bad"] + common)
 
     def test_extended_timeout_is_explicit_and_fingerprinted(self):
         selection = phase3.rvls_smoke_schedule()[6]

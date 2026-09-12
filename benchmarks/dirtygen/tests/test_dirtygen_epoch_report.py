@@ -146,6 +146,15 @@ class EpochReportTest(unittest.TestCase):
                                              "same-pte", None, 2, backend)
             self.assertEqual(len(result["samples"][0]["harts"]), 2)
 
+    def test_explicit_no_trace_report_is_not_a_trace_pass(self):
+        samples = report.validate_console(single_document(), "single", "unique",
+                                          1, 1, "pte-scan-serial")
+        trace = report.trace_not_collected(samples, "pte-scan-serial")
+        self.assertEqual(trace["status"], "NOT_COLLECTED")
+        self.assertEqual(trace["reason"], "trace-disabled")
+        self.assertEqual(trace["samples"], [])
+        self.assertIsNone(trace["totals"])
+
     def test_rejects_bad_timing_bitmap_scan_and_ack(self):
         mutations = (
             lambda row: row.update(harvest_cycles=24),

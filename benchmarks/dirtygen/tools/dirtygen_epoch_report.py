@@ -710,7 +710,16 @@ def check_trace(lines: TextIO, samples: dict[str, Any], backend: str,
             "totals": {name: sum(row[name] for row in trace_samples) for name in
                        ("pte_cas_attempts", "pte_cas_success", "pte_cas_mismatch",
                         "physical_attempts", "committed", "superseded",
-                        "architectural_stores")}}
+                       "architectural_stores")}}
+
+
+def trace_not_collected(samples: dict[str, Any], backend: str) -> dict[str, Any]:
+    """Describe an intentional architecture-only run without trace evidence."""
+    return {"schema": "shdlt-dirtygen-epoch-trace-v1",
+            "status": "NOT_COLLECTED", "profile": samples["profile"],
+            "backend": backend, "reason": "trace-disabled",
+            "sample_segmentation": None, "samples": [], "lifecycles": [],
+            "totals": None}
 
 
 def csv_rows(document: dict[str, Any]) -> list[dict[str, Any]]:
@@ -754,7 +763,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--value", type=int)
     parser.add_argument("--hart-count", type=int, choices=(1, 2, 4), required=True)
     parser.add_argument("--backend", choices=tuple(BACKENDS), required=True)
-    parser.add_argument("--tracer", type=Path, required=True)
+    trace = parser.add_mutually_exclusive_group(required=True)
+    trace.add_argument("--tracer", type=Path)
+    trace.add_argument("--without-trace", action="store_true")
     parser.add_argument("--elf", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args(argv)
@@ -772,11 +783,15 @@ def main(argv: list[str] | None = None) -> int:
             parsed = parse_console(stream, args.profile)
         samples = validate_console(parsed, args.profile, args.workload,
                                    args.value, args.hart_count, args.backend)
-        symbols = symbol_values(args.elf, args.profile, args.workload)
-        layout = trace_layout(symbols, args.profile, args.workload, args.hart_count)
-        with args.tracer.open(encoding="utf-8", errors="replace") as stream:
-            trace = check_trace(stream, samples, args.backend, layout)
-        write_outputs(samples, trace, args.output_dir)
+        if args.tracer is not None:
+            symbols = symbol_values(args.elf, args.profile, args.workload)
+            layout = trace_layout(symbols, args.profile, args.workload,
+                                  args.hart_count)
+            with args.tracer.open(encoding="utf-8", errors="replace") as stream:
+                trace_document = check_trace(stream, samples, args.backend, layout)
+        else:
+            trace_document = trace_not_collected(samples, args.backend)
+        write_outputs(samples, trace_document, args.output_dir)
         print(f"dirtygen epoch report: PASS profile={args.profile} "
               f"backend={args.backend} samples={RUNS}")
         return 0

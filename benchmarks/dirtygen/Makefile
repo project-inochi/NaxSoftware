@@ -311,7 +311,8 @@ test-epoch-common: build/epoch-host-test/dirtygen_epoch_common_test
 
 test-epoch-tools:
 	python3 -m unittest -v tests.test_dirtygen_epoch_report \
-		tests.test_dirtygen_epoch_compare tests.test_dirtygen_epoch_campaign
+		tests.test_dirtygen_epoch_compare tests.test_dirtygen_epoch_campaign \
+		tests.test_dirtygen_epoch_phase4
 
 build/epoch-host-test/dirtygen_epoch_common_test: \
 		src/dirtygen_epoch.c tests/dirtygen_epoch_common_test.c \
