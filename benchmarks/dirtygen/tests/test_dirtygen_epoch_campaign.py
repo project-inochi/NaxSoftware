@@ -41,12 +41,21 @@ class EpochCampaignTest(unittest.TestCase):
             no_trace = runner.mill_command(root, "single", "unique", 1, 1,
                 "pte-scan-serial", "E0", "unit", "architecture", 2, "c",
                 "disabled")
+            mc_h1 = runner.mill_command(root, "mc", "private-strong", None, 1,
+                "pte-scan-serial", "E0", "unit", "architecture", 2, "d",
+                "disabled")
         self.assertIn("--with-rvls-log", architecture)
         self.assertIn("--no-rvls-check", architecture)
         self.assertIn("--with-rvls-log", rvls)
         self.assertNotIn("--no-rvls-check", rvls)
         self.assertNotIn("--with-rvls-log", no_trace)
         self.assertIn("--no-rvls-check", no_trace)
+        self.assertNotIn("--performance-counters", no_trace)
+        self.assertIn("--performance-counters", mc_h1)
+        self.assertEqual(mc_h1[mc_h1.index("--performance-counters") + 1], "4")
+        self.assertNotIn("--lsu-l1-coherency", mc_h1)
+        self.assertEqual(runner.cpu_config("single", 1, 2)["performance_counters"], 0)
+        self.assertEqual(runner.cpu_config("mc", 1, 2)["performance_counters"], 4)
         self.assertNotEqual(architecture[architecture.index("--name") + 1],
                             rvls[rvls.index("--name") + 1])
 

@@ -118,12 +118,13 @@ def build_command(root: Path, profile: str, workload: str, value: int | None,
     return command
 
 
-def cpu_config(harts: int, seed: int) -> dict[str, Any]:
+def cpu_config(profile: str, harts: int, seed: int) -> dict[str, Any]:
+    performance_counters = 4 if profile == "mc" else 0
     return {"xlen": 64, "cpu_count": harts, "physical_width": 32,
             "reset_vector": "0x80000000",
             "isa": "h,m,a,c,svadu,shdlt,zicntr", "fetch_l1": True,
             "lsu_l1": True, "lsu_l1_coherency": harts > 1,
-            "performance_counters": 4 if harts > 1 else 0,
+            "performance_counters": performance_counters,
             "pass_policy": "all", "fail_policy": "any",
             "fail_after": 2_000_000_000, "dbus_ready_factor": "1.01",
             "memory_latency": 0, "seed": seed, "stdin": False}
@@ -145,14 +146,17 @@ def mill_command(root: Path, profile: str, workload: str, value: int | None,
     mill = shutil.which("mill")
     if mill is None:
         raise RuntimeError("mill was not found in PATH")
-    config = cpu_config(harts, seed)
+    config = cpu_config(profile, harts, seed)
     command = ["/bin/sh", mill, "--no-server", "Test[2.13.12].runMain",
                "vexiiriscv.tester.TestBench", "--xlen", "64",
                "--cpu-count", str(harts), "--physical-width", "32",
                "--reset-vector", "0x80000000", "--with-isa", config["isa"],
                "--with-fetch-l1", "--with-lsu-l1"]
     if harts > 1:
-        command += ["--lsu-l1-coherency", "--performance-counters", "4"]
+        command.append("--lsu-l1-coherency")
+    if config["performance_counters"] != 0:
+        command += ["--performance-counters",
+                    str(config["performance_counters"])]
     command += ["--load-elf", str(elf_path(root, profile, workload, value,
                                             harts, backend)),
                 "--pass-symbol", "pass", "--fail-symbol", "fail",
@@ -397,7 +401,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.dry_run:
         print(json.dumps({"schema": SCHEMA, "output_root": str(output),
                           "build": build, "simulation": mill, "report": report,
-                          "cpu_config": cpu_config(args.hart_count, args.seed),
+                          "cpu_config": cpu_config(args.profile,
+                                                   args.hart_count, args.seed),
                           "host_timeout_seconds": args.host_timeout_seconds,
                           "trace_mode": args.trace_mode,
                           "prebuilt_elf_sha256": args.prebuilt_elf_sha256,
@@ -441,7 +446,7 @@ def main(argv: list[str] | None = None) -> int:
             "top_level_gitlinks": top_level_gitlinks(root, repositories),
             "source_fingerprint": source,
             "toolchain": toolchain_information(mill),
-            "cpu_config": cpu_config(args.hart_count, args.seed),
+            "cpu_config": cpu_config(args.profile, args.hart_count, args.seed),
             "execution_environment": {"MILL_OUTPUT_DIR": os.environ.get("MILL_OUTPUT_DIR"),
                                       "SPINALSIM_WORKSPACE": os.environ.get("SPINALSIM_WORKSPACE")},
             "commands": {"build": command_record(build),
